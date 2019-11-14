@@ -34,6 +34,7 @@ public class Client extends JFrame implements Runnable, ActionListener {
         area.setBackground(colorarea);
 
         setLocationRelativeTo(null);
+
         area.setVisible(true);
         buttonPanel.setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
