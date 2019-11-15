@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Protocoll {
 
@@ -10,8 +11,8 @@ public class Protocoll {
 
     Protocoll(){}
 
-    public String[] getRiddles() {
-        return riddles;
+    public String[] infoFromServer2() {
+        return infoFromServer2;
     }
 
     public String getInfo(String[] info,int i) {
@@ -23,41 +24,31 @@ public class Protocoll {
     private int state = BEGIN;
     private int currentRiddle = 0;
 
-    private String[] riddles = {
-            "I am not alive, but I grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I?",
-            "The more you take, the more you leave behind. What am I?",
-            "What room do ghosts avoid?",
-            "What belongs to you, but other people use it more than you?",
-            "My life can be measured in hours, I serve by being devoured. Thin, I am quick. Fat, I am slow. Wind is my foe. What am I?"
-    };
+    public String[] infoFromServer2 =
+             {"Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
+            "Men när släpptes Sony Playstation sin första spelkonsol?"};
 
 
-    public String[] answers = {
-            "Fire",
-            "Footsteps",
-            "The living room",
-            "Your name",
-            "A candle"
+
+    public  String[] answerArray = {"1997","1991","2011","1994","3"
+
     };
+
+    int correctAnswerIndex = Integer.parseInt(answerArray[4]);
 
     public String processInput(String theInput) {
         String theOutput = "";
-        if (state == BEGIN){
-            System.out.println("WAITING");
-            theOutput = "Welcome to the riddleFactory, do you want to begin?";
-            state = QUESTION;
-        }
         if (state == QUESTION) {
-            theOutput = riddles[currentRiddle];
+            theOutput = infoFromServer2[currentRiddle];
             state = VALIDATION;
         } else if (theInput.equalsIgnoreCase("No")
                 || theInput.equalsIgnoreCase("N")) {
             theOutput = "Bye";
             state = QUIT;
         } else if (state == VALIDATION) {
-            if (theInput.equalsIgnoreCase(answers[currentRiddle])) {
+            if (theInput.equalsIgnoreCase(answerArray[correctAnswerIndex])) {
                 System.out.println("CORRECT ANSWER");
-                theOutput = answers[currentRiddle]
+                theOutput = answerArray[correctAnswerIndex]
                         + " was the correct answer! Want another? (Yes/No)";
                 currentRiddle++;
             } else {
