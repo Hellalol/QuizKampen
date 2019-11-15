@@ -3,24 +3,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.*;
+import java.util.Arrays;
 
-public class Client extends JFrame implements Runnable, ActionListener {
-    Protocoll pro = new Protocoll();
+class Client extends JFrame implements ActionListener {
+
+    //all info ska komma in i en array i detta formatet
+    String[] infoFromServer2 = {"Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
+            "Men när släpptes Sony Playstation sin första spelkonsol?","1997","1991","2011","1994","3"};
+
+    //svar och rätt index i Buttonarrayen parsas in i en mindre array och en variabel
+    String[] answerArray = Arrays.copyOfRange(infoFromServer2, 1, 5);
+    int correctAnswerIndex = Integer.parseInt(infoFromServer2[5]);
+
     JPanel panel = new JPanel();
     JPanel buttonPanel = new JPanel();
     JTextArea area = new JTextArea();
-    Color colorbutton = new Color(30, 29, 37);
-    Color colorarea = new Color(13, 199, 253);
-    int toPort = 12345;
-    String hostName = "172.20.201.51";
-    Socket socket = new Socket(hostName, toPort);
-    Thread thread = new Thread(this);
+    Color colorbutton = new Color(13, 199, 253);
     private static JButton[] buttons = new JButton[4];
 
-    public Client() throws IOException {
-
-        Server chatServer = new Server();
+    public Client() {
         setSize(400, 439);
         add(panel);
         panel.setSize(400, 400);
@@ -31,65 +32,55 @@ public class Client extends JFrame implements Runnable, ActionListener {
         buttonPanel.setLayout(new GridLayout(2, 2));
         buttonPanel.setSize(400, 200);
         panel.add(addButtons(), BorderLayout.SOUTH);
-        area.setBackground(colorarea);
-
+        area.setText(infoFromServer2[0]);
         setLocationRelativeTo(null);
-
         area.setVisible(true);
         buttonPanel.setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        this.thread.start();
-
-
     }
 
     public JPanel addButtons(){
-        JPanel grid = new JPanel();
+
+        //Knapparna målas upp en for-loop
+        JPanel buttonGridArray = new JPanel();
         buttons = new JButton[4];
         for (int i = 0; i < 4 ; i++) {
             buttons[i] = new JButton();
-            grid.setLayout(new GridLayout(2,2));
+            buttonGridArray.setLayout(new GridLayout(2,2));
             buttons[i].setPreferredSize(new Dimension(500,100));
+            buttons[i].putClientProperty("column", i);
             buttons[i].addActionListener(this);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
-            buttons[i].setText(pro.getInfo(pro.answers,i));
-            grid.add(buttons[i]);
+            buttons[i].setText(answerArray[i]);
+            buttonGridArray.add(buttons[i]);
         }
-        return grid;
-    }
-    public String getRiddle(String[] riddles, int i){
-        return riddles[i];
-    }
-
-    public static void main(String[] args) throws IOException {
-        Client cc = new Client();
-    }
-
-    @Override
-    public void run() {
-        try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(this.socket.getInputStream()));
-        ) {
-            String message;
-            while ((message = in.readLine()) != null) {
-                area.append(message + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return buttonGridArray;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        JButton buttonPressed = (JButton) e.getSource();
         for (int i = 0; i < 4 ; i++) {
             if(buttons[i] == e.getSource()){
-                if(buttons[i].getText().equalsIgnoreCase("")) {
-                    buttons[i].setBackground(Color.GREEN);
-                }
+                if ((int)buttonPressed.getClientProperty("column") == correctAnswerIndex){
+                    buttons[i].setBackground(Color.green);
+                    JOptionPane.showMessageDialog(null,"RÄTT");
+                    System.exit(0);
+
+                }else
+                    buttons[i].setBackground(Color.red);
+                    JOptionPane.showMessageDialog(null,"FEL");
+                    System.exit(0);
+
             }
 
         }
+    }
+
+    public static void main(String[] args){
+        Client cc = new Client();
     }
 }
