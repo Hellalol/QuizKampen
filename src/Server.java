@@ -4,9 +4,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class Server implements Runnable {
     int portNumber = 12345;
+    //all info ska komma in i en array i detta formatet
+
+
+    //svar och rätt index i Buttonarrayen parsas in i en mindre array och en variabel
+
+    //int correctAnswerIndex = Integer.parseInt(infoFromServer2[5]);
 
     public Server() throws IOException {
 
