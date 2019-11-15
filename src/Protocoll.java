@@ -41,10 +41,6 @@ public class Protocoll {
         if (state == QUESTION) {
             theOutput = infoFromServer2[currentRiddle];
             state = VALIDATION;
-        } else if (theInput.equalsIgnoreCase("No")
-                || theInput.equalsIgnoreCase("N")) {
-            theOutput = "Bye";
-            state = QUIT;
         } else if (state == VALIDATION) {
             if (theInput.equalsIgnoreCase(answerArray[correctAnswerIndex])) {
                 System.out.println("CORRECT ANSWER");

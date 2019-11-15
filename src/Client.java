@@ -23,7 +23,7 @@ class Client extends JFrame implements ActionListener,Runnable {
     private static JButton[] buttons = new JButton[4];
     int toPort = 12345;
     String hostName = "172.20.201.86";
-    Socket socket = new Socket(hostName, toPort);
+    Socket socket = new Socket("localhost", toPort);
     Thread thread = new Thread(this);
     Protocoll pro = new Protocoll();
 
