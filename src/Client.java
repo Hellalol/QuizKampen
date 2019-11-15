@@ -3,24 +3,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.*;
 import java.util.Arrays;
 
-class GUI extends JFrame implements ActionListener {
+class Client extends JFrame implements ActionListener {
 
-    String[] info = {"När släpptes SNES?","2011","1991","1984","1990","1"};
-    String[] svarArray = Arrays.copyOfRange(info, 1, 5);
-    int correctAnswer = Integer.parseInt(info[5]);
+    //all info ska komma in i en array i detta formatet
+    String[] infoFromServer = {"När släpptes SNES?","2011","1991","1984","1990","1"};
 
+    //svar och rätt index i Buttonarrayen parsas in i en mindre array och en variabel
+    String[] answerArray = Arrays.copyOfRange(infoFromServer, 1, 5);
+    int correctAnswerIndex = Integer.parseInt(infoFromServer[5]);
 
     JPanel panel = new JPanel();
     JPanel buttonPanel = new JPanel();
     JTextArea area = new JTextArea();
-    Color colorarea = new Color(30, 29, 37);
     Color colorbutton = new Color(13, 199, 253);
     private static JButton[] buttons = new JButton[4];
 
-    public GUI() {
+    public Client() {
         setSize(400, 439);
         add(panel);
         panel.setSize(400, 400);
@@ -31,7 +31,7 @@ class GUI extends JFrame implements ActionListener {
         buttonPanel.setLayout(new GridLayout(2, 2));
         buttonPanel.setSize(400, 200);
         panel.add(addButtons(), BorderLayout.SOUTH);
-        area.setText(info[0]);
+        area.setText(infoFromServer[0]);
         setLocationRelativeTo(null);
         area.setVisible(true);
         buttonPanel.setVisible(true);
@@ -41,20 +41,22 @@ class GUI extends JFrame implements ActionListener {
     }
 
     public JPanel addButtons(){
-        JPanel grid = new JPanel();
+
+        //Knapparna målas upp en for-loop
+        JPanel buttonGridArray = new JPanel();
         buttons = new JButton[4];
         for (int i = 0; i < 4 ; i++) {
             buttons[i] = new JButton();
-            grid.setLayout(new GridLayout(2,2));
+            buttonGridArray.setLayout(new GridLayout(2,2));
             buttons[i].setPreferredSize(new Dimension(500,100));
             buttons[i].putClientProperty("column", i);
             buttons[i].addActionListener(this);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
-            buttons[i].setText(svarArray[i]);
-            grid.add(buttons[i]);
+            buttons[i].setText(answerArray[i]);
+            buttonGridArray.add(buttons[i]);
         }
-        return grid;
+        return buttonGridArray;
     }
 
     @Override
@@ -65,19 +67,19 @@ class GUI extends JFrame implements ActionListener {
 
         for (int i = 0; i < 4 ; i++) {
             if(buttons[i] == e.getSource()){
-                if ((int)btn.getClientProperty("column") == correctAnswer){
+                if ((int)btn.getClientProperty("column") == correctAnswerIndex){
                     buttons[i].setBackground(Color.green);
-                    //Skickar info till server RÄTT
+                    //Skickar info till servern RÄTT
                 }else
                     buttons[i].setBackground(Color.red);
-                //Skickar info till server FEL
+                    //Skickar info till servern FEL
 
             }
 
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        GUI cc = new GUI();
+    public static void main(String[] args){
+        Client cc = new Client();
     }
 }
