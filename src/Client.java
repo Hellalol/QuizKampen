@@ -37,7 +37,6 @@ class Client extends JFrame implements ActionListener {
         buttonPanel.setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-
     }
 
     public JPanel addButtons(){
