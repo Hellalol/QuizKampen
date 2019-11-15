@@ -4,23 +4,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
 
-public class Client extends JFrame implements Runnable, ActionListener {
-    Protocoll pro = new Protocoll();
+class GUI extends JFrame implements ActionListener {
+
+    String[] info = {"När släpptes SNES?","2011","1991","1984","1990","1"};
+    String[] svarArray = Arrays.copyOfRange(info, 1, 5);
+    int correctAnswer = Integer.parseInt(info[5]);
+
+
     JPanel panel = new JPanel();
     JPanel buttonPanel = new JPanel();
     JTextArea area = new JTextArea();
-    Color colorbutton = new Color(30, 29, 37);
-    Color colorarea = new Color(13, 199, 253);
-    int toPort = 12345;
-    String hostName = "172.20.201.51";
-    Socket socket = new Socket(hostName, toPort);
-    Thread thread = new Thread(this);
+    Color colorarea = new Color(30, 29, 37);
+    Color colorbutton = new Color(13, 199, 253);
     private static JButton[] buttons = new JButton[4];
 
-    public Client() throws IOException {
-
-        Server chatServer = new Server();
+    public GUI() {
         setSize(400, 439);
         add(panel);
         panel.setSize(400, 400);
@@ -31,16 +31,12 @@ public class Client extends JFrame implements Runnable, ActionListener {
         buttonPanel.setLayout(new GridLayout(2, 2));
         buttonPanel.setSize(400, 200);
         panel.add(addButtons(), BorderLayout.SOUTH);
-        area.setBackground(colorarea);
-
+        area.setText(info[0]);
         setLocationRelativeTo(null);
-
         area.setVisible(true);
         buttonPanel.setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        this.thread.start();
-
 
     }
 
@@ -51,45 +47,37 @@ public class Client extends JFrame implements Runnable, ActionListener {
             buttons[i] = new JButton();
             grid.setLayout(new GridLayout(2,2));
             buttons[i].setPreferredSize(new Dimension(500,100));
+            buttons[i].putClientProperty("column", i);
             buttons[i].addActionListener(this);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
-            buttons[i].setText(pro.getInfo(pro.answers,i));
+            buttons[i].setText(svarArray[i]);
             grid.add(buttons[i]);
         }
         return grid;
     }
-    public String getRiddle(String[] riddles, int i){
-        return riddles[i];
-    }
-
-    public static void main(String[] args) throws IOException {
-        Client cc = new Client();
-    }
-
-    @Override
-    public void run() {
-        try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(this.socket.getInputStream()));
-        ) {
-            String message;
-            while ((message = in.readLine()) != null) {
-                area.append(message + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        JButton btn = (JButton) e.getSource();
+        System.out.println("clicked column " + btn.getClientProperty("column"));
+
         for (int i = 0; i < 4 ; i++) {
             if(buttons[i] == e.getSource()){
-                if(buttons[i].getText().equalsIgnoreCase("")) {
-                    buttons[i].setBackground(Color.GREEN);
-                }
+                if ((int)btn.getClientProperty("column") == correctAnswer){
+                    buttons[i].setBackground(Color.green);
+                    //Skickar info till server RÄTT
+                }else
+                    buttons[i].setBackground(Color.red);
+                //Skickar info till server FEL
+
             }
 
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        GUI cc = new GUI();
     }
 }

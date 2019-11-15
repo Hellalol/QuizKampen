@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 
 public class Protocoll {
 
@@ -10,13 +8,7 @@ public class Protocoll {
 
 
 
-    Protocoll(){
-
-
-
-    }
-
-
+    Protocoll(){}
 
     public String[] getRiddles() {
         return riddles;
