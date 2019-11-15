@@ -8,11 +8,12 @@ import java.util.Arrays;
 class Client extends JFrame implements ActionListener {
 
     //all info ska komma in i en array i detta formatet
-    String[] infoFromServer = {"När släpptes SNES?","2011","1991","1984","1990","1"};
+    String[] infoFromServer2 = {"Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
+            "Men när släpptes Sony Playstation sin första spelkonsol?","1997","1991","2011","1994","3"};
 
     //svar och rätt index i Buttonarrayen parsas in i en mindre array och en variabel
-    String[] answerArray = Arrays.copyOfRange(infoFromServer, 1, 5);
-    int correctAnswerIndex = Integer.parseInt(infoFromServer[5]);
+    String[] answerArray = Arrays.copyOfRange(infoFromServer2, 1, 5);
+    int correctAnswerIndex = Integer.parseInt(infoFromServer2[5]);
 
     JPanel panel = new JPanel();
     JPanel buttonPanel = new JPanel();
@@ -31,7 +32,7 @@ class Client extends JFrame implements ActionListener {
         buttonPanel.setLayout(new GridLayout(2, 2));
         buttonPanel.setSize(400, 200);
         panel.add(addButtons(), BorderLayout.SOUTH);
-        area.setText(infoFromServer[0]);
+        area.setText(infoFromServer2[0]);
         setLocationRelativeTo(null);
         area.setVisible(true);
         buttonPanel.setVisible(true);
@@ -61,17 +62,18 @@ class Client extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        JButton btn = (JButton) e.getSource();
-        System.out.println("clicked column " + btn.getClientProperty("column"));
-
+        JButton buttonPressed = (JButton) e.getSource();
         for (int i = 0; i < 4 ; i++) {
             if(buttons[i] == e.getSource()){
-                if ((int)btn.getClientProperty("column") == correctAnswerIndex){
+                if ((int)buttonPressed.getClientProperty("column") == correctAnswerIndex){
                     buttons[i].setBackground(Color.green);
-                    //Skickar info till servern RÄTT
+                    JOptionPane.showMessageDialog(null,"RÄTT");
+                    System.exit(0);
+
                 }else
                     buttons[i].setBackground(Color.red);
-                    //Skickar info till servern FEL
+                    JOptionPane.showMessageDialog(null,"FEL");
+                    System.exit(0);
 
             }
 
