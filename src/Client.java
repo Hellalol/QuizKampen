@@ -22,12 +22,15 @@ class Client extends JFrame implements ActionListener,Runnable {
     Color colorbutton = new Color(13, 199, 253);
     private static JButton[] buttons = new JButton[4];
     int toPort = 12345;
-    String hostName = "172.20.201.86";
-    Socket socket = new Socket("localhost", toPort);
+
+    String hostName = "localhost";
+    Socket socket = new Socket(hostName, toPort);
+
     Thread thread = new Thread(this);
     Protocoll pro = new Protocoll();
 
     public Client() throws IOException {
+        this.thread.start();
 
         setSize(400, 439);
         add(panel);
@@ -45,7 +48,6 @@ class Client extends JFrame implements ActionListener,Runnable {
         buttonPanel.setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        this.thread.start();
     }
 
     public JPanel addButtons(){
@@ -73,6 +75,9 @@ class Client extends JFrame implements ActionListener,Runnable {
                 new InputStreamReader(this.socket.getInputStream()));
         ) {
             String message;
+            String title = in.readLine();
+            setTitle(title);
+
             while ((message = in.readLine()) != null) {
                 area.append(message + "\n");
             }
