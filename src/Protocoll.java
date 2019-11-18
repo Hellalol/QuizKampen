@@ -36,15 +36,14 @@ public class Protocoll {
 
     int correctAnswerIndex = Integer.parseInt(answerArray[4]);
 
-    public String processInput(String theInput) {
+    public String processInput(String theInput, Server server) {
         String theOutput = "";
-        if (state == QUESTION) {
+        if(state == BEGIN) {
+            theOutput = server.Playername;
+        }
+        else if (state == QUESTION) {
             theOutput = infoFromServer2[currentRiddle];
             state = VALIDATION;
-        } else if (theInput.equalsIgnoreCase("No")
-                || theInput.equalsIgnoreCase("N")) {
-            theOutput = "Bye";
-            state = QUIT;
         } else if (state == VALIDATION) {
             if (theInput.equalsIgnoreCase(answerArray[correctAnswerIndex])) {
                 System.out.println("CORRECT ANSWER");
