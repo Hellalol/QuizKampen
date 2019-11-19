@@ -13,8 +13,6 @@ class Client extends JFrame implements ActionListener,Runnable {
     JFrame categoryMainWindow = new JFrame();
     JFrame questionMainWindow = new JFrame();
 
-
-
     JPanel onlyVisibleNotCat = new JPanel();
     JPanel panel = new JPanel();
     JPanel buttonPanel = new JPanel();
