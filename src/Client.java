@@ -126,7 +126,6 @@ class Client extends JFrame implements ActionListener,Runnable {
 
         JPanel questionMainPanel = new JPanel();
         JPanel qbuttonPanel = new JPanel();
-
         questionMainWindow.add(questionMainPanel);
         questionMainPanel.setLayout(new BorderLayout());
         questionMainPanel.add(area, BorderLayout.CENTER);
