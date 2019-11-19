@@ -3,68 +3,166 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.Inet4Address;
 import java.net.Socket;
-import java.util.Arrays;
 
 class Client extends JFrame implements ActionListener,Runnable {
 
-//    //all info ska komma in i en array i detta formatet
-//    String[] infoFromServer2 = {"Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
-//            "Men när släpptes Sony Playstation sin första spelkonsol?","1997","1991","2011","1994","3"};
-//
-//    //svar och rätt index i Buttonarrayen parsas in i en mindre array och en variabel
-//    String[] answerArray = Arrays.copyOfRange(infoFromServer2, 1, 5);
-//    int correctAnswerIndex = Integer.parseInt(infoFromServer2[5]);
-
+    // Swing stuff
     JPanel panel = new JPanel();
-    JPanel buttonPanel = new JPanel();
     JTextArea area = new JTextArea();
+    JPanel buttonPanel = new JPanel();
+    JPanel welcomePanel = new JPanel();
+    JTextField userNameInput = new JTextField();
+    JTextField roundsInput = new JTextField();
+    JTextField questionsInput = new JTextField();
+    JLabel welcomeText = new JLabel("QUIZGAME");
+    JLabel userName = new JLabel("name: ");
+    JLabel rounds = new JLabel("rounds: ");
+    JLabel questions = new JLabel("Questions:");
+    JButton connect = new JButton("CONNECT");
+    JButton exit = new JButton("EXIT");
     Color colorbutton = new Color(13, 199, 253);
     private static JButton[] buttons = new JButton[4];
+
+
+    // Server stuff
     int toPort = 12345;
-    String hostName = "localhost";
+    String hostName = Inet4Address.getLocalHost().getHostAddress();
     Socket socket = new Socket(hostName, toPort);
     Thread thread = new Thread(this);
     Protocoll pro = new Protocoll();
 
     public Client() throws IOException {
         this.thread.start();
-
-        setSize(400, 439);
+        setSize(400, 200);
         add(panel);
-        panel.setSize(400, 400);
         panel.setLayout(new BorderLayout());
-        panel.add(area, BorderLayout.CENTER);
-        area.setEditable(false);
-        area.setLineWrap(true);
-        buttonPanel.setLayout(new GridLayout(2, 2));
-        buttonPanel.setSize(400, 200);
-        panel.add(addButtons(), BorderLayout.SOUTH);
-        area.setText(pro.infoFromServer2[0]);
+        panel.setSize(400, 4);
+        panel.add(buttonPanel, BorderLayout.CENTER);
+        buttonPanel.setLayout(new GridLayout(4,2));
+        buttonPanel.add(userName);
+        buttonPanel.add(userNameInput);
+        buttonPanel.add(rounds);
+        buttonPanel.add(roundsInput);
+        buttonPanel.add(questions);
+        buttonPanel.add(questionsInput);
+        buttonPanel.add(connect);
+        buttonPanel.add(exit);
+        add(welcomePanel,BorderLayout.NORTH);
+        welcomePanel.add(welcomeText);
+        welcomeText.setFont(new Font("arial", Font.PLAIN,40));
+
         setLocationRelativeTo(null);
-        area.setVisible(true);
-        buttonPanel.setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+
+        connect.addActionListener(l ->{
+            openCategoryChooserWindow();
+            dispose();
+        });
+
+
+        exit.addActionListener(l ->{
+            System.exit(0);
+        });
+
+
+
+
+
     }
 
-    public JPanel addButtons(){
+    public JPanel addQuestionButtons(){
 
-        //Knapparna målas upp en for-loop
-        JPanel buttonGridArray = new JPanel();
+        JPanel questionGridArray = new JPanel();
         buttons = new JButton[4];
         for (int i = 0; i < 4 ; i++) {
             buttons[i] = new JButton();
-            buttonGridArray.setLayout(new GridLayout(2,2));
+            questionGridArray.setLayout(new GridLayout(2,2));
             buttons[i].setPreferredSize(new Dimension(500,100));
             buttons[i].putClientProperty("column", i);
             buttons[i].addActionListener(this);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
             buttons[i].setText(pro.answerArray[i]);
-            buttonGridArray.add(buttons[i]);
+            questionGridArray.add(buttons[i]);
         }
-        return buttonGridArray;
+        return questionGridArray;
+    }
+
+    public JPanel addCategoryButtons(){
+
+        JPanel categoryGridArray = new JPanel();
+        buttons = new JButton[4];
+        for (int i = 0; i < 4 ; i++) {
+            buttons[i] = new JButton();
+            categoryGridArray.setLayout(new GridLayout(2,2));
+            buttons[i].setPreferredSize(new Dimension(500,100));
+            buttons[i].putClientProperty("column", i);
+            buttons[i].setFocusable(false);
+            buttons[i].setBackground(colorbutton);
+            buttons[i].setText("TEXT");
+            buttons[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    for (int j = 0; j < 4; j++) {
+                        if (buttons[j] == e.getSource()){
+
+                        }
+                    }
+                }
+            });
+            categoryGridArray.add(buttons[i]);
+        }
+        return categoryGridArray;
+    }
+
+
+    public JFrame openQuestionWindow(){
+
+        JFrame questionMainWindow = new JFrame();
+        JPanel questionMainPanel = new JPanel();
+        JPanel qbuttonPanel = new JPanel();
+
+
+        questionMainWindow.add(questionMainPanel);
+        questionMainPanel.setLayout(new BorderLayout());
+        questionMainPanel.add(area, BorderLayout.CENTER);
+        area.setEditable(false);
+        area.setLineWrap(true);
+        qbuttonPanel.setLayout(new GridLayout(2, 2));
+        qbuttonPanel.setSize(400, 200);
+        questionMainPanel.add(addQuestionButtons(), BorderLayout.SOUTH);
+        area.setText(pro.infoFromServer2[0]);
+        setLocationRelativeTo(null);
+        area.setVisible(true);
+        qbuttonPanel.setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+
+        return questionMainWindow;
+    }
+
+    public JFrame openCategoryChooserWindow(){
+
+        JFrame categoryMainWindow = new JFrame();
+        JPanel categoryMainPanel = new JPanel();
+        JPanel textPanelNorth = new JPanel();
+        JLabel textNorth = new JLabel("CATEGORY");
+
+        categoryMainPanel.setLayout(new BorderLayout());
+        categoryMainPanel.add(addCategoryButtons(),BorderLayout.CENTER);
+        categoryMainPanel.add(textPanelNorth, BorderLayout.NORTH);
+        textPanelNorth.add(textNorth);
+        textNorth.setFont(new Font("Arial", Font.PLAIN,30));
+        categoryMainWindow.add(categoryMainPanel);
+        categoryMainWindow.setSize(400,500);
+        categoryMainWindow.setLocationRelativeTo(null);
+        categoryMainWindow.setVisible(true);
+
+
+        return categoryMainWindow;
     }
 
     @Override
