@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,10 +10,16 @@ import java.net.Socket;
 class Client extends JFrame implements ActionListener,Runnable {
 
     // Swing stuff
+    JFrame categoryMainWindow = new JFrame();
+    JFrame questionMainWindow = new JFrame();
+
+
+
+    JPanel onlyVisibleNotCat = new JPanel();
     JPanel panel = new JPanel();
-    JTextArea area = new JTextArea();
     JPanel buttonPanel = new JPanel();
     JPanel welcomePanel = new JPanel();
+    JTextArea area = new JTextArea();
     JTextField userNameInput = new JTextField();
     JTextField roundsInput = new JTextField();
     JTextField questionsInput = new JTextField();
@@ -66,10 +73,6 @@ class Client extends JFrame implements ActionListener,Runnable {
             System.exit(0);
         });
 
-
-
-
-
     }
 
     public JPanel addQuestionButtons(){
@@ -107,8 +110,9 @@ class Client extends JFrame implements ActionListener,Runnable {
                 public void actionPerformed(ActionEvent e) {
 
                     for (int j = 0; j < 4; j++) {
-                        if (buttons[j] == e.getSource()){
-
+                        if(buttons[j] == e.getSource()){
+                            openQuestionWindow();
+                            categoryMainWindow.dispose();
                         }
                     }
                 }
@@ -121,48 +125,69 @@ class Client extends JFrame implements ActionListener,Runnable {
 
     public JFrame openQuestionWindow(){
 
-        JFrame questionMainWindow = new JFrame();
+
         JPanel questionMainPanel = new JPanel();
         JPanel qbuttonPanel = new JPanel();
-
 
         questionMainWindow.add(questionMainPanel);
         questionMainPanel.setLayout(new BorderLayout());
         questionMainPanel.add(area, BorderLayout.CENTER);
+        questionMainWindow.setSize(400, 300);
         area.setEditable(false);
-        area.setLineWrap(true);
+
         qbuttonPanel.setLayout(new GridLayout(2, 2));
         qbuttonPanel.setSize(400, 200);
         questionMainPanel.add(addQuestionButtons(), BorderLayout.SOUTH);
         area.setText(pro.infoFromServer2[0]);
-        setLocationRelativeTo(null);
+        questionMainWindow.setLocationRelativeTo(null);
         area.setVisible(true);
         qbuttonPanel.setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
+        questionMainWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        questionMainWindow.setVisible(true);
 
         return questionMainWindow;
     }
 
+
+
+
     public JFrame openCategoryChooserWindow(){
 
-        JFrame categoryMainWindow = new JFrame();
-        JPanel categoryMainPanel = new JPanel();
+
         JPanel textPanelNorth = new JPanel();
         JLabel textNorth = new JLabel("CATEGORY");
-
+        JPanel categoryMainPanel = new JPanel();
+        categoryMainWindow.add(categoryMainPanel);
+        categoryMainWindow.setSize(400,300);
+        categoryMainWindow.setLocationRelativeTo(null);
+        categoryMainWindow.setVisible(true);
         categoryMainPanel.setLayout(new BorderLayout());
         categoryMainPanel.add(addCategoryButtons(),BorderLayout.CENTER);
         categoryMainPanel.add(textPanelNorth, BorderLayout.NORTH);
         textPanelNorth.add(textNorth);
         textNorth.setFont(new Font("Arial", Font.PLAIN,30));
-        categoryMainWindow.add(categoryMainPanel);
-        categoryMainWindow.setSize(400,500);
-        categoryMainWindow.setLocationRelativeTo(null);
-        categoryMainWindow.setVisible(true);
-
 
         return categoryMainWindow;
+    }
+
+
+    public JFrame openFinalResultWindow(){
+        String[] columns = new String[] {"spelare 1","spelare 2"};
+        Object[][] data = new Object[][] {{1,3},{1,3},{1,3},{1,3},{1,3},{1,3},{1,3},{1,3}};
+        JTable table = new JTable(data,columns);
+
+        JFrame finalWindowFrame = new JFrame();
+        JPanel finalWindowPanel = new JPanel();
+        finalWindowFrame.setSize(400,300);
+        finalWindowFrame.setLayout(new BorderLayout());
+        finalWindowFrame.add(finalWindowPanel,BorderLayout.CENTER);
+        finalWindowPanel.add(table);
+
+        finalWindowFrame.setVisible(true);
+        finalWindowFrame.setLocationRelativeTo(null);
+
+
+        return finalWindowFrame;
     }
 
     @Override
@@ -190,11 +215,13 @@ class Client extends JFrame implements ActionListener,Runnable {
             if(buttons[i] == e.getSource()){
                 if ((int)buttonPressed.getClientProperty("column") == pro.correctAnswerIndex){
                     buttons[i].setBackground(Color.green);
-                   JOptionPane.showMessageDialog(null,"RÄTT");
+                    openFinalResultWindow();
+                    questionMainWindow.dispose();
 
                 }else
                     buttons[i].setBackground(Color.red);
-                    JOptionPane.showMessageDialog(null,"FEL");
+                    openFinalResultWindow();
+                    questionMainWindow.dispose();
 
             }
 
