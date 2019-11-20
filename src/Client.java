@@ -151,6 +151,7 @@ class Client extends JFrame implements ActionListener,Runnable {
         });
         btn_confirm.addActionListener(l->{
             sendQuestionAndRoundNumber = true;
+            message = "R&Q"+round_amount+question_amount;
         });
     }
 
@@ -230,10 +231,11 @@ class Client extends JFrame implements ActionListener,Runnable {
                     //msg for question amount and round amount
                     if(sendQuestionAndRoundNumber){
                         message = "R&Q@"+round_amount+"@"+question_amount;
-                        //initial = false;
+
                     }
                     sendMessage(message);
                     message="";
+              System.out.println("Send is running");
            }
         }
 
