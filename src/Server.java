@@ -1,48 +1,84 @@
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Server extends Thread {
     Socket socket;
     Server opponent;
-    String Playername;
-    public Server(Socket socket, String Playername){
+    String playerName;
+    PrintWriter out;
+    BufferedReader in;
+    String round_amount ;
+    String question_amount;
+    boolean serverIsRunning = true;
+    public Server(Socket socket){
         this.socket = socket;
-        this.Playername = Playername;
-    }
-    public void setOpponent(Server opponent) {
-        this.opponent = opponent;
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+            //Get this client's name
+            this.playerName = receive();
 
+            System.out.println("player name is:"+ playerName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //Exchange players' name to each other
+    public void setOpponent(Server opponent) {
+        if(opponent!=null) {
+            this.opponent = opponent;
+            sendToOpponent("OpponentName@"+this.playerName+"@"+false);
+        }
+    }
+    void sendToOpponent(String msg){
+        opponent.send(msg);
     }
 
     @Override
     public void run() {
-        try (
-                PrintWriter out = new PrintWriter(
-                        socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream()));
-        ) {
-            String inputLine, outPutLine;
-
-            //Initiate conversation with client
-
-            Protocoll prot = new Protocoll();
-            outPutLine = prot.processInput(null, this);
-            out.println(outPutLine);
-
-            while ((inputLine = in.readLine()) != null) {
-                outPutLine = prot.processInput(inputLine,this);
-                out.println(outPutLine);
-            }
-        } catch (IOException e) {
-
+        while(serverIsRunning) {
+            String msg = receive();
+            if(opponent!=null)
+                sendToOpponent(msg);
         }
-
     }
+
+    String receive (){
+        String msg = "";
+        try {
+            msg = in.readLine();
+            if(msg.contains("@")){
+                StringTokenizer st = new StringTokenizer(msg,"@");
+                switch (st.nextToken()){
+                    case "R&Q":
+                        round_amount = st.nextToken();
+                        question_amount = st.nextToken();
+
+                        System.out.println("Round and Question amount: "+ round_amount+" "+question_amount );
+                        break;
+
+                }
+            }
+            if(msg == null){
+                System.out.println(playerName +" shut down.");
+                serverIsRunning = false;
+                socket.close();
+            }
+            System.out.println(playerName +" Server receive: "+msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return msg;
+    }
+
+    void send(String msg){
+        out.println(msg);
+    }
+
+
 }

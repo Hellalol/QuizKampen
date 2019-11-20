@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Protocoll {
 
     private static final int BEGIN = 0;
@@ -39,7 +37,7 @@ public class Protocoll {
     public String processInput(String theInput, Server server) {
         String theOutput = "";
         if(state == BEGIN) {
-            theOutput = server.Playername;
+            theOutput = server.playerName;
         }
         else if (state == QUESTION) {
             theOutput = infoFromServer2[currentRiddle];
