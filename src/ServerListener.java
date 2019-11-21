@@ -11,6 +11,7 @@ public class ServerListener implements Serializable {
                         = new Server(listener.accept(), "Player One");
                 Server playerTwo
                         = new Server(listener.accept(),"Player Two");
+
                 playerOne.setOpponent(playerOne);
                 playerTwo.setOpponent(playerTwo);
                 playerOne.start();
