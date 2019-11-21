@@ -39,7 +39,7 @@ class Client extends JFrame implements ActionListener,Runnable {
         buttonPanel.setLayout(new GridLayout(2, 2));
         buttonPanel.setSize(400, 200);
         panel.add(addButtons(), BorderLayout.SOUTH);
-        area.setText(pro.infoFromServer2[0]);
+        area.setText(pro.infoFromServer2.get(0));
         setLocationRelativeTo(null);
         area.setVisible(true);
         buttonPanel.setVisible(true);
@@ -61,7 +61,7 @@ class Client extends JFrame implements ActionListener,Runnable {
             buttons[i].addActionListener(this);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
-            buttons[i].setText(pro.answerArray[i]);
+            buttons[i].setText(pro.answerArray.get(0));
             buttonGridArray.add(buttons[i]);
         }
         return buttonGridArray;
@@ -103,4 +103,4 @@ class Client extends JFrame implements ActionListener,Runnable {
     public static void main(String[] args) throws IOException {
         Client cc = new Client();
     }
-}
+  }

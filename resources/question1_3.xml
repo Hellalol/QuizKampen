@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="answer1">answer1_3_1</entry>
-    <entry key="answer2">answer1_3_2</entry>
-    <entry key="answer3">answer1_3_3</entry>
-    <entry key="answer4">answer1_3_4</entry>
+    <entry key="category1">category1</entry>
+    <entry key="question1_3">question1_3</entry>
+    <entry key="answer1_3_1">answer1_3_1</entry>
+    <entry key="answer1_3_2">answer1_3_2</entry>
+    <entry key="answer1_3_3">answer1_3_3</entry>
+    <entry key="question1_3_right">_answer1_3_right</entry>
 </properties>

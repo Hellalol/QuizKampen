@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="answer1">answer1_1_1</entry>
-    <entry key="answer2">answer1_1_2</entry>
-    <entry key="answer3">answer1_1_3</entry>
-    <entry key="answer4">answer1_1_4</entry>
+    <entry key="category1">category1</entry>
+    <entry key="question1_1">Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. Men när släpptes Sony Playstation sin första spelkonsol?</entry>
+    <entry key="answer1_1_1">1997</entry>
+    <entry key="answer1_1_2">1991</entry>
+    <entry key="answer1_1_3">2011</entry>
+    <entry key="question1_1_right">1994</entry>
 </properties>
+

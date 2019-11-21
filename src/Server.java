@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 
+
 public class Server implements Runnable {
     int portNumber = 12345;
     //all info ska komma in i en array i detta formatet
