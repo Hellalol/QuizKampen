@@ -1,13 +1,24 @@
+import javax.print.DocFlavor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
 public class Protocoll {
 
-    private static final int BEGIN = 0;
+    private static final int CONNECTING = 0;
     private static final int QUESTION = 1;
     private static final int VALIDATION = 2;
-    private static final int QUIT = 3;
+
+    private static final int CATEGORIES_SENT = 3;
+    private static final int CATEGORY_PICKED = 4;
+    private static final int QUESTIONS_SENT = 5;
+    private static final int QUESTIONS_ANSWERED = 6;
+    private static final int SHOW_RESULTS = 7;
+
+
+
+
+
     Properties properties;
     Map<String,String> all = new LinkedHashMap<>();
     List<String> infoFromServer2 = new ArrayList<>();
@@ -40,6 +51,7 @@ public class Protocoll {
         }
         return questions;
     }
+
     //To get all questions under one question
     List<String> getAnswersByQuestion(String question){
         List<String> answers = new ArrayList<>();
@@ -124,30 +136,42 @@ public class Protocoll {
     }
 
 
-    private static final int NUMRIDDLES = 5;
-
-    private int state = BEGIN;
+    private int state = CONNECTING;
     private int currentRiddle = 0;
 
     //int correctAnswerIndex = Integer.parseInt(answerArray[4]);
 
-    public String processInput(String theInput) {
+    public String processInput(String theInput, Server server) {
         String theOutput = "";
-        if (state == QUESTION) {
+
+        if (state == CATEGORIES_SENT) {
             theOutput = infoFromServer2.get(currentRiddle);
-            state = VALIDATION;
-        } else if (state == VALIDATION) {
-            if (theInput.equalsIgnoreCase(answerArray.get(correctAnswerIndex))) {
-                System.out.println("CORRECT ANSWER");
-                theOutput = answerArray.get(correctAnswerIndex)
-                        + " was the correct answer! Want another? (Yes/No)";
-                currentRiddle++;
-            } else {
-                theOutput = "Wrong answer, try again? (Yes/No)";
-                System.out.println("WRONG ANSWER");
-            }
-            state = QUESTION;
+            state = CATEGORY_PICKED;
+
+        } else if (state == CATEGORY_PICKED) {
+
+            state = QUESTIONS_SENT;
+
+        }else if(state == QUESTIONS_SENT){
+
+            state = QUESTIONS_SENT;
+
+        }else if (state == QUESTIONS_ANSWERED){
+
+
+        }else if(state == SHOW_RESULTS){
+
         }
         return theOutput;
     }
 }
+
+//            if (theInput.equalsIgnoreCase(answerArray.get(correctAnswerIndex))) {
+//                System.out.println("CORRECT ANSWER");
+//                theOutput = answerArray.get(correctAnswerIndex)
+//                        + " was the correct answer! Want another? (Yes/No)";
+//                currentRiddle++;
+//            } else {
+//                theOutput = "Wrong answer, try again? (Yes/No)";
+//                System.out.println("WRONG ANSWER");
+//            }
