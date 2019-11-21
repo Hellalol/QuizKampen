@@ -49,7 +49,7 @@ public class Server extends Thread {
     }
 
     String receive (){
-        String msg = "";
+        String msg = null;
         try {
             msg = in.readLine();
             if(msg.contains("@")){
@@ -78,7 +78,7 @@ public class Server extends Thread {
 
     void send(String msg){
         out.println(msg);
+        System.out.println("Server sends: "+msg);
     }
-
 
 }

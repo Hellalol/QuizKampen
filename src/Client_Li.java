@@ -53,11 +53,9 @@ class Client_Li extends JFrame implements ActionListener,Runnable {
     String username;
     boolean isConnected = false;
     boolean clientIsRunning = true;
-    String message = "";
+    String message = null;
 
     public Client_Li() throws IOException {
-
-
 
         setSize(400, 439);
         add(panel);
@@ -191,7 +189,8 @@ class Client_Li extends JFrame implements ActionListener,Runnable {
 
         @Override
         public void run() {
-         while(clientIsRunning && !message.isEmpty());
+            System.out.println("Message is: "+message);
+         while(clientIsRunning && message!=null)
             {
                     System.out.println("Send in Send Thread run! and message is: "+ message);
                     //msg for question amount and round amount
@@ -204,7 +203,7 @@ class Client_Li extends JFrame implements ActionListener,Runnable {
         void sendMessage(){
             out.println(message);
             System.out.println("Client "+ username +" has sent:"+message);
-            message = "";
+            message = null;
             System.out.println("Current message value : "+message);
         }
 
