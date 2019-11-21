@@ -34,6 +34,7 @@ class Client extends JFrame implements ActionListener{//,Runnable {
     JLabel rounds = new JLabel("Rounds");
     ButtonGroup round_group = new ButtonGroup();
     JRadioButton r_2 = new JRadioButton("2",true);
+
     JRadioButton r_3 = new JRadioButton("3");
     JRadioButton r_4 = new JRadioButton("4");
 
@@ -42,6 +43,7 @@ class Client extends JFrame implements ActionListener{//,Runnable {
     JRadioButton q_2 = new JRadioButton("2",true);
     JRadioButton q_3 = new JRadioButton("3");
     JRadioButton q_4 = new JRadioButton("4");
+
 
 
 
@@ -64,8 +66,8 @@ class Client extends JFrame implements ActionListener{//,Runnable {
     boolean clientIsRunning = true;
 
     boolean sendQuestionAndRoundNumber = false;
-    String question_amount ="2";
-    String round_amount ="2";
+    String question_amount ="+";
+    String round_amount ="-";
     String message;
 
     Thread sender;
@@ -92,13 +94,6 @@ class Client extends JFrame implements ActionListener{//,Runnable {
         setSize(400, 439);
         //choose question and round amount
         option_zone.setLayout(new GridLayout(2,2));
-
-        r_2.addActionListener(this);
-        r_3.addActionListener(this);
-        r_4.addActionListener(this);
-        q_2.addActionListener(this);
-        q_3.addActionListener(this);
-        q_4.addActionListener(this);
 
         round_group_panel.setLayout(new GridLayout(1,3));
         round_group.add(r_2);
@@ -178,7 +173,27 @@ class Client extends JFrame implements ActionListener{//,Runnable {
             }
         });
         btn_confirm.addActionListener(l->{
+        /*
+            if(l.getActionCommand().equals("btn_confirm")) {
+                round_amount = round_group.getSelection().getActionCommand();
+                question_amount = question_group.getSelection().getActionCommand();
+                System.out.println("btn_confirm selection");
+            }
+         */
+            if(r_2.isSelected())
+                round_amount = "2";
+            if(r_3.isSelected())
+                round_amount = "3";
+            if(r_4.isSelected())
+                round_amount = "4";
+            if(q_2.isSelected())
+                question_amount = "2";
+            if(q_3.isSelected())
+                question_amount = "3";
+            if(q_4.isSelected())
+                question_amount = "4";
             sendQuestionAndRoundNumber = true;
+
             message = "R&Q@"+round_amount+"@"+question_amount;
             out.println(message);
            // System.out.println("btn_confirm->Sender status:"+sender.isAlive()+" ,Receiver status: "+receiver.isAlive()+" ,confirm button runs and message is "+message);
@@ -297,9 +312,6 @@ class Client extends JFrame implements ActionListener{//,Runnable {
                     switch (st.nextToken()){
                         case "OpponentName":
                             msg = st.nextToken();
-                            if(st.nextToken().equals("false"))
-                                //initial = false;
-                            break;
                         default:
                             System.out.println("Client receive unmatched msg ");
                     }

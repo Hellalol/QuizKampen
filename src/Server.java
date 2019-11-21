@@ -32,7 +32,7 @@ public class Server extends Thread {
     public void setOpponent(Server opponent) {
         if(opponent!=null) {
             this.opponent = opponent;
-            sendToOpponent("OpponentName@"+this.playerName+"@"+false);
+            sendToOpponent("OpponentName@"+this.playerName);
         }
     }
     void sendToOpponent(String msg){
@@ -49,7 +49,7 @@ public class Server extends Thread {
     }
 
     String receive (){
-        String msg = null;
+        String msg = "";
         try {
             msg = in.readLine();
             if(msg.contains("@")){
@@ -63,8 +63,7 @@ public class Server extends Thread {
                         break;
 
                 }
-            }
-            if(msg == null){
+            }else if(msg == null){
                 System.out.println(playerName +" shut down.");
                 serverIsRunning = false;
                 socket.close();
