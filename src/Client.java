@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-class Client extends JFrame implements ActionListener{//,Runnable {
+class Client extends JFrame {
     //Log in frame
     JFrame loginFrame = new JFrame();
     JPanel loginPanel = new JPanel();
@@ -55,20 +55,17 @@ class Client extends JFrame implements ActionListener{//,Runnable {
     String hostName = "localhost";
     Socket socket ;
 
-    Thread thread ;
     Protocoll pro = new Protocoll();
 
     BufferedReader in;
     PrintWriter out;
 
     String username;
-    boolean isConnected = false;
     boolean clientIsRunning = true;
 
-    boolean sendQuestionAndRoundNumber = false;
     String question_amount ="+";
     String round_amount ="-";
-    String message;
+    volatile String  message;
 
     Thread sender;
     Thread receiver;
@@ -90,11 +87,10 @@ class Client extends JFrame implements ActionListener{//,Runnable {
         questionFrame.setSize(600,600);
         questionFrame.setTitle("To answer questions");
         questionFrame.setLocationRelativeTo(null);
-
         setSize(400, 439);
+
         //choose question and round amount
         option_zone.setLayout(new GridLayout(2,2));
-
         round_group_panel.setLayout(new GridLayout(1,3));
         round_group.add(r_2);
         round_group.add(r_3);
@@ -119,10 +115,9 @@ class Client extends JFrame implements ActionListener{//,Runnable {
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         loginFrame.setVisible(true);
 
-
+        //Category frame to choose category type
         categoryFrame.setSize(600,600);
         categoryFrame.setTitle("Category");
         categoryFrame.setLocationRelativeTo(null);
@@ -130,56 +125,30 @@ class Client extends JFrame implements ActionListener{//,Runnable {
 
         //Use btn-start to start
         btn_start.addActionListener(l->{
-            if(!isConnected) {
-                username = name_txt.getText().trim();
-                try {
-                    socket = new Socket(hostName, toPort);
-                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    out = new PrintWriter(socket.getOutputStream(), true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-             /*   thread = new Thread(this);
-                thread.start();
-*/
-                System.out.println("btn_start>>>>>>>>>>>>");
-                //SwingUtilities.invokeLater(()-> {
-                    receiver = new Thread(new ReceiveMessage(socket));
-                    receiver.setName("Receive Thread" );
-                    receiver.start();
-
-                    //Sender thread
-              /*      sender = new Thread(new SendMessage(socket, username));
-                    sender.setName("Send Thread");
-                    sender.start();*/
-                    out.println(username);
-
-
-                //});
-              //  System.out.println("Sender status: "+sender.isAlive());
-
-
-              //  System.out.println("!!I am run!!"+"Sender status: "+sender.isAlive()+" Receiver status:"+receiver.isAlive());
-
-                /* isConnected = true;
-                System.out.println("btn_start isConnected is true->Sender status: "+sender.isAlive()+" ,Receiver status: "+receiver.isAlive());*/
-
-                loginFrame.setVisible(false);
-
-                //System.out.println("btn_start after login invisible->Sender status: "+sender.isAlive()+" ,Receiver status: "+receiver.isAlive());
-                this.setVisible(true);
-                //System.out.println("btn_start->Sender status: "+sender.isAlive()+" ,Receiver status: "+receiver.isAlive());
-                System.out.println("btn_start<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            username = name_txt.getText().trim();
+            try {
+                socket = new Socket(hostName, toPort);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            //Start receive thread
+            receiver = new Thread(new ReceiveMessage(socket));
+            receiver.setName("Receive Thread" );
+            receiver.start();
+
+            //Start send Sender thread
+            sender = new Thread(new SendMessage(socket, username));
+            sender.setName("Send Thread");
+            sender.start();
+
+            loginFrame.setVisible(false);
+            this.setVisible(true);
         });
+
         btn_confirm.addActionListener(l->{
-        /*
-            if(l.getActionCommand().equals("btn_confirm")) {
-                round_amount = round_group.getSelection().getActionCommand();
-                question_amount = question_group.getSelection().getActionCommand();
-                System.out.println("btn_confirm selection");
-            }
-         */
             if(r_2.isSelected())
                 round_amount = "2";
             if(r_3.isSelected())
@@ -192,97 +161,50 @@ class Client extends JFrame implements ActionListener{//,Runnable {
                 question_amount = "3";
             if(q_4.isSelected())
                 question_amount = "4";
-            sendQuestionAndRoundNumber = true;
-
+            System.out.println("Sender thead alive: "+sender.isAlive());
             message = "R&Q@"+round_amount+"@"+question_amount;
-            out.println(message);
-           // System.out.println("btn_confirm->Sender status:"+sender.isAlive()+" ,Receiver status: "+receiver.isAlive()+" ,confirm button runs and message is "+message);
+            System.out.println(message);
         });
-    }
-
-/*
-    @Override
-    public void run() {
-        receiver = new Thread(new ReceiveMessage(socket));
-        receiver.setName("Receive Thread" );
-        receiver.start();
-        sender = new Thread(new SendMessage(socket, username));
-        sender.setName("Send Thread");
-        sender.start();
-        System.out.println("I am run!!"+"Sender status: "+sender.isAlive()+" Receiver status:"+receiver.isAlive());
-    }
-*/
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals("r_2")){
-            round_amount = "2";
-            System.out.println("Round amount is:"+round_amount);
-        }else if(e.getSource().equals("r_3")){
-            round_amount = "3";
-            System.out.println("Round amount is:"+round_amount);
-        }else if(e.getSource().equals("r_4")){
-            round_amount = "4";
-            System.out.println("Round amount is:"+round_amount);
-        }
-
-        if(e.getSource().equals("q_2")){
-            question_amount = "2";
-            System.out.println("Question amount is:"+question_amount);
-        }else if(e.getSource().equals("q_3")){
-            question_amount = "3";
-            System.out.println("Question amount is:"+question_amount);
-        }else if(e.getSource().equals("q_4")){
-            question_amount = "4";
-            System.out.println("Question amount is:"+question_amount);
-        }
     }
 
     public static void main(String[] args) throws IOException {
         new Client();
     }
 
+    //Send thread
     class SendMessage implements Runnable{
         private Socket socket;
         private String username;
+        
 
         public SendMessage(Socket socket,String username) {
             this.socket = socket;
             this.username = username;
-            message = username;
             //Send username
-            sendMessage();
+            message = username;
+
         }
 
         @Override
         public void run() {
-            System.out.println("Sender Thread *********************");
-            System.out.println("Message going to send: "+message);
-            System.out.println(clientIsRunning);
-            System.out.println("Inside sender thread: "+sender.isAlive());
-            while(clientIsRunning && message!= null) {
-                    //msg for question amount and round amount
-                    if(sendQuestionAndRoundNumber){
-                        //message = "R&Q@"+round_amount+"@"+question_amount;
-                        sendQuestionAndRoundNumber = false;
-                        System.out.println("Send R&D");
-                    }
-                    sendMessage();//message="";
+            while(clientIsRunning) {
+                //When message is not null, client send the message
+                if(message!=null) {
+                    System.out.println("inside: "+message);
+                    sendMessage();
+                }
             }
-              System.out.println("Sender status in Sender run(): "+sender.isAlive());
-
-            System.out.println("********************* Sender Thread");
         }
 
         void sendMessage(){
-            System.out.println("###########sendMessage###########");
             out.println(message);
             System.out.println("Client "+ username +" has sent:"+message);
+            //After the message is sent, make message as null again
             message = null;
-            System.out.println("###########sendMessage###########");
         }
     }
 
+    //Receive thread
     class ReceiveMessage implements Runnable{
         private Socket socket;
 
@@ -312,8 +234,7 @@ class Client extends JFrame implements ActionListener{//,Runnable {
                     switch (st.nextToken()){
                         case "OpponentName":
                             msg = st.nextToken();
-                        default:
-                            System.out.println("Client receive unmatched msg ");
+                            break;
                     }
                 }else {
                     System.out.println("Client receives: "+msg);

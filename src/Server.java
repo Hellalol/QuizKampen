@@ -52,21 +52,20 @@ public class Server extends Thread {
         String msg = "";
         try {
             msg = in.readLine();
-            if(msg.contains("@")){
+            if(msg == null){
+                System.out.println(playerName +" shut down.");
+                serverIsRunning = false;
+                socket.close();
+            } else if(msg.contains("@")){
                 StringTokenizer st = new StringTokenizer(msg,"@");
                 switch (st.nextToken()){
                     case "R&Q":
                         round_amount = st.nextToken();
                         question_amount = st.nextToken();
-
                         System.out.println("Round and Question amount: "+ round_amount+" "+question_amount );
                         break;
 
                 }
-            }else if(msg == null){
-                System.out.println(playerName +" shut down.");
-                serverIsRunning = false;
-                socket.close();
             }
             System.out.println(playerName +" Server receive: "+msg);
         } catch (IOException e) {
