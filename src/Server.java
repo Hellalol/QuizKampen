@@ -14,8 +14,11 @@ public class Server extends Thread {
     String round_amount ;
     String question_amount;
     boolean serverIsRunning = true;
-    public Server(Socket socket){
+    //to check whether to show rounds and questions configuration frame
+    boolean firstPlayer;
+    public Server(Socket socket,boolean firstPlayer){
         this.socket = socket;
+        this.firstPlayer = firstPlayer;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -32,7 +35,7 @@ public class Server extends Thread {
     public void setOpponent(Server opponent) {
         if(opponent!=null) {
             this.opponent = opponent;
-            sendToOpponent("OpponentName@"+this.playerName);
+            sendToOpponent("OpponentName@"+this.playerName+"@"+firstPlayer);
         }
     }
     void sendToOpponent(String msg){
@@ -52,21 +55,21 @@ public class Server extends Thread {
         String msg = "";
         try {
             msg = in.readLine();
-            if(msg.contains("@")){
+            if(msg == null){
+                System.out.println(playerName +" shut down.");
+                serverIsRunning = false;
+                socket.close();
+            }
+            else if(msg.contains("@")){
                 StringTokenizer st = new StringTokenizer(msg,"@");
                 switch (st.nextToken()){
                     case "R&Q":
                         round_amount = st.nextToken();
                         question_amount = st.nextToken();
-
                         System.out.println("Round and Question amount: "+ round_amount+" "+question_amount );
                         break;
 
                 }
-            }else if(msg == null){
-                System.out.println(playerName +" shut down.");
-                serverIsRunning = false;
-                socket.close();
             }
             System.out.println(playerName +" Server receive: "+msg);
         } catch (IOException e) {

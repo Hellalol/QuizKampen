@@ -128,6 +128,7 @@ class Client extends JFrame implements ActionListener{//,Runnable {
         categoryFrame.setLocationRelativeTo(null);
         categoryFrame.setVisible(false);
 
+        boolean firstPlayer;
         //Use btn-start to start
         btn_start.addActionListener(l->{
             if(!isConnected) {
@@ -152,6 +153,7 @@ class Client extends JFrame implements ActionListener{//,Runnable {
               /*      sender = new Thread(new SendMessage(socket, username));
                     sender.setName("Send Thread");
                     sender.start();*/
+              //send username
                     out.println(username);
 
 
@@ -167,19 +169,13 @@ class Client extends JFrame implements ActionListener{//,Runnable {
                 loginFrame.setVisible(false);
 
                 //System.out.println("btn_start after login invisible->Sender status: "+sender.isAlive()+" ,Receiver status: "+receiver.isAlive());
+                this.setTitle(username);
                 this.setVisible(true);
                 //System.out.println("btn_start->Sender status: "+sender.isAlive()+" ,Receiver status: "+receiver.isAlive());
                 System.out.println("btn_start<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
             }
         });
         btn_confirm.addActionListener(l->{
-        /*
-            if(l.getActionCommand().equals("btn_confirm")) {
-                round_amount = round_group.getSelection().getActionCommand();
-                question_amount = question_group.getSelection().getActionCommand();
-                System.out.println("btn_confirm selection");
-            }
-         */
             if(r_2.isSelected())
                 round_amount = "2";
             if(r_3.isSelected())
@@ -196,6 +192,7 @@ class Client extends JFrame implements ActionListener{//,Runnable {
 
             message = "R&Q@"+round_amount+"@"+question_amount;
             out.println(message);
+
            // System.out.println("btn_confirm->Sender status:"+sender.isAlive()+" ,Receiver status: "+receiver.isAlive()+" ,confirm button runs and message is "+message);
         });
     }
@@ -312,6 +309,7 @@ class Client extends JFrame implements ActionListener{//,Runnable {
                     switch (st.nextToken()){
                         case "OpponentName":
                             msg = st.nextToken();
+                            break;
                         default:
                             System.out.println("Client receive unmatched msg ");
                     }
