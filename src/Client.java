@@ -36,9 +36,16 @@ class Client extends JFrame implements ActionListener,Runnable {
     String hostName = Inet4Address.getLocalHost().getHostAddress();
     Socket socket = new Socket(hostName, toPort);
     Thread thread = new Thread(this);
-    Protocoll pro = new Protocoll();
+    ServerProtocoll pro = new ServerProtocoll();
+    PrintWriter out;
+    BufferedReader in;
 
     public Client() throws IOException {
+        try {
+            out=new PrintWriter(socket.getOutputStream(),true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.thread.start();
         setSize(400, 200);
         add(panel);
@@ -48,11 +55,12 @@ class Client extends JFrame implements ActionListener,Runnable {
         buttonPanel.setLayout(new GridLayout(4,2));
         buttonPanel.add(userName);
         buttonPanel.add(userNameInput);
-        buttonPanel.add(rounds);
-        buttonPanel.add(roundsInput);
-        buttonPanel.add(questions);
-        buttonPanel.add(questionsInput);
+//        buttonPanel.add(rounds);
+//        buttonPanel.add(roundsInput);
+//        buttonPanel.add(questions);
+//        buttonPanel.add(questionsInput);
         buttonPanel.add(connect);
+        connect.addActionListener(sendUserName);
         buttonPanel.add(exit);
         add(welcomePanel,BorderLayout.NORTH);
         welcomePanel.add(welcomeText);
@@ -71,7 +79,11 @@ class Client extends JFrame implements ActionListener,Runnable {
             System.exit(0);
         });
 
-    }
+    }//Constructor
+
+    ActionListener sendUserName=e->{
+     out.println(userNameInput.getText());
+    };
 
     public JPanel addQuestionButtons(){
 
@@ -85,7 +97,7 @@ class Client extends JFrame implements ActionListener,Runnable {
             buttons[i].addActionListener(this);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
-            buttons[i].setText(pro.answerArray[i]);
+            buttons[i].setText(pro.answerArray[i]+i);
             questionGridArray.add(buttons[i]);
         }
         return questionGridArray;
@@ -102,16 +114,18 @@ class Client extends JFrame implements ActionListener,Runnable {
             buttons[i].putClientProperty("column", i);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
-            buttons[i].setText("TEXT");
-            buttons[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            buttons[i].setText("TEXT"+i);
+            buttons[i].addActionListener(sendSelectedCategory);
+            buttons[i].addActionListener(e -> {
 
-                    for (int j = 0; j < 4; j++) {
-                        if(buttons[j] == e.getSource()){
+                for (int j = 0; j < 4; j++) {
+                    if(buttons[j] == e.getSource()){
+                        try {
                             openQuestionWindow();
-                            categoryMainWindow.dispose();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
+                        categoryMainWindow.dispose();
                     }
                 }
             });
@@ -119,9 +133,13 @@ class Client extends JFrame implements ActionListener,Runnable {
         }
         return categoryGridArray;
     }
+    ActionListener sendSelectedCategory=e->{
+        JButton button=(JButton)e.getSource();
+        out.println(button.getText());
 
+    };
 
-    public JFrame openQuestionWindow(){
+    public JFrame openQuestionWindow() throws IOException {
 
 
         JPanel questionMainPanel = new JPanel();
@@ -135,7 +153,8 @@ class Client extends JFrame implements ActionListener,Runnable {
         qbuttonPanel.setLayout(new GridLayout(2, 2));
         qbuttonPanel.setSize(400, 200);
         questionMainPanel.add(addQuestionButtons(), BorderLayout.SOUTH);
-        area.setText(pro.infoFromServer2[0]);
+        String somethingFromServer = in.readLine();
+        area.setText(somethingFromServer);
         questionMainWindow.setLocationRelativeTo(null);
         area.setVisible(true);
         qbuttonPanel.setVisible(true);
@@ -195,6 +214,7 @@ class Client extends JFrame implements ActionListener,Runnable {
             String message;
             String title = in.readLine();
             setTitle(title);
+
 
             while ((message = in.readLine()) != null) {
                 area.append(message + "\n");

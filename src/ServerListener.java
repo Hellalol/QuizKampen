@@ -6,14 +6,26 @@ public class ServerListener {
         ServerSocket listener = new ServerSocket(12345);
         try {
             while (true) {
+                Game game =new Game();
+                //Spelare 1
                 Server playerOne
-                        = new Server(listener.accept(), "Player One");
+                        = new Server(listener.accept());
+                Object obj = playerOne.in.readObject();
+                String playerOneName=(String) obj;
+                playerOne.setPlayername(playerOneName);
+                game.setNuvarandeSpelare(playerOne);
+                //Spelare 2
                 Server playerTwo
-                        = new Server(listener.accept(),"Player Two");
-                playerOne.setOpponent(playerOne);
-                playerTwo.setOpponent(playerTwo);
-                playerOne.start();
-                playerTwo.start();
+                        = new Server(listener.accept());
+                Object obj1 = playerTwo.in.readObject();
+                String playerTwoName=(String) obj1;
+
+                playerTwo.setPlayername(playerTwoName);
+                playerOne.setOpponent(playerTwo);
+                playerTwo.setOpponent(playerOne);
+
+                game.start();
+                //playerTwo.start();
             }
         }catch (IOException e){
             e.printStackTrace();
