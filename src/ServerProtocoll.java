@@ -11,6 +11,8 @@ public class ServerProtocoll {
 
 
 
+
+
     ServerProtocoll(){}
 
     private int state = BEGIN;

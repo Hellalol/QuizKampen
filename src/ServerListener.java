@@ -14,6 +14,7 @@ public class ServerListener {
                 String playerOneName=(String) obj;
                 playerOne.setPlayername(playerOneName);
                 game.setNuvarandeSpelare(playerOne);
+
                 //Spelare 2
                 Server playerTwo
                         = new Server(listener.accept());
@@ -21,11 +22,11 @@ public class ServerListener {
                 String playerTwoName=(String) obj1;
                 playerTwo.setPlayername(playerTwoName);
 
+
                 playerOne.setOpponent(playerTwo);
                 playerTwo.setOpponent(playerOne);
 
                 game.start();
-                //playerTwo.start();
             }
         }catch (IOException e){
             e.printStackTrace();
