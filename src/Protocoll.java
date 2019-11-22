@@ -23,9 +23,9 @@ public class Protocoll {
         //By send "category1" as argument to get all 4 questions under category1
         infoFromServer2 = getQuestionsByCategory("category1");
         System.out.println(infoFromServer2);
-       // answerArray = getAnswersByQuestion("Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
-       //         "Men när släpptes Sony Playstation sin första spelkonsol?");
-        answerArray = getAnswersByQuestion("question2_2");
+        answerArray = getAnswersByQuestion("Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
+               "Men när släpptes Sony Playstation sin första spelkonsol?");
+        //answerArray = getAnswersByQuestion("question2_2");
         System.out.println("answerArray is:"+answerArray+answerArray.size());
         correctAnswerIndex = Integer.parseInt(answerArray.get(4));
     }
@@ -43,7 +43,7 @@ public class Protocoll {
     //To get all questions under one question
     List<String> getAnswersByQuestion(String question){
         List<String> answers = new ArrayList<>();
-        //answers.add(question);
+        answers.add(question);
         for(Map.Entry<String,String> entry : all.entrySet()){
             if(entry.getValue().equals(question)){
                 System.out.println(entry.getKey());
@@ -58,10 +58,10 @@ public class Protocoll {
     void randomAnswers(List<String> answers){
         String rightAnswer = answers.get(answers.size()-1);
         System.out.println("right answer: "+rightAnswer);
-        //for (int i = answers.size()-1; i >=1; i--) {
-        for (int i = answers.size()-1; i >=0; i--) {
-            //int random = (int) (Math.random()*i)+1;
-            int random = (int) (Math.random()*(i+1));
+        for (int i = answers.size()-1; i >=1; i--) {
+        //for (int i = answers.size()-1; i >=0; i--) {
+            int random = (int) (Math.random()*i)+1;
+            //int random = (int) (Math.random()*(i+1));
             String temp = answers.get(i);
             answers.set(i,answers.get(random));
             answers.set(random,temp);
@@ -69,8 +69,8 @@ public class Protocoll {
         System.out.println("answers after random: "+answers);
         for (int i = 0; i < answers.size() ; i++) {
             if(answers.get(i).equals(rightAnswer)){
-                //answers.add(""+(i-1));
-                answers.add(""+i);
+                answers.add(""+(i-1));
+                //answers.add(""+i);
                 System.out.println("right index: "+i);
                 break;
             }
