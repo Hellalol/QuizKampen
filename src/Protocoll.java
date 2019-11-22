@@ -23,11 +23,11 @@ public class Protocoll {
         //By send "category1" as argument to get all 4 questions under category1
         infoFromServer2 = getQuestionsByCategory("category1");
         System.out.println(infoFromServer2);
-        answerArray = getAnswersByQuestion("Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
-               "Men när släpptes Sony Playstation sin första spelkonsol?");
-        //answerArray = getAnswersByQuestion("question2_2");
+        //answerArray = getAnswersByQuestion("Sony Playstation blev Nintendos största konkurrent efter misslyckad samarbete. " +
+         //      "Men när släpptes Sony Playstation sin första spelkonsol?");
+        answerArray = getAnswersByQuestion("question2_2");
         System.out.println("answerArray is:"+answerArray+answerArray.size());
-        correctAnswerIndex = Integer.parseInt(answerArray.get(4));
+        correctAnswerIndex = Integer.parseInt(answerArray.get(5));
     }
 
     //To get all questions under one category
