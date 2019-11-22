@@ -19,8 +19,8 @@ public class ServerListener {
                         = new Server(listener.accept());
                 Object obj1 = playerTwo.in.readObject();
                 String playerTwoName=(String) obj1;
-
                 playerTwo.setPlayername(playerTwoName);
+
                 playerOne.setOpponent(playerTwo);
                 playerTwo.setOpponent(playerOne);
 
