@@ -21,8 +21,6 @@ public class Server extends Thread {
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
-            oos.writeObject("Welcome: " + name);
-            oos.writeObject("Wait until the other player is connected");
 
 
         } catch (IOException e) {
