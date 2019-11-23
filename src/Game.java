@@ -1,11 +1,13 @@
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Game extends Thread {
 
     Server nuvarandeSpelare;
-    int rounds;
+    int questionAmount;
+    int roundAmount;
     List<Question> ålder =new LinkedList<>();
     public void setNuvarandeSpelare(Server nuvarandeSpelare) {
         this.nuvarandeSpelare = nuvarandeSpelare;
@@ -21,12 +23,26 @@ public class Game extends Thread {
             while (true) {
                 nuvarandeSpelare.opponent.pw.writeObject("Other player is choosing category ?");
                 Object sel=nuvarandeSpelare.in.readObject();
-                String selectedCategory=(String)sel;
-                System.out.println("Cat "+selectedCategory);
-                sendQuestion(ålder);
-                System.out.println("Atef");
-                nuvarandeSpelare=nuvarandeSpelare.opponent;
-                sendQuestion(ålder);
+                if(sel instanceof String){
+                    if(((String) sel).contains("@")){
+                        StringTokenizer st = new StringTokenizer((String)sel, "@");
+                        switch (st.nextToken()) {
+                            //To get roundAmount and questionAmount from client
+                            case "R&Q":
+                                roundAmount = Integer.parseInt(st.nextToken());
+                                questionAmount = Integer.parseInt(st.nextToken());
+                                System.out.println(nuvarandeSpelare.playerName+"has chosen rounds as: "+roundAmount + " and questions as: " + questionAmount);
+                                break;
+                        }
+                    }else {
+                        String selectedCategory=(String)sel;
+                        System.out.println("Cat "+selectedCategory);
+                        sendQuestion(ålder);
+                        System.out.println("Atef");
+                        nuvarandeSpelare=nuvarandeSpelare.opponent;
+                        sendQuestion(ålder);
+                    }
+                }
             }
 
 

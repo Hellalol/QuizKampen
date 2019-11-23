@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class ServerProtocoll {
 
     private static final int BEGIN = 0;
@@ -25,7 +23,7 @@ public class ServerProtocoll {
     public String processInput(String theInput, Server server) {
         String theOutput = "";
         if(state == BEGIN) {
-            theOutput = server.Playername;
+            theOutput = server.playerName;
             state = CHOOSECATEGORY;
         }
         else if (state == CHOOSECATEGORY) {
