@@ -12,6 +12,7 @@ public class DatabaseQuestions {
     protected List<Question> teknik = new LinkedList<>();
 
     DatabaseQuestions() {
+
         String questionSpel1 = xmlInfo.getQuestionsByCategory("category1").get(0);
         Question answersAndQuestionsSpel1 = new Question(xmlInfo.getAnswersByQuestion(questionSpel1).get(0),
                 xmlInfo.getAnswersByQuestion(questionSpel1).get(1),
@@ -20,6 +21,7 @@ public class DatabaseQuestions {
                 xmlInfo.getAnswersByQuestion(questionSpel1).get(4),
                 xmlInfo.getAnswersByQuestion(questionSpel1).get(4)
         );
+
         String questionSpel2 = xmlInfo.getQuestionsByCategory("category1").get(1);
         Question answersAndQuestionsSpel2 = new Question(xmlInfo.getAnswersByQuestion(questionSpel2).get(0),
                 xmlInfo.getAnswersByQuestion(questionSpel2).get(1),
@@ -27,6 +29,7 @@ public class DatabaseQuestions {
                 xmlInfo.getAnswersByQuestion(questionSpel2).get(3),
                 xmlInfo.getAnswersByQuestion(questionSpel2).get(4),
                 xmlInfo.getAnswersByQuestion(questionSpel1).get(4));
+
         String questionSpel3 = xmlInfo.getQuestionsByCategory("category1").get(2);
         Question answersAndQuestionsSpel3 = new Question(xmlInfo.getAnswersByQuestion(questionSpel3).get(0),
                 xmlInfo.getAnswersByQuestion(questionSpel3).get(1),

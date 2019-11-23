@@ -68,17 +68,6 @@ public class Game extends Thread {
         }
     }
 
-//    private void choosingCategory() throws IOException, ClassNotFoundException {
-//        nuvarandeSpelare.oos.writeObject("Choose category :");
-//        String category = (String) nuvarandeSpelare.ois.readObject();
-//        nuvarandeSpelare.game.
-//    }
-
-    public synchronized void selectCategory(String categoryName) {
-
-        currentRound++;
-    }
-
     private void sendQuestion(List<Question> list) throws IOException, ClassNotFoundException {
         int  counter = 0;
         Object obj;
