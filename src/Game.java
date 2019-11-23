@@ -15,7 +15,6 @@ public class Game extends Thread {
     Server nuvarandeSpelare;
     int questionAmount;
     int roundAmount;
-    private int currentRound = 0;
     DatabaseQuestions dbq = new DatabaseQuestions();
 
     List<Question> spel = new LinkedList<>();
@@ -41,15 +40,12 @@ public class Game extends Thread {
                     sendQuestion(spel);
                     System.out.println("Atef");
                     currentState = SWITCH_PLAYER;
-
-
                 } else if (currentState == SWITCH_PLAYER) {
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
                     sendQuestion(spel);
+                    currentState= SELECTING_CATEGORY;
 
-                    if (currentRound > 0) {
-                        currentState = ALL_QUESTIONS_ANSWERED;
-                    }
+
                 } else if (currentState == ALL_QUESTIONS_ANSWERED) {
                     JOptionPane.showMessageDialog(null, "YOU WIN");
                 }
@@ -85,7 +81,7 @@ public class Game extends Thread {
     private void sendQuestion(List<Question> list) throws IOException, ClassNotFoundException {
         int counter = 0;
         Object obj;
-        while (counter < 2) {
+        while (counter < 4) {
             System.out.println(counter + " before");
             nuvarandeSpelare.oos.writeObject(list.get(counter));
             obj = nuvarandeSpelare.ois.readObject();
