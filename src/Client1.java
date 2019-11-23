@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -14,9 +12,10 @@ public class Client1 extends JFrame implements Runnable {
     ObjectOutputStream pw;
     ObjectInputStream in;
     Socket socket;
+    int points;
     public Client1(){
         String namn=JOptionPane.showInputDialog("Skriv ditt namn");
-      //  String categoy=JOptionPane.showInputDialog("Choose category");
+        //  String categoy=JOptionPane.showInputDialog("Choose category");
         setLayout(new BorderLayout());
         try {
             socket=new Socket("localhost",12345);
@@ -28,12 +27,14 @@ public class Client1 extends JFrame implements Runnable {
         }
         for (int i = 0; i < buttons.length; i++) {
             buttons[i]=new JButton(i+"");
-            buttons[i].addActionListener(sendSelecetedAlternativ);
+            buttons[i].addActionListener(sendcorretAnswer);
             buttonsPanel.add(buttons[i]);
         }
 
+
         add(question,BorderLayout.NORTH);
         add(buttonsPanel,BorderLayout.SOUTH);
+
 
         setSize(500,500);
         setVisible(true);
@@ -42,27 +43,43 @@ public class Client1 extends JFrame implements Runnable {
 
     }
     Question questionFromServer;
+
+
     @Override
     public void run() {
 
         try {
-                Object message;
-                while((message=in.readObject())!=null){
-                   if(message instanceof Question){
-                       questionFromServer=(Question)  message;
-                       question.setText(questionFromServer.getQuestion());
-                       buttons[0].setText(questionFromServer.getAnswerOne());
-                       buttons[1].setText(questionFromServer.getAnswerTwo());
-                       buttons[2].setText(questionFromServer.getAnswerThree());
-                       buttons[3].setText(questionFromServer.getAnswerFour());
-                   }else if(message instanceof String){
-                       String nnn=(String) message;
-                       setTitle(nnn);
-                       System.out.println(nnn);
-
-                   }
+            Object message;
+            while((message=in.readObject())!=null){
+                if(message instanceof Question) {
+                    questionFromServer = (Question) message;
+                    question.setText(questionFromServer.getQuestion());
+                    buttons[0].setText(questionFromServer.getAnswerOne());
+                    buttons[1].setText(questionFromServer.getAnswerTwo());
+                    buttons[2].setText(questionFromServer.getAnswerThree());
+                    buttons[3].setText(questionFromServer.getAnswerFour());
+                    for (int i = 0; i < buttons.length; i++) {
+                        buttons[i].setEnabled(true);
+                    }
 
                 }
+
+                else if(message instanceof String){
+                    String nnn=(String) message;
+                    setTitle(nnn);
+                    System.out.println(nnn);
+                    if(((String) message).startsWith("Other")){
+                        for (int i = 0; i < buttons.length; i++) {
+                            buttons[i].setEnabled(false);
+                        }
+                    }else
+                        for (int i = 0; i < buttons.length; i++) {
+                            buttons[i].setEnabled(true);
+                        }
+
+                }
+
+            }
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -71,13 +88,27 @@ public class Client1 extends JFrame implements Runnable {
 
     ActionListener sendSelecetedAlternativ= e->{
         JButton button=(JButton) e.getSource();
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setEnabled(false);
+        }
         try {
+            pw.writeObject(button.getText());
 
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    };
+
+    ActionListener sendcorretAnswer = e -> {
+        JButton button=(JButton) e.getSource();
+
+        try {
             pw.writeObject(button.getText());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     };
+
 
 
     public static void main(String[] args) {

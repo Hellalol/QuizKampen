@@ -1,5 +1,6 @@
+package GammalGUI;
+
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +37,7 @@ class Client extends JFrame implements ActionListener,Runnable {
     String hostName = Inet4Address.getLocalHost().getHostAddress();
     Socket socket = new Socket(hostName, toPort);
     Thread thread = new Thread(this);
-    ServerProtocoll pro = new ServerProtocoll();
+    //ServerProtocoll pro = new ServerProtocoll();
     PrintWriter out;
     BufferedReader in;
 
@@ -97,7 +98,7 @@ class Client extends JFrame implements ActionListener,Runnable {
             buttons[i].addActionListener(this);
             buttons[i].setFocusable(false);
             buttons[i].setBackground(colorbutton);
-            buttons[i].setText(pro.answerArray[i]+i);
+           // buttons[i].setText(pro.answerArray[i]+i);
             questionGridArray.add(buttons[i]);
         }
         return questionGridArray;
@@ -230,7 +231,7 @@ class Client extends JFrame implements ActionListener,Runnable {
         JButton buttonPressed = (JButton) e.getSource();
         for (int i = 0; i < 4 ; i++) {
             if(buttons[i] == e.getSource()){
-                if ((int)buttonPressed.getClientProperty("column") == pro.correctAnswerIndex){
+                if ((int)buttonPressed.getClientProperty("column") == 1){
                     buttons[i].setBackground(Color.green);
                     openFinalResultWindow();
                     questionMainWindow.dispose();
