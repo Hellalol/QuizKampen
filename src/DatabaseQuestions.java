@@ -6,10 +6,11 @@ public class DatabaseQuestions {
 
     Properties properties;
     Map<String,String> all = new LinkedHashMap<>();
+
     protected List<Question> spelCategory = new LinkedList<>();
-    protected List<Question> sport = new LinkedList<>();
-    protected List<Question> javaa = new LinkedList<>();
-    protected List<Question> teknik = new LinkedList<>();
+    protected List<Question> sportCategory = new LinkedList<>();
+    protected List<Question> javaCategory = new LinkedList<>();
+    protected List<Question> teknikCategory = new LinkedList<>();
 
     DatabaseQuestions() {
         properties = new Properties();
@@ -40,6 +41,7 @@ public class DatabaseQuestions {
                 getAnswersByQuestion(questionSpel3).get(3),
                 getAnswersByQuestion(questionSpel3).get(4),
                 getAnswersByQuestion(questionSpel1).get(4));
+
         String questionSpel4 = getQuestionsByCategory("category1").get(3);
         Question answersAndQuestionsSpel4 = new Question(getAnswersByQuestion(questionSpel4).get(0),
                 getAnswersByQuestion(questionSpel4).get(1),
@@ -47,7 +49,6 @@ public class DatabaseQuestions {
                 getAnswersByQuestion(questionSpel4).get(3),
                 getAnswersByQuestion(questionSpel4).get(4),
                 getAnswersByQuestion(questionSpel1).get(4));
-
 
         spelCategory.add(answersAndQuestionsSpel1);
         spelCategory.add(answersAndQuestionsSpel2);
@@ -105,7 +106,6 @@ public class DatabaseQuestions {
         System.out.println("answers :"+answers);
     }
 
-
     //Store all categories, questions and answers into a Map
     void getInfoFromAllXML(){
         InputStream in;
@@ -132,9 +132,17 @@ public class DatabaseQuestions {
         }
     }
 
-
-
-    public static void main(String[] args) {
-        DatabaseQuestions db = new DatabaseQuestions();
+    private List<Question> getCategoryList(String input){
+        List<Question> tempList = new LinkedList<>();
+        if (input.equalsIgnoreCase("spel"))
+            tempList = spelCategory;
+        else if (input.equalsIgnoreCase("sport"))
+            tempList = sportCategory;
+        else if (input.equalsIgnoreCase("java")){
+            tempList = javaCategory;
+        }else if(input.equalsIgnoreCase("teknik")){
+            tempList = teknikCategory;
+        }
+        return tempList;
     }
 }

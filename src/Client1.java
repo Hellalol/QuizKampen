@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client1 extends JFrame implements Runnable {
+
     Thread thread=new Thread(this);
     JLabel question=new JLabel("Question");
     JButton[] buttons=new JButton[4];
@@ -13,6 +14,7 @@ public class Client1 extends JFrame implements Runnable {
     ObjectInputStream in;
     Socket socket;
     int points;
+
     public Client1(){
         String namn=JOptionPane.showInputDialog("Skriv ditt namn");
         //  String categoy=JOptionPane.showInputDialog("Choose category");

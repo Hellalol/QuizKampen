@@ -8,16 +8,18 @@ public class Question implements Serializable {
     private String answerTwo;
     private String answerThree;
     private String answerFour;
-    private String corretAnswer;
+    private String correctAnswer;
     //ServerProtocoll pro = new ServerProtocoll();
+
     public Question(){};
-    public Question(String question, String answerOne, String answerTwo, String answerThree, String answerFour, String corretAnswer) {
+
+    public Question(String question, String answerOne, String answerTwo, String answerThree, String answerFour, String correctAnswer) {
         this.question = question;
         this.answerOne = answerOne;
         this.answerTwo = answerTwo;
         this.answerThree = answerThree;
         this.answerFour = answerFour;
-        this.corretAnswer = corretAnswer;
+        this.correctAnswer = correctAnswer;
     }
 
     public String getQuestion() {
@@ -40,7 +42,7 @@ public class Question implements Serializable {
         return answerFour;
     }
 
-    public String getCorretAnswer() {
-        return corretAnswer;
+    public String getCorrectAnswer() {
+        return correctAnswer;
     }
 }

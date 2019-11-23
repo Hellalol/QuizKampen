@@ -53,8 +53,6 @@ public class Game extends Thread {
                     JOptionPane.showMessageDialog(null,"YOU WIN");
                 }
 
-
-
             }
 
 
@@ -67,6 +65,14 @@ public class Game extends Thread {
             e.printStackTrace();
         }
     }
+
+
+    protected List<Question> spelCategory = new LinkedList<>();
+    protected List<Question> sport = new LinkedList<>();
+    protected List<Question> javaa = new LinkedList<>();
+    protected List<Question> teknik = new LinkedList<>();
+
+
 
     private void sendQuestion(List<Question> list) throws IOException, ClassNotFoundException {
         int  counter = 0;
