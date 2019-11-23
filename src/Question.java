@@ -1,14 +1,16 @@
-public class Question {
+import java.io.Serializable;
 
+public class Question implements Serializable {
+    static final long serialVersionUID = 42L;
     private String question;
     private String answerOne;
     private String answerTwo;
     private String answerThree;
     private String answerFour;
-    private int corretAnswer;
-    Protocoll pro = new Protocoll();
-
-    public Question(String question, String answerOne, String answerTwo, String answerThree, String answerFour, int corretAnswer) {
+    private String corretAnswer;
+    //ServerProtocoll pro = new ServerProtocoll();
+    public Question(){};
+    public Question(String question, String answerOne, String answerTwo, String answerThree, String answerFour, String corretAnswer) {
         this.question = question;
         this.answerOne = answerOne;
         this.answerTwo = answerTwo;
@@ -37,7 +39,7 @@ public class Question {
         return answerFour;
     }
 
-    public int getCorretAnswer() {
+    public String getCorretAnswer() {
         return corretAnswer;
     }
 }
