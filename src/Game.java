@@ -26,11 +26,6 @@ public class Game extends Thread {
 
     @Override
     public void run() {
-
-        spel.add(dbq.loadCategorylistSpel().get(0));
-        spel.add(dbq.loadCategorylistSpel().get(1));
-        spel.add(dbq.loadCategorylistSpel().get(2));
-        spel.add(dbq.loadCategorylistSpel().get(3));
         try {
             while (true) {
 
@@ -38,24 +33,8 @@ public class Game extends Thread {
                 if (currentState == SELECTING_CATEGORY) {
                     nuvarandeSpelare.opponent.oos.writeObject("Other player is choosing category ?");
                     Object sel = nuvarandeSpelare.ois.readObject();
-
-//                    if (sel instanceof String) {
-//                        if (((String) sel).contains("@")) {
-//                            StringTokenizer st = new StringTokenizer((String) sel, "@");
-//                            //To get roundAmount and questionAmount from client
-//                            if ("R&Q".equals(st.nextToken())) {
-//                                roundAmount = Integer.parseInt(st.nextToken());
-//                                questionAmount = Integer.parseInt(st.nextToken());
-//                               // System.out.println(nuvarandeSpelare.playerName + "has chosen rounds as: " + roundAmount + " and questions as: " + questionAmount);
-//                            }
-//                        }
-//                    }
-
-                    assert sel instanceof String;
                     String selectedCategory = (String) sel;
-                    System.out.println("Cat " + selectedCategory);
-
-
+                    spel = getCategoryList(selectedCategory);
                     currentState = ASKING_QUESTIONS;
 
                 } else if (currentState == ASKING_QUESTIONS) {
@@ -86,6 +65,20 @@ public class Game extends Thread {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private List<Question> getCategoryList(String input){
+        List<Question> tempList = new LinkedList<>();
+        if (input.equalsIgnoreCase("spel"))
+            tempList = dbq.spelCategory;
+        else if (input.equalsIgnoreCase("sport"))
+            tempList = dbq.sportCategory;
+        else if (input.equalsIgnoreCase("java")){
+            tempList = dbq.javaCategory;
+        }else if(input.equalsIgnoreCase("teknik")){
+            tempList = dbq.teknikCategory;
+        }
+        return tempList;
     }
 
 

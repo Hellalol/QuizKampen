@@ -16,6 +16,46 @@ public class DatabaseQuestions {
         properties = new Properties();
         getInfoFromAllXML();
 
+        String questionsport1 = getQuestionsByCategory("category2").get(0);
+        Question answersAndQuestionsSport1 = new Question(getAnswersByQuestion(questionsport1).get(0),
+                getAnswersByQuestion(questionsport1).get(1),
+                getAnswersByQuestion(questionsport1).get(2),
+                getAnswersByQuestion(questionsport1).get(3),
+                getAnswersByQuestion(questionsport1).get(4),
+                getAnswersByQuestion(questionsport1).get(4)
+        );
+
+        String questionsport2 = getQuestionsByCategory("category2").get(1);
+        Question answersAndQuestionsSport2 = new Question(getAnswersByQuestion(questionsport2).get(0),
+                getAnswersByQuestion(questionsport2).get(1),
+                getAnswersByQuestion(questionsport2).get(2),
+                getAnswersByQuestion(questionsport2).get(3),
+                getAnswersByQuestion(questionsport2).get(4),
+                getAnswersByQuestion(questionsport2).get(4));
+
+        String questionsport3 = getQuestionsByCategory("category2").get(2);
+        Question answersAndQuestionsSport3 = new Question(getAnswersByQuestion(questionsport3).get(0),
+                getAnswersByQuestion(questionsport3).get(1),
+                getAnswersByQuestion(questionsport3).get(2),
+                getAnswersByQuestion(questionsport3).get(3),
+                getAnswersByQuestion(questionsport3).get(4),
+                getAnswersByQuestion(questionsport3).get(4));
+
+        String questionsport4 = getQuestionsByCategory("category2").get(3);
+        Question answersAndQuestionsSport4 = new Question(getAnswersByQuestion(questionsport4).get(0),
+                getAnswersByQuestion(questionsport4).get(1),
+                getAnswersByQuestion(questionsport4).get(2),
+                getAnswersByQuestion(questionsport4).get(3),
+                getAnswersByQuestion(questionsport4).get(4),
+                getAnswersByQuestion(questionsport4).get(4));
+
+        sportCategory.add(answersAndQuestionsSport1);
+        sportCategory.add(answersAndQuestionsSport2);
+        sportCategory.add(answersAndQuestionsSport3);
+        sportCategory.add(answersAndQuestionsSport4);
+
+
+        // SPEL
         String questionSpel1 = getQuestionsByCategory("category1").get(0);
         Question answersAndQuestionsSpel1 = new Question(getAnswersByQuestion(questionSpel1).get(0),
 
@@ -50,10 +90,13 @@ public class DatabaseQuestions {
                 getAnswersByQuestion(questionSpel4).get(4),
                 getAnswersByQuestion(questionSpel1).get(4));
 
+
+
         spelCategory.add(answersAndQuestionsSpel1);
         spelCategory.add(answersAndQuestionsSpel2);
         spelCategory.add(answersAndQuestionsSpel3);
         spelCategory.add(answersAndQuestionsSpel4);
+
 
     }
     public List<Question> loadCategorylistSpel(){
@@ -132,17 +175,24 @@ public class DatabaseQuestions {
         }
     }
 
-    private List<Question> getCategoryList(String input){
+    List<Question> getCategoryList(String category){
         List<Question> tempList = new LinkedList<>();
-        if (input.equalsIgnoreCase("spel"))
+        if (category.equalsIgnoreCase("spel"))
             tempList = spelCategory;
-        else if (input.equalsIgnoreCase("sport"))
+        else if (category.equalsIgnoreCase("sport"))
             tempList = sportCategory;
-        else if (input.equalsIgnoreCase("java")){
+        else if (category.equalsIgnoreCase("java")){
             tempList = javaCategory;
-        }else if(input.equalsIgnoreCase("teknik")){
+        }else if(category.equalsIgnoreCase("teknik")){
             tempList = teknikCategory;
         }
         return tempList;
+    }
+
+    public static void main(String[] args) {
+        DatabaseQuestions ad= new DatabaseQuestions();
+
+        System.out.println(ad.getCategoryList("spel").get(0).getQuestion());
+
     }
 }
