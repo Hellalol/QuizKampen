@@ -13,11 +13,11 @@ public class DatabaseQuestions {
 
     DatabaseQuestions() {
         properties = new Properties();
-
         getInfoFromAllXML();
 
         String questionSpel1 = getQuestionsByCategory("category1").get(0);
         Question answersAndQuestionsSpel1 = new Question(getAnswersByQuestion(questionSpel1).get(0),
+
                 getAnswersByQuestion(questionSpel1).get(1),
                 getAnswersByQuestion(questionSpel1).get(2),
                 getAnswersByQuestion(questionSpel1).get(3),
@@ -53,8 +53,6 @@ public class DatabaseQuestions {
         spelCategory.add(answersAndQuestionsSpel2);
         spelCategory.add(answersAndQuestionsSpel3);
         spelCategory.add(answersAndQuestionsSpel4);
-
-        System.out.println(spelCategory.get(0).getQuestion());
 
     }
     public List<Question> loadCategorylistSpel(){
