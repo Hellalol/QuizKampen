@@ -18,44 +18,14 @@ public class Game extends Thread {
     public void setNuvarandeSpelare(Server nuvarandeSpelare) {
         this.nuvarandeSpelare = nuvarandeSpelare;
     }
-    Xml xml = new Xml();
+    DatabaseQuestions dbq = new DatabaseQuestions();
     @Override
     public void run() {
-        String questionSpel1 = xml.getQuestionsByCategory("category1").get(0);
-        Question q = new Question(xml.getAnswersByQuestion(questionSpel1).get(0),
-                xml.getAnswersByQuestion(questionSpel1).get(1),
-                xml.getAnswersByQuestion(questionSpel1).get(2),
-                xml.getAnswersByQuestion(questionSpel1).get(3),
-                xml.getAnswersByQuestion(questionSpel1).get(4),
-                xml.getAnswersByQuestion(questionSpel1).get(4)
-        );
-        String questionSpel2 = xml.getQuestionsByCategory("category1").get(1);
-        Question qq =new Question(xml.getAnswersByQuestion(questionSpel2).get(0),
-                xml.getAnswersByQuestion(questionSpel2).get(1),
-                xml.getAnswersByQuestion(questionSpel2).get(2),
-                xml.getAnswersByQuestion(questionSpel2).get(3),
-                xml.getAnswersByQuestion(questionSpel2).get(4),
-                "e");
-        String questionSpel3 = xml.getQuestionsByCategory("category1").get(2);
-        Question qqq = new Question(xml.getAnswersByQuestion(questionSpel3).get(0),
-                xml.getAnswersByQuestion(questionSpel3).get(1),
-                xml.getAnswersByQuestion(questionSpel3).get(2),
-                xml.getAnswersByQuestion(questionSpel3).get(3),
-                xml.getAnswersByQuestion(questionSpel3).get(4),
-                "e");
-        String questionSpel4 = xml.getQuestionsByCategory("category1").get(3);
-        Question qqqq = new Question(xml.getAnswersByQuestion(questionSpel4).get(0),
-                xml.getAnswersByQuestion(questionSpel4).get(1),
-                xml.getAnswersByQuestion(questionSpel4).get(2),
-                xml.getAnswersByQuestion(questionSpel4).get(3),
-                xml.getAnswersByQuestion(questionSpel4).get(4),
-                "e");
 
-
-        spel.add(q);
-        spel.add(qq);
-        spel.add(qqq);
-        spel.add(qqqq);
+        spel.add(dbq.loadCategorylistSpel().get(0));
+        spel.add(dbq.loadCategorylistSpel().get(1));
+        spel.add(dbq.loadCategorylistSpel().get(2));
+        spel.add(dbq.loadCategorylistSpel().get(3));
         try {
             while (true) {
 
