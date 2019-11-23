@@ -18,6 +18,7 @@ public class Server extends Thread {
         this.playername = name;
         this.game = game;
 
+
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
@@ -33,7 +34,7 @@ public class Server extends Thread {
 
     public void setPlayername(String playername) throws IOException {
         this.playername = playername;
-        oos.writeObject(playername);
+       oos.writeObject(playername);
     }
 }
 
