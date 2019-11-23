@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -7,12 +9,15 @@ import java.net.Socket;
 public class Client1 extends JFrame implements Runnable {
 
     Thread thread=new Thread(this);
-    JLabel question=new JLabel("Question");
+    JLabel question=new JLabel();
     JButton[] buttons=new JButton[4];
     JPanel buttonsPanel=new JPanel();
+    JTextArea showQuestion = new JTextArea(15,100);
     ObjectOutputStream pw;
     ObjectInputStream in;
+    Border border = BorderFactory.createLineBorder(Color.BLACK);
     Socket socket;
+    String[] alterativ = {"spel", "sport", "java", "teknik"};
     int points;
 
     public Client1(){
@@ -28,17 +33,25 @@ public class Client1 extends JFrame implements Runnable {
             e.printStackTrace();
         }
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i]=new JButton(i+"");
-            buttons[i].addActionListener(sendcorretAnswer);
+            buttons[i]=new JButton(alterativ[i]);
+            buttons[i].addActionListener(sendcorrectAnswer);
+            buttons[i].setBackground(Color.white);
+            buttons[i].setBorder(border);
+            buttons[i].setFont(new Font("arial",Font.PLAIN,20));
+            buttonsPanel.setLayout(new GridLayout(2,2,16,16));
             buttonsPanel.add(buttons[i]);
         }
-
-
-        add(question,BorderLayout.NORTH);
+        setLocationRelativeTo(null);
+        showQuestion.setWrapStyleWord(true);
+        showQuestion.setLineWrap(true);
+        showQuestion.setFont(new Font("arial",Font.PLAIN,20));
+        add(showQuestion,BorderLayout.NORTH);
         add(buttonsPanel,BorderLayout.SOUTH);
+        showQuestion.setBorder(border);
 
 
-        setSize(500,500);
+
+        setSize(500,485);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         thread.start();
@@ -55,7 +68,7 @@ public class Client1 extends JFrame implements Runnable {
             while((message=in.readObject())!=null){
                 if(message instanceof Question) {
                     questionFromServer = (Question) message;
-                    question.setText(questionFromServer.getQuestion());
+                    showQuestion.setText(questionFromServer.getQuestion());
                     buttons[0].setText(questionFromServer.getAnswerOne());
                     buttons[1].setText(questionFromServer.getAnswerTwo());
                     buttons[2].setText(questionFromServer.getAnswerThree());
@@ -101,7 +114,7 @@ public class Client1 extends JFrame implements Runnable {
         }
     };
 
-    ActionListener sendcorretAnswer = e -> {
+    ActionListener sendcorrectAnswer = e -> {
         JButton button=(JButton) e.getSource();
 
         try {
