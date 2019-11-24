@@ -6,7 +6,8 @@ public class DatabaseQuestions {
 
     Properties properties;
     Map<String,String> all = new LinkedHashMap<>();
-
+    protected Category categories = new Category("välj kategori","spel","sport","teknik","java");
+    protected List<String> allCategories = new LinkedList<>();
     protected List<Question> spelCategory = new LinkedList<>();
     protected List<Question> sportCategory = new LinkedList<>();
     protected List<Question> javaCategory = new LinkedList<>();
@@ -54,8 +55,15 @@ public class DatabaseQuestions {
         sportCategory.add(answersAndQuestionsSport3);
         sportCategory.add(answersAndQuestionsSport4);
 
+        allCategories.add(categories.getChooseCat());
+        allCategories.add(categories.getCat1());
+        allCategories.add(categories.getCat2());
+        allCategories.add(categories.getCat3());
+        allCategories.add(categories.getCat4());
+
 
         // SPEL
+
         String questionSpel1 = getQuestionsByCategory("category1").get(0);
         Question answersAndQuestionsSpel1 = new Question(getAnswersByQuestion(questionSpel1).get(0),
 
@@ -91,14 +99,19 @@ public class DatabaseQuestions {
                 getAnswersByQuestion(questionSpel1).get(4));
 
 
-
         spelCategory.add(answersAndQuestionsSpel1);
         spelCategory.add(answersAndQuestionsSpel2);
         spelCategory.add(answersAndQuestionsSpel3);
         spelCategory.add(answersAndQuestionsSpel4);
 
 
+
     }
+
+
+
+
+
     public List<Question> loadCategorylistSpel(){
         return this.spelCategory;
     }
@@ -137,7 +150,7 @@ public class DatabaseQuestions {
             answers.set(i,answers.get(random));
             answers.set(random,temp);
         }
-        System.out.println("answers after random: "+answers);
+
         for (int i = 0; i < answers.size() ; i++) {
             if(answers.get(i).equals(rightAnswer)){
                 answers.add(""+(i-1));
@@ -146,7 +159,6 @@ public class DatabaseQuestions {
                 break;
             }
         }
-        System.out.println("answers :"+answers);
     }
 
     //Store all categories, questions and answers into a Map
@@ -192,7 +204,6 @@ public class DatabaseQuestions {
     public static void main(String[] args) {
         DatabaseQuestions ad= new DatabaseQuestions();
 
-        System.out.println(ad.getCategoryList("spel").get(0).getQuestion());
 
     }
 }

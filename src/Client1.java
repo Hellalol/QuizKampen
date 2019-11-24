@@ -9,15 +9,16 @@ import java.net.Socket;
 public class Client1 extends JFrame implements Runnable {
 
     Thread thread=new Thread(this);
-    JLabel question=new JLabel();
     JButton[] buttons=new JButton[4];
     JPanel buttonsPanel=new JPanel();
     JTextArea showQuestion = new JTextArea(15,100);
     ObjectOutputStream pw;
     ObjectInputStream in;
+    String[] alternatives = {"spel", "sport", "teknik","Java"};
     Border border = BorderFactory.createLineBorder(Color.BLACK);
     Socket socket;
-    String[] alterativ = {"spel", "sport", "java", "teknik"};
+
+
     int points;
 
     public Client1(){
@@ -33,7 +34,7 @@ public class Client1 extends JFrame implements Runnable {
             e.printStackTrace();
         }
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i]=new JButton(alterativ[i]);
+            buttons[i]= new JButton(alternatives[i]);
             buttons[i].addActionListener(sendcorrectAnswer);
             buttons[i].setBackground(Color.white);
             buttons[i].setBorder(border);
@@ -58,7 +59,7 @@ public class Client1 extends JFrame implements Runnable {
 
     }
     Question questionFromServer;
-
+    Category categoryFromServer;
 
     @Override
     public void run() {
@@ -76,9 +77,19 @@ public class Client1 extends JFrame implements Runnable {
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
                     }
-
                 }
 
+                else if(message instanceof Category){
+                    categoryFromServer = (Category) message;
+                    showQuestion.setText(categoryFromServer.getChooseCat());
+                    buttons[0].setText(categoryFromServer.getCat1());
+                    buttons[1].setText(categoryFromServer.getCat2());
+                    buttons[2].setText(categoryFromServer.getCat3());
+                    buttons[3].setText(categoryFromServer.getCat4());
+                    for (int i = 0; i < buttons.length; i++) {
+                        buttons[i].setEnabled(true);
+                    }
+                }
                 else if(message instanceof String){
                     String nnn=(String) message;
                     setTitle(nnn);
@@ -116,7 +127,6 @@ public class Client1 extends JFrame implements Runnable {
 
     ActionListener sendcorrectAnswer = e -> {
         JButton button=(JButton) e.getSource();
-
         try {
             pw.writeObject(button.getText());
         } catch (IOException ex) {
