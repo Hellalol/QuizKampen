@@ -12,10 +12,12 @@ public class Game extends Thread {
     int currentState = SELECTING_CATEGORY;
     int categoryCounter = 0;
     Server nuvarandeSpelare;
+    private QuestionAndRound questionAndRound = new QuestionAndRound("roundAndQuestions.properties");
 
     // TODO: 2019-11-24 This is where we need Li's round and question "amountchooser"
-    int questionAmount = 4;
-    int roundAmount = 4;
+
+    int questionAmount = questionAndRound.getQuestionAmount();
+    int roundAmount = questionAndRound.getRoundAmount();
 
 
     DatabaseQuestions dbq = new DatabaseQuestions();
@@ -106,8 +108,6 @@ public class Game extends Thread {
             obj = nuvarandeSpelare.ois.readObject();
             String answer = (String) obj;
             counter++;
-
-
         }
     }
 }
