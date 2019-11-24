@@ -50,8 +50,6 @@ public class Client1 extends JFrame implements Runnable {
         add(buttonsPanel,BorderLayout.SOUTH);
         showQuestion.setBorder(border);
 
-
-
         setSize(500,485);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
