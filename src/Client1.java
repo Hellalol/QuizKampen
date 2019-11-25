@@ -7,8 +7,6 @@ import java.net.Socket;
 
 public class Client1 extends JFrame implements Runnable {
 
-
-
     Thread thread=new Thread(this);
     JButton[] buttons=new JButton[4];
     JPanel buttonsPanel=new JPanel();
@@ -20,6 +18,8 @@ public class Client1 extends JFrame implements Runnable {
     Question questionFromServer;
     Category categoryFromServer;
     int points;
+    int pointsOpponent =-1;
+    String rightAnswer;
 
     public Client1(){
         String namn=JOptionPane.showInputDialog("Skriv ditt namn!");
@@ -32,12 +32,13 @@ public class Client1 extends JFrame implements Runnable {
             pw=new ObjectOutputStream(socket.getOutputStream());
             in=new ObjectInputStream(socket.getInputStream());
             pw.writeObject(namn);
+            setTitle(namn);
         } catch (IOException e) {
             e.printStackTrace();
         }
         for (int i = 0; i < buttons.length; i++) {
             buttons[i]= new JButton("Vänta på andra spelaren");
-            buttons[i].addActionListener(sendcorrectAnswer);
+            buttons[i].addActionListener(sendAnswer);
             buttons[i].setBackground(Color.white);
             buttons[i].setBorder(border);
             buttons[i].setFont(new Font("arial",Font.PLAIN,20));
@@ -56,7 +57,6 @@ public class Client1 extends JFrame implements Runnable {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         thread.start();
-
     }
 
 
@@ -72,37 +72,67 @@ public class Client1 extends JFrame implements Runnable {
                         e.printStackTrace();
                     }
                     questionFromServer = (Question) data;
+
+                    for (int i = 0; i < buttons.length; i++) {
+                        //buttons[i].addActionListener(sendAnswer);
+                        buttons[i].setBackground(Color.white);
+                        buttons[i].setForeground(Color.BLUE);
+                        buttons[i].setBorder(border);
+                        buttons[i].setFont(new Font("arial", Font.PLAIN, 20));
+                        buttonsPanel.setLayout(new GridLayout(2, 2, 16, 16));
+                        buttonsPanel.add(buttons[i]);
+                    }
                     showQuestion.setText(questionFromServer.getQuestion());
                     buttons[0].setText(questionFromServer.getAnswerOne());
+                    //System.out.println(questionFromServer.getAnswerOne());
                     buttons[1].setText(questionFromServer.getAnswerTwo());
+                    //System.out.println(questionFromServer.getAnswerTwo());
                     buttons[2].setText(questionFromServer.getAnswerThree());
+                    //System.out.println(questionFromServer.getAnswerThree());
                     buttons[3].setText(questionFromServer.getAnswerFour());
+                    //System.out.println(questionFromServer.getAnswerFour());
+
+                    System.out.println("correct answer: "+questionFromServer.getCorrectAnswer());
+                    rightAnswer = questionFromServer.getCorrectAnswer();
+                    //System.out.println("Right answer in receive: "+rightAnswer);
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
                     }
                 }
-
                 else if(data instanceof Category){
                     categoryFromServer = (Category) data;
+
                     showQuestion.setText(categoryFromServer.getChooseCat());
                     buttons[0].setText(categoryFromServer.getCat1());
                     buttons[1].setText(categoryFromServer.getCat2());
                     buttons[2].setText(categoryFromServer.getCat3());
                     buttons[3].setText(categoryFromServer.getCat4());
-
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
                     }
                 }
                 else if(data instanceof String){
                     String stringFromServer = (String) data;
-                    setTitle(stringFromServer);
+                    //setTitle(stringFromServer);
                     System.out.println(stringFromServer);
                     if(((String) data).startsWith("showscore")){
                         System.exit(0);
                     }
-
+                    if(((String) data).startsWith("RoundScore")){
+                        pointsOpponent = Integer.parseInt(((String) data).substring(10));
+                        System.out.println("pointsOpponent is: "+pointsOpponent);
+                    }
+                    if(((String) data).equals("Gameover")){
+                        pw.writeObject(""+points);
+                        System.out.println("Send: "+points);
+                        pointsOpponent = Integer.parseInt((String)in.readObject());
+                        showQuestion.setText(points +" : "+pointsOpponent);
+                        for(JButton btn:buttons){
+                            btn.setText("");
+                        }
+                    }
                     if(((String) data).startsWith("Other")){
+                        showQuestion.setText((String) data);
                         for (int i = 0; i < buttons.length; i++) {
                             buttons[i].setEnabled(false);
                         }
@@ -119,7 +149,7 @@ public class Client1 extends JFrame implements Runnable {
             e.printStackTrace();
         }
     }
-
+/*
     ActionListener sendSelecetedAlternativ= e->{
         JButton button=(JButton) e.getSource();
         for (int i = 0; i < buttons.length; i++) {
@@ -131,18 +161,61 @@ public class Client1 extends JFrame implements Runnable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    };
-
-    ActionListener sendcorrectAnswer = e -> {
+    };*/
+/*
+    ActionListener sendCategory = e -> {
+        System.out.println("button click runs");
         JButton button=(JButton) e.getSource();
+        System.out.println(button.getText());
         try {
             pw.writeObject(button.getText());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    };*/
+
+    ActionListener sendAnswer = e -> {
+        System.out.println("button click runs");
+        JButton button=(JButton) e.getSource();
+        System.out.println(button.getText());
+        System.out.println(rightAnswer);
+        if(rightAnswer!=null && button.getText().equals(rightAnswer)){
+            //button.setBackground(Color.green);
+            button.setForeground(Color.green);
+            points++;
+            try {
+                //send player's points
+                pw.writeObject(""+points);
+                System.out.println("Player's points on clinent side: "+points);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("Right answer is: "+rightAnswer);
+        }else if(rightAnswer!=null){
+            //button.setBackground(Color.red);
+            button.setForeground(Color.red);
+            for(JButton btn : buttons){
+                if(btn.getText().equals(rightAnswer)){
+                    //btn.setBackground(Color.green);
+                    btn.setForeground(Color.green);
+                    break;
+                }
+            }
+        }else{
+            try {
+                pw.writeObject(button.getText());
+                System.out.println("client sends: "+button.getText());
+                buttonsPanel.repaint();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        //Show pointOpponent when get an opponent's points(which means as well one round is done)
+        if(pointsOpponent>0) {
+            showQuestion.setText(points + " : " + pointsOpponent);
+        }
+        pointsOpponent = -1;
     };
-
-
 
     public static void main(String[] args) {
         new Client1();

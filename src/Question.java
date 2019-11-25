@@ -45,4 +45,9 @@ public class Question implements Serializable {
     public String getCorrectAnswer() {
         return correctAnswer;
     }
+
+    @Override
+    public String toString() {
+        return question+"："+answerOne+"，"+answerTwo+"， "+answerThree+"， "+answerFour+"-->"+correctAnswer;
+    }
 }

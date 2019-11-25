@@ -11,6 +11,7 @@ public class Server extends Thread {
     Game game;
     ObjectOutputStream oos;
     ObjectInputStream ois;
+    int points;
 
 
     public Server(Socket socket, String name, Game game){
