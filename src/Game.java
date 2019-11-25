@@ -52,8 +52,10 @@ public class Game extends Thread {
                     System.out.println("SWITCH_PLAYER");
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
                     sendQuestion(spel);
-
-                    currentState = SELECTING_CATEGORY;
+                    if(roundAmount == 2)
+                        currentState = ALL_QUESTIONS_ANSWERED;
+                    else
+                        currentState = SELECTING_CATEGORY;
                 } else if (currentState == ALL_QUESTIONS_ANSWERED) {
 
                     // TODO: 2019-11-24 for each round add points to a list??
@@ -62,6 +64,7 @@ public class Game extends Thread {
                     //nuvarandeSpelare.opponent.showScores();
 
                     System.out.println("ALL_QUESTIONS_ANSWERED");
+                    break;
 
                     //Send scores
                 }
@@ -96,17 +99,15 @@ public class Game extends Thread {
     private void checkIfGameHasEnded() throws IOException {
         if (categoryCounter == roundAmount){
             nuvarandeSpelare.oos.writeObject("Gameover");
+            currentState = ALL_QUESTIONS_ANSWERED;
         }
 
     }
 
     private void sendQuestion(List<Question> list) throws IOException, ClassNotFoundException {
         int counter = 0;
-        Object obj;
         while (counter < questionAmount) {
             nuvarandeSpelare.oos.writeObject(list.get(counter));
-            obj = nuvarandeSpelare.ois.readObject();
-            String answer = (String) obj;
             counter++;
         }
     }

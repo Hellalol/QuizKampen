@@ -12,6 +12,9 @@ public class Server extends Thread {
     ObjectOutputStream oos;
     ObjectInputStream ois;
 
+    public String getPlayername() {
+        return playername;
+    }
 
     public Server(Socket socket, String name, Game game){
         this.socket = socket;

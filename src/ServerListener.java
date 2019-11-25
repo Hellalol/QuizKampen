@@ -12,19 +12,22 @@ public class ServerListener {
                 //Spelare 1
                 Server playerOne
                         = new Server(listener.accept(),"Player 1", game);
-                System.out.println("--Player one connected--");
                 Object obj = playerOne.ois.readObject();
                 String playerOneName=(String) obj;
                 playerOne.setPlayername(playerOneName);
+                System.out.println("--" + playerOne.getPlayername() + " has connected--");
+                System.out.println("--Socket " + playerOne.socket);
+
                 game.setNuvarandeSpelare(playerOne);
 
                 //Spelare 2
                 Server playerTwo
                         = new Server(listener.accept(), "Player 2", game);
-                System.out.println("--Player two connected--");
                 Object obj1 = playerTwo.ois.readObject();
                 String playerTwoName=(String) obj1;
                 playerTwo.setPlayername(playerTwoName);
+                System.out.println("--" + playerTwo.getPlayername() + " has connected--");
+                System.out.println("--Socket " + playerTwo.socket);
 
 
                 playerOne.setOpponent(playerTwo);
