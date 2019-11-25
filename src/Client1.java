@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -20,8 +19,6 @@ public class Client1 extends JFrame implements Runnable {
     Socket socket;
     Question questionFromServer;
     Category categoryFromServer;
-
-
     int points;
 
     public Client1(){
@@ -69,6 +66,11 @@ public class Client1 extends JFrame implements Runnable {
             Object data;
             while((data=in.readObject())!=null){
                 if(data instanceof Question) {
+                    try{
+                        Thread.sleep(500);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
                     questionFromServer = (Question) data;
                     showQuestion.setText(questionFromServer.getQuestion());
                     buttons[0].setText(questionFromServer.getAnswerOne());
@@ -96,6 +98,10 @@ public class Client1 extends JFrame implements Runnable {
                     String stringFromServer = (String) data;
                     setTitle(stringFromServer);
                     System.out.println(stringFromServer);
+                    if(((String) data).startsWith("showscore")){
+                        System.exit(0);
+                    }
+
                     if(((String) data).startsWith("Other")){
                         for (int i = 0; i < buttons.length; i++) {
                             buttons[i].setEnabled(false);
