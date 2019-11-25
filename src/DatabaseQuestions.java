@@ -6,7 +6,7 @@ public class DatabaseQuestions {
 
     Properties properties;
     Map<String,String> all = new LinkedHashMap<>();
-    protected Category categories = new Category("välj kategori","spel","sport","teknik","java");
+    protected Category categories = new Category("Välj kategori!","spel","sport","teknik","java");
     protected List<String> allCategories = new LinkedList<>();
     protected List<Question> spelCategory = new LinkedList<>();
     protected List<Question> sportCategory = new LinkedList<>();
