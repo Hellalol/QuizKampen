@@ -2,9 +2,9 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="category2">category2</entry>
-    <entry key="question2_2">question2_2</entry>
-    <entry key="answer2_2_1">answer2_2_1</entry>
-    <entry key="answer2_2_2">answer2_2_2</entry>
-    <entry key="answer2_2_3">answer2_2_3</entry>
-    <entry key="question2_2_right">answer2_2_right</entry>
+    <entry key="question2_2">Hur många poäng får man om man ”dunkar” bollen i korgen inom basket?</entry>
+    <entry key="answer2_2_1">1 poäng</entry>
+    <entry key="answer2_2_2">3 poäng</entry>
+    <entry key="answer2_2_3">4 poäng</entry>
+    <entry key="question2_2_right">2 poäng</entry>
 </properties>

@@ -1,8 +1,7 @@
-import javax.swing.*;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class Game extends Thread {
 
@@ -11,13 +10,17 @@ public class Game extends Thread {
     private static final int SWITCH_PLAYER = 2;
     private static final int ALL_QUESTIONS_ANSWERED = 3;
     int currentState = SELECTING_CATEGORY;
-
+    int categoryCounter = 0;
     Server nuvarandeSpelare;
-    int questionAmount;
-    int roundAmount;
-    private int currentRound = 0;
-    DatabaseQuestions dbq = new DatabaseQuestions();
+    private QuestionAndRound questionAndRound = new QuestionAndRound("roundAndQuestions.properties");
 
+    // TODO: 2019-11-24 This is where we need Li's round and question "amountchooser"
+
+    int questionAmount = questionAndRound.getQuestionAmount();
+    int roundAmount = questionAndRound.getRoundAmount();
+
+
+    DatabaseQuestions dbq = new DatabaseQuestions();
     List<Question> spel = new LinkedList<>();
 
     public void setNuvarandeSpelare(Server nuvarandeSpelare) {
@@ -27,80 +30,84 @@ public class Game extends Thread {
     @Override
     public void run() {
 
-        spel.add(dbq.loadCategorylistSpel().get(0));
-        spel.add(dbq.loadCategorylistSpel().get(1));
-        spel.add(dbq.loadCategorylistSpel().get(2));
-        spel.add(dbq.loadCategorylistSpel().get(3));
         try {
             while (true) {
 
-
                 if (currentState == SELECTING_CATEGORY) {
+                    System.out.println("SELECTING_CATEGORY");
                     nuvarandeSpelare.opponent.oos.writeObject("Other player is choosing category ?");
-                    Object sel = nuvarandeSpelare.ois.readObject();
-
-//                    if (sel instanceof String) {
-//                        if (((String) sel).contains("@")) {
-//                            StringTokenizer st = new StringTokenizer((String) sel, "@");
-//                            //To get roundAmount and questionAmount from client
-//                            if ("R&Q".equals(st.nextToken())) {
-//                                roundAmount = Integer.parseInt(st.nextToken());
-//                                questionAmount = Integer.parseInt(st.nextToken());
-//                               // System.out.println(nuvarandeSpelare.playerName + "has chosen rounds as: " + roundAmount + " and questions as: " + questionAmount);
-//                            }
-//                        }
-//                    }
-
-                    assert sel instanceof String;
-                    String selectedCategory = (String) sel;
-                    System.out.println("Cat " + selectedCategory);
-
-
+                    sendCategories();
+                    checkIfGameHasEnded();
                     currentState = ASKING_QUESTIONS;
 
                 } else if (currentState == ASKING_QUESTIONS) {
+                    System.out.println("ASKING_QUESTIONS");
+                    Object sel = nuvarandeSpelare.ois.readObject();
+                    String selectedCategory = (String) sel;
+                    System.out.println(selectedCategory);
+                    spel = getCategoryList(selectedCategory);
                     sendQuestion(spel);
-                    System.out.println("Atef");
                     currentState = SWITCH_PLAYER;
 
-
                 } else if (currentState == SWITCH_PLAYER) {
+                    System.out.println("SWITCH_PLAYER");
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
                     sendQuestion(spel);
 
-                    if (currentRound > 0) {
-                        currentState = ALL_QUESTIONS_ANSWERED;
-                    }
+                    currentState = SELECTING_CATEGORY;
                 } else if (currentState == ALL_QUESTIONS_ANSWERED) {
-                    JOptionPane.showMessageDialog(null, "YOU WIN");
+
+                    // TODO: 2019-11-24 for each round add points to a list??
+                    // todo make it so that it shows in the end of the game.
+                    //nuvarandeSpelare.showScores();
+                    //nuvarandeSpelare.opponent.showScores();
+
+                    System.out.println("ALL_QUESTIONS_ANSWERED");
+
+                    //Send scores
                 }
 
             }
-
-
-            //TODO : fix the database
-            //-Skapa en metod som tar in en String och returnerar en lista i databasen/hÃ¤r
-            // - questions=database.getQuestionLisT(selectedCategory);
-
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    private List<Question> getCategoryList(String input){
+        List<Question> tempList = new LinkedList<>();
+        if (input.equalsIgnoreCase("spel"))
+            tempList = dbq.spelCategory;
+        else if (input.equalsIgnoreCase("sport"))
+            tempList = dbq.sportCategory;
+        else if (input.equalsIgnoreCase("java")){
+            tempList = dbq.javaCategory;
+        }else if(input.equalsIgnoreCase("teknik")){
+            tempList = dbq.teknikCategory;
+        }
+        return tempList;
+    }
+
+    private void sendCategories() throws IOException {
+        nuvarandeSpelare.oos.writeObject(dbq.categories);
+        categoryCounter++;
+        System.out.println(categoryCounter);
+    }
+
+    private void checkIfGameHasEnded(){
+        if (categoryCounter == roundAmount)
+            currentState = ALL_QUESTIONS_ANSWERED;
+
+    }
 
     private void sendQuestion(List<Question> list) throws IOException, ClassNotFoundException {
         int counter = 0;
         Object obj;
-        while (counter < 2) {
-            System.out.println(counter + " before");
+        while (counter < questionAmount) {
             nuvarandeSpelare.oos.writeObject(list.get(counter));
             obj = nuvarandeSpelare.ois.readObject();
             String answer = (String) obj;
-            System.out.println(answer);
             counter++;
-            System.out.println("after " + counter);
-
         }
     }
 }
