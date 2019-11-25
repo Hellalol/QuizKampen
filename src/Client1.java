@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -8,21 +7,24 @@ import java.net.Socket;
 
 public class Client1 extends JFrame implements Runnable {
 
+
+
     Thread thread=new Thread(this);
     JButton[] buttons=new JButton[4];
     JPanel buttonsPanel=new JPanel();
     JTextArea showQuestion = new JTextArea(15,100);
     ObjectOutputStream pw;
     ObjectInputStream in;
-    String[] alternatives = {"spel", "sport", "teknik","Java"};
     Border border = BorderFactory.createLineBorder(Color.BLACK);
     Socket socket;
-
-
+    Question questionFromServer;
+    Category categoryFromServer;
     int points;
 
     public Client1(){
-        String namn=JOptionPane.showInputDialog("Skriv ditt namn");
+        String namn=JOptionPane.showInputDialog("Skriv ditt namn!");
+        if(namn == null)
+            System.exit(0);
         //  String categoy=JOptionPane.showInputDialog("Choose category");
         setLayout(new BorderLayout());
         try {
@@ -34,7 +36,7 @@ public class Client1 extends JFrame implements Runnable {
             e.printStackTrace();
         }
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i]= new JButton(alternatives[i]);
+            buttons[i]= new JButton("Vänta på andra spelaren");
             buttons[i].addActionListener(sendcorrectAnswer);
             buttons[i].setBackground(Color.white);
             buttons[i].setBorder(border);
@@ -56,17 +58,20 @@ public class Client1 extends JFrame implements Runnable {
         thread.start();
 
     }
-    Question questionFromServer;
-    Category categoryFromServer;
+
 
     @Override
     public void run() {
-
         try {
-            Object message;
-            while((message=in.readObject())!=null){
-                if(message instanceof Question) {
-                    questionFromServer = (Question) message;
+            Object data;
+            while((data=in.readObject())!=null){
+                if(data instanceof Question) {
+                    try{
+                        Thread.sleep(500);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                    questionFromServer = (Question) data;
                     showQuestion.setText(questionFromServer.getQuestion());
                     buttons[0].setText(questionFromServer.getAnswerOne());
                     buttons[1].setText(questionFromServer.getAnswerTwo());
@@ -77,22 +82,27 @@ public class Client1 extends JFrame implements Runnable {
                     }
                 }
 
-                else if(message instanceof Category){
-                    categoryFromServer = (Category) message;
+                else if(data instanceof Category){
+                    categoryFromServer = (Category) data;
                     showQuestion.setText(categoryFromServer.getChooseCat());
                     buttons[0].setText(categoryFromServer.getCat1());
                     buttons[1].setText(categoryFromServer.getCat2());
                     buttons[2].setText(categoryFromServer.getCat3());
                     buttons[3].setText(categoryFromServer.getCat4());
+
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
                     }
                 }
-                else if(message instanceof String){
-                    String nnn=(String) message;
-                    setTitle(nnn);
-                    System.out.println(nnn);
-                    if(((String) message).startsWith("Other")){
+                else if(data instanceof String){
+                    String stringFromServer = (String) data;
+                    setTitle(stringFromServer);
+                    System.out.println(stringFromServer);
+                    if(((String) data).startsWith("showscore")){
+                        System.exit(0);
+                    }
+
+                    if(((String) data).startsWith("Other")){
                         for (int i = 0; i < buttons.length; i++) {
                             buttons[i].setEnabled(false);
                         }

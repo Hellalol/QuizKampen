@@ -3,11 +3,11 @@ import java.util.List;
 
 public class Category implements Serializable {
     static final long serialVersionUID = 42L;
-    private String chooseCat;
-    private String cat1;
-    private String cat2;
-    private String cat3;
-    private String cat4;
+    protected String chooseCat;
+    protected String cat1;
+    protected String cat2;
+    protected String cat3;
+    protected String cat4;
 
     public Category(String chooseCat, String cat1, String cat2, String cat3, String cat4) {
         this.chooseCat = chooseCat;

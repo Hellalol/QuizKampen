@@ -14,7 +14,6 @@ public class Game extends Thread {
     Server nuvarandeSpelare;
     private QuestionAndRound questionAndRound = new QuestionAndRound("roundAndQuestions.properties");
 
-    // TODO: 2019-11-24 This is where we need Li's round and question "amountchooser"
 
     int questionAmount = questionAndRound.getQuestionAmount();
     int roundAmount = questionAndRound.getRoundAmount();
@@ -94,9 +93,10 @@ public class Game extends Thread {
         System.out.println(categoryCounter);
     }
 
-    private void checkIfGameHasEnded(){
-        if (categoryCounter == roundAmount)
-            currentState = ALL_QUESTIONS_ANSWERED;
+    private void checkIfGameHasEnded() throws IOException {
+        if (categoryCounter == roundAmount){
+            nuvarandeSpelare.oos.writeObject("Gameover");
+        }
 
     }
 
