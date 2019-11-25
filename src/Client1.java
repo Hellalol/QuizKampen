@@ -25,7 +25,6 @@ public class Client1 extends JFrame implements Runnable {
         String namn=JOptionPane.showInputDialog("Skriv ditt namn!");
         if(namn == null)
             System.exit(0);
-        //  String categoy=JOptionPane.showInputDialog("Choose category");
         setLayout(new BorderLayout());
         try {
             socket=new Socket("localhost",12345);
@@ -51,6 +50,7 @@ public class Client1 extends JFrame implements Runnable {
         add(showQuestion,BorderLayout.NORTH);
         add(buttonsPanel,BorderLayout.SOUTH);
         showQuestion.setBorder(border);
+        showQuestion.setEditable(false);
 
         setSize(500,485);
         setVisible(true);
@@ -96,12 +96,9 @@ public class Client1 extends JFrame implements Runnable {
                 }
                 else if(data instanceof String){
                     String stringFromServer = (String) data;
-                    setTitle(stringFromServer);
+                    //setTitle(stringFromServer);
+                    showQuestion.setText(stringFromServer);
                     System.out.println(stringFromServer);
-                    if(((String) data).startsWith("showscore")){
-                        System.exit(0);
-                    }
-
                     if(((String) data).startsWith("Other")){
                         for (int i = 0; i < buttons.length; i++) {
                             buttons[i].setEnabled(false);

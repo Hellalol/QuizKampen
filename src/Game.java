@@ -47,12 +47,13 @@ public class Game extends Thread {
                     spel = getCategoryList(selectedCategory);
                     sendQuestion(spel);
                     currentState = SWITCH_PLAYER;
+                    categoryCounter++;
 
                 } else if (currentState == SWITCH_PLAYER) {
                     System.out.println("SWITCH_PLAYER");
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
                     sendQuestion(spel);
-                    if(roundAmount == 2)
+                    if(categoryCounter == questionAndRound.getRoundAmount())
                         currentState = ALL_QUESTIONS_ANSWERED;
                     else
                         currentState = SELECTING_CATEGORY;
@@ -63,9 +64,9 @@ public class Game extends Thread {
                     //nuvarandeSpelare.showScores();
                     //nuvarandeSpelare.opponent.showScores();
 
-                    System.out.println("ALL_QUESTIONS_ANSWERED");
+                    nuvarandeSpelare.oos.writeObject("ALL_QUESTIONS_ANSWERED");
+                    nuvarandeSpelare.opponent.oos.writeObject("ALL_QUESTIONS_ANSWERED");
                     break;
-
                     //Send scores
                 }
 
@@ -92,22 +93,24 @@ public class Game extends Thread {
 
     private void sendCategories() throws IOException {
         nuvarandeSpelare.oos.writeObject(dbq.categories);
-        categoryCounter++;
         System.out.println(categoryCounter);
+
     }
 
     private void checkIfGameHasEnded() throws IOException {
         if (categoryCounter == roundAmount){
             nuvarandeSpelare.oos.writeObject("Gameover");
-            currentState = ALL_QUESTIONS_ANSWERED;
+
         }
 
     }
 
     private void sendQuestion(List<Question> list) throws IOException, ClassNotFoundException {
         int counter = 0;
+        Object obj;
         while (counter < questionAmount) {
             nuvarandeSpelare.oos.writeObject(list.get(counter));
+            obj = nuvarandeSpelare.ois.readObject();
             counter++;
         }
     }
