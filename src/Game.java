@@ -34,6 +34,7 @@ public class Game extends Thread {
                 if (currentState == SELECTING_CATEGORY) {
                     System.out.println("SELECTING_CATEGORY");
                     nuvarandeSpelare.opponent.oos.writeObject("Other player is choosing category ?");
+                    nuvarandeSpelare.opponent.oos.flush();
                     //Server sends the 4 Categories and jump to next state
                     sendCategories();
                     //checkIfGameHasEnded();
@@ -55,7 +56,7 @@ public class Game extends Thread {
                 } else if (currentState == SWITCH_PLAYER) {
                     System.out.println("SWITCH_PLAYER");
                     //Swap player
-                    nuvarandeSpelare.oos.writeObject("Andra spelarens tur!");
+//                    nuvarandeSpelare.oos.writeObject("Andra spelarens tur!");
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
                     opponentPoints = points;
                     points = 0;
@@ -64,6 +65,7 @@ public class Game extends Thread {
                     nuvarandeSpelare.oos.writeObject("RoundScore" + opponentPoints);
                     //server sends the updated new points to the previous player
                     nuvarandeSpelare.opponent.oos.writeObject("RoundScore" + points);
+                    nuvarandeSpelare.opponent.oos.flush();
                     System.out.println("One round is done, send my points: " + points);
                     //Send questions to client and get client's answer
                     checkIfGameHasEnded();
@@ -107,7 +109,9 @@ public class Game extends Thread {
     private void checkIfGameHasEnded() throws IOException {
         if (categoryCounter == roundAmount){
             nuvarandeSpelare.oos.writeObject("Gameover");
+            nuvarandeSpelare.oos.flush();
             nuvarandeSpelare.opponent.oos.writeObject("Gameover");
+            nuvarandeSpelare.opponent.oos.flush();
             currentState = ALL_QUESTIONS_ANSWERED;
         } else if(currentState == ASKING_QUESTIONS) {
             System.out.println("!it runs here!");
@@ -127,6 +131,8 @@ public class Game extends Thread {
         System.out.println("question amount is: " + questionAmount);
         while (counter < questionAmount) {
             nuvarandeSpelare.oos.writeObject(list.get(counter));
+            nuvarandeSpelare.opponent.oos.flush();
+
             //Read player's points
             points = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
             System.out.println("Current player's points: "+points);

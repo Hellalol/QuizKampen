@@ -5,13 +5,18 @@ import java.util.*;
 public class Database {
 
     Properties properties;
-    Map<String,String> all = new LinkedHashMap<>();
-    protected Category categories = new Category("Välj kategori!","spel","sport","teknik","java");
+    Map<String, String> all = new LinkedHashMap<>();
+    protected Category categories = new Category("Välj kategori!", "spel", "sport", "teknik", "java");
+    protected Category categories2 = new Category("Välj kategori!", "spel", "sport", "teknik", "java");
+    protected Category categories3 = new Category("Välj kategori!", "spel", "sport", "teknik", "java");
+    protected Category categories4 = new Category("Välj kategori!", "spel", "sport", "teknik", "java");
+
     protected List<String> allCategories = new LinkedList<>();
     protected List<Question> spelCategory = new LinkedList<>();
     protected List<Question> sportCategory = new LinkedList<>();
     protected List<Question> javaCategory = new LinkedList<>();
     protected List<Question> teknikCategory = new LinkedList<>();
+
 
     Database() {
         properties = new Properties();
@@ -19,35 +24,35 @@ public class Database {
 
         String questionsport1 = getQuestionsByCategory("category2").get(0);
         Question answersAndQuestionsSport1 = new Question(getAnswersByQuestion(questionsport1).get(0),
-                getAnswersByQuestion(questionsport1).get(1),
+                getAnswersByQuestion(questionsport1).get(4),
                 getAnswersByQuestion(questionsport1).get(2),
                 getAnswersByQuestion(questionsport1).get(3),
-                getAnswersByQuestion(questionsport1).get(4),
+                getAnswersByQuestion(questionsport1).get(1),
                 getAnswersByQuestion(questionsport1).get(4)
         );
 
         String questionsport2 = getQuestionsByCategory("category2").get(1);
         Question answersAndQuestionsSport2 = new Question(getAnswersByQuestion(questionsport2).get(0),
+                getAnswersByQuestion(questionsport2).get(3),
                 getAnswersByQuestion(questionsport2).get(1),
                 getAnswersByQuestion(questionsport2).get(2),
-                getAnswersByQuestion(questionsport2).get(3),
                 getAnswersByQuestion(questionsport2).get(4),
                 getAnswersByQuestion(questionsport2).get(4));
 
         String questionsport3 = getQuestionsByCategory("category2").get(2);
         Question answersAndQuestionsSport3 = new Question(getAnswersByQuestion(questionsport3).get(0),
-                getAnswersByQuestion(questionsport3).get(1),
                 getAnswersByQuestion(questionsport3).get(2),
-                getAnswersByQuestion(questionsport3).get(3),
                 getAnswersByQuestion(questionsport3).get(4),
+                getAnswersByQuestion(questionsport3).get(1),
+                getAnswersByQuestion(questionsport3).get(3),
                 getAnswersByQuestion(questionsport3).get(4));
 
         String questionsport4 = getQuestionsByCategory("category2").get(3);
         Question answersAndQuestionsSport4 = new Question(getAnswersByQuestion(questionsport4).get(0),
-                getAnswersByQuestion(questionsport4).get(1),
                 getAnswersByQuestion(questionsport4).get(2),
                 getAnswersByQuestion(questionsport4).get(3),
                 getAnswersByQuestion(questionsport4).get(4),
+                getAnswersByQuestion(questionsport4).get(1),
                 getAnswersByQuestion(questionsport4).get(4));
 
         sportCategory.add(answersAndQuestionsSport1);
@@ -66,35 +71,35 @@ public class Database {
 
         String questionSpel1 = getQuestionsByCategory("category1").get(0);
         Question answersAndQuestionsSpel1 = new Question(getAnswersByQuestion(questionSpel1).get(0),
-                getAnswersByQuestion(questionSpel1).get(1),
                 getAnswersByQuestion(questionSpel1).get(2),
-                getAnswersByQuestion(questionSpel1).get(3),
                 getAnswersByQuestion(questionSpel1).get(4),
+                getAnswersByQuestion(questionSpel1).get(3),
+                getAnswersByQuestion(questionSpel1).get(1),
                 getAnswersByQuestion(questionSpel1).get(4)
         );
 
         String questionSpel2 = getQuestionsByCategory("category1").get(1);
         Question answersAndQuestionsSpel2 = new Question(getAnswersByQuestion(questionSpel2).get(0),
-                getAnswersByQuestion(questionSpel2).get(1),
+                getAnswersByQuestion(questionSpel2).get(4),
                 getAnswersByQuestion(questionSpel2).get(2),
                 getAnswersByQuestion(questionSpel2).get(3),
-                getAnswersByQuestion(questionSpel2).get(4),
+                getAnswersByQuestion(questionSpel2).get(1),
                 getAnswersByQuestion(questionSpel2).get(4));
 
         String questionSpel3 = getQuestionsByCategory("category1").get(2);
         Question answersAndQuestionsSpel3 = new Question(getAnswersByQuestion(questionSpel3).get(0),
-                getAnswersByQuestion(questionSpel3).get(1),
-                getAnswersByQuestion(questionSpel3).get(2),
                 getAnswersByQuestion(questionSpel3).get(3),
                 getAnswersByQuestion(questionSpel3).get(4),
+                getAnswersByQuestion(questionSpel3).get(1),
+                getAnswersByQuestion(questionSpel3).get(2),
                 getAnswersByQuestion(questionSpel3).get(4));
 
         String questionSpel4 = getQuestionsByCategory("category1").get(3);
         Question answersAndQuestionsSpel4 = new Question(getAnswersByQuestion(questionSpel4).get(0),
                 getAnswersByQuestion(questionSpel4).get(1),
-                getAnswersByQuestion(questionSpel4).get(2),
-                getAnswersByQuestion(questionSpel4).get(3),
                 getAnswersByQuestion(questionSpel4).get(4),
+                getAnswersByQuestion(questionSpel4).get(3),
+                getAnswersByQuestion(questionSpel4).get(2),
                 getAnswersByQuestion(questionSpel4).get(4));
 
 
@@ -104,21 +109,31 @@ public class Database {
         spelCategory.add(answersAndQuestionsSpel4);
 
 
-
     }
 
 
+    Category orderOfCategories() {
+        int randomnr = (int) (Math.random() * 4);
+        System.out.println(randomnr);
+        switch (randomnr) {
+            case 1:
+                categories = new Category("Välj kategori!", "spel", "sport", "teknik", "java");
+            case 2:
+                categories = new Category("Välj kategori!", "java", "sport", "spel", "teknik");
+            case 3:
+                categories = new Category("Välj kategori", "sport", "teknik", "spel", "java");
+            case 4:
+                categories = new Category("Välj kategori", "teknik", "spel", "sport", "java");
+        }
+        return categories;
+        }
 
 
 
-    public List<Question> loadCategorylistSpel(){
-        return this.spelCategory;
-    }
-
-    List<String> getQuestionsByCategory(String category){
+    List<String> getQuestionsByCategory(String category) {
         List<String> questions = new ArrayList<>();
-        for(Map.Entry<String,String> entry : all.entrySet()){
-            if(entry.getValue().equals(category)){
+        for (Map.Entry<String, String> entry : all.entrySet()) {
+            if (entry.getValue().equals(category)) {
                 questions.add(entry.getKey());
             }
         }
@@ -126,11 +141,11 @@ public class Database {
     }
 
     //To get all questions under one question
-    List<String> getAnswersByQuestion(String question){
+    List<String> getAnswersByQuestion(String question) {
         List<String> answers = new ArrayList<>();
         answers.add(question);
-        for(Map.Entry<String,String> entry : all.entrySet()){
-            if(entry.getValue().equals(question)){
+        for (Map.Entry<String, String> entry : all.entrySet()) {
+            if (entry.getValue().equals(question)) {
                 answers.add(entry.getKey());
             }
         }
@@ -138,47 +153,45 @@ public class Database {
     }
 
     //Random the answers and show the right answer index
-    void randomAnswers(List<String> answers){
-        String rightAnswer = answers.get(answers.size()-1);
-        System.out.println("right answer: "+rightAnswer);
-        for (int i = answers.size()-1; i >=1; i--) {
+    void randomAnswers(List<String> answers) {
+        String rightAnswer = answers.get(answers.size() - 1);
+        for (int i = answers.size() - 1; i >= 1; i--) {
             //for (int i = answers.size()-1; i >=0; i--) {
-            int random = (int) (Math.random()*i)+1;
+            int random = (int) (Math.random() * i) + 1;
             //int random = (int) (Math.random()*(i+1));
             String temp = answers.get(i);
-            answers.set(i,answers.get(random));
-            answers.set(random,temp);
+            answers.set(i, answers.get(random));
+            answers.set(random, temp);
         }
 
-        for (int i = 0; i < answers.size() ; i++) {
-            if(answers.get(i).equals(rightAnswer)){
-                answers.add(""+(i-1));
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).equals(rightAnswer)) {
+                answers.add("" + (i - 1));
                 //answers.add(""+i);
-                System.out.println("right index: "+i);
                 break;
             }
         }
     }
 
     //Store all categories, questions and answers into a Map
-    void getInfoFromAllXML(){
+    void getInfoFromAllXML() {
         InputStream in;
-        for (int i = 1; i<=4 ; i++) {
-            for(int j=1; j<=4 ; j++ ){
-                in = getClass().getResourceAsStream("question"+i+"_"+j+".xml");
+        for (int i = 1; i <= 4; i++) {
+            for (int j = 1; j <= 4; j++) {
+                in = getClass().getResourceAsStream("question" + i + "_" + j + ".xml");
                 try {
                     properties.loadFromXML(in);
-                    String category = properties.getProperty("category"+i);
-                    String question = properties.getProperty("question"+i+"_"+j);
-                    String answer1 = properties.getProperty("answer"+i+"_"+j+"_1");
-                    String answer2 = properties.getProperty("answer"+i+"_"+j+"_2");
-                    String answer3 = properties.getProperty("answer"+i+"_"+j+"_3");
-                    String rightAnswer = properties.getProperty("question"+i+"_"+j+"_right");
-                    all.put(question,category);
-                    all.put(answer1,question);
-                    all.put(answer2,question);
-                    all.put(answer3,question);
-                    all.put(rightAnswer,question);
+                    String category = properties.getProperty("category" + i);
+                    String question = properties.getProperty("question" + i + "_" + j);
+                    String answer1 = properties.getProperty("answer" + i + "_" + j + "_1");
+                    String answer2 = properties.getProperty("answer" + i + "_" + j + "_2");
+                    String answer3 = properties.getProperty("answer" + i + "_" + j + "_3");
+                    String rightAnswer = properties.getProperty("question" + i + "_" + j + "_right");
+                    all.put(question, category);
+                    all.put(answer1, question);
+                    all.put(answer2, question);
+                    all.put(answer3, question);
+                    all.put(rightAnswer, question);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -186,25 +199,23 @@ public class Database {
         }
     }
 
-    List<Question> getCategoryList(String category){
+    List<Question> getCategoryList(String category) {
         List<Question> tempList = new LinkedList<>();
         if (category.equalsIgnoreCase("spel"))
             tempList = spelCategory;
         else if (category.equalsIgnoreCase("sport"))
             tempList = sportCategory;
-        else if (category.equalsIgnoreCase("java")){
+        else if (category.equalsIgnoreCase("java")) {
             tempList = javaCategory;
-        }else if(category.equalsIgnoreCase("teknik")){
+        } else if (category.equalsIgnoreCase("teknik")) {
             tempList = teknikCategory;
         }
         return tempList;
     }
 
-/*    public static void main(String[] args) {
-        DatabaseQuestions ad= new DatabaseQuestions();
-        //System.out.println(ad.getCategoryList("spel"));
-        for(Serveron question: ad.getCategoryList("spel")){
-            System.out.println(question);
-        }
-    }*/
+    public static void main(String[] args) {
+        Database e = new Database();
+
+    }
 }
+
