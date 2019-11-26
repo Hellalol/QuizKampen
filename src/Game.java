@@ -58,6 +58,7 @@ public class Game extends Thread {
                 } else if (currentState == SWITCH_PLAYER) {
                     System.out.println("SWITCH_PLAYER");
                     //Swap player
+                    nuvarandeSpelare.oos.writeObject("Andra spelarens tur!");
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
                     opponentPoints = points;
                     points = 0;

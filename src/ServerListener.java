@@ -11,7 +11,7 @@ public class ServerListener {
                 Game game =new Game();
                 //Spelare 1
                 Server playerOne
-                        = new Server(listener.accept(),"Player 1", game);
+                        = new Server(listener.accept(),"Player 1");
                 System.out.println("--Player one connected--");
                 Object obj = playerOne.ois.readObject();
                 String playerOneName=(String) obj;
@@ -20,7 +20,7 @@ public class ServerListener {
 
                 //Spelare 2
                 Server playerTwo
-                        = new Server(listener.accept(), "Player 2", game);
+                        = new Server(listener.accept(), "Player 2");
                 System.out.println("--Player two connected--");
                 Object obj1 = playerTwo.ois.readObject();
                 String playerTwoName=(String) obj1;
