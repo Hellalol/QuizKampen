@@ -6,7 +6,7 @@ public class DatabaseQuestions {
 
     Properties properties;
     Map<String,String> all = new LinkedHashMap<>();
-    protected Category categories = new Category("välj kategori","spel","sport","teknik","java");
+    protected Category categories = new Category("Välj kategori!","spel","sport","teknik","java");
     protected List<String> allCategories = new LinkedList<>();
     protected List<Question> spelCategory = new LinkedList<>();
     protected List<Question> sportCategory = new LinkedList<>();
@@ -80,7 +80,7 @@ public class DatabaseQuestions {
                 getAnswersByQuestion(questionSpel2).get(2),
                 getAnswersByQuestion(questionSpel2).get(3),
                 getAnswersByQuestion(questionSpel2).get(4),
-                getAnswersByQuestion(questionSpel1).get(4));
+                getAnswersByQuestion(questionSpel2).get(4));
 
         String questionSpel3 = getQuestionsByCategory("category1").get(2);
         Question answersAndQuestionsSpel3 = new Question(getAnswersByQuestion(questionSpel3).get(0),
@@ -88,7 +88,7 @@ public class DatabaseQuestions {
                 getAnswersByQuestion(questionSpel3).get(2),
                 getAnswersByQuestion(questionSpel3).get(3),
                 getAnswersByQuestion(questionSpel3).get(4),
-                getAnswersByQuestion(questionSpel1).get(4));
+                getAnswersByQuestion(questionSpel3).get(4));
 
         String questionSpel4 = getQuestionsByCategory("category1").get(3);
         Question answersAndQuestionsSpel4 = new Question(getAnswersByQuestion(questionSpel4).get(0),
@@ -96,7 +96,7 @@ public class DatabaseQuestions {
                 getAnswersByQuestion(questionSpel4).get(2),
                 getAnswersByQuestion(questionSpel4).get(3),
                 getAnswersByQuestion(questionSpel4).get(4),
-                getAnswersByQuestion(questionSpel1).get(4));
+                getAnswersByQuestion(questionSpel4).get(4));
 
 
         spelCategory.add(answersAndQuestionsSpel1);
@@ -201,9 +201,11 @@ public class DatabaseQuestions {
         return tempList;
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         DatabaseQuestions ad= new DatabaseQuestions();
-
-
-    }
+        //System.out.println(ad.getCategoryList("spel"));
+        for(Question question: ad.getCategoryList("spel")){
+            System.out.println(question);
+        }
+    }*/
 }

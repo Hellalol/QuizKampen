@@ -1,4 +1,6 @@
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,11 +16,12 @@ public class Game extends Thread {
     Server nuvarandeSpelare;
     private QuestionAndRound questionAndRound = new QuestionAndRound("roundAndQuestions.properties");
 
-    // TODO: 2019-11-24 This is where we need Li's round and question "amountchooser"
 
     int questionAmount = questionAndRound.getQuestionAmount();
     int roundAmount = questionAndRound.getRoundAmount();
 
+    int points;
+    int opponentPoints;
 
     DatabaseQuestions dbq = new DatabaseQuestions();
     List<Question> spel = new LinkedList<>();
@@ -32,48 +35,58 @@ public class Game extends Thread {
 
         try {
             while (true) {
-
                 if (currentState == SELECTING_CATEGORY) {
                     System.out.println("SELECTING_CATEGORY");
                     nuvarandeSpelare.opponent.oos.writeObject("Other player is choosing category ?");
+                    //Player 1 sever sends the 4 Categories and jump to next state
                     sendCategories();
-                    checkIfGameHasEnded();
+                    //checkIfGameHasEnded();
                     currentState = ASKING_QUESTIONS;
 
                 } else if (currentState == ASKING_QUESTIONS) {
                     System.out.println("ASKING_QUESTIONS");
+                    //Read category chosen by player1
                     Object sel = nuvarandeSpelare.ois.readObject();
                     String selectedCategory = (String) sel;
-                    System.out.println(selectedCategory);
+                    System.out.println("Chosen category is: "+selectedCategory);
+                    //Get all questions under one category
                     spel = getCategoryList(selectedCategory);
+                    //Send questions to client and keep on collecting score
                     sendQuestion(spel);
+                    System.out.println("received points is: " + points);
                     currentState = SWITCH_PLAYER;
 
                 } else if (currentState == SWITCH_PLAYER) {
                     System.out.println("SWITCH_PLAYER");
+                    //Swap player
+
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
+                    opponentPoints = points;
+                    points = 0;
                     sendQuestion(spel);
+                    System.out.println("received points is: " + opponentPoints);
+                    //send the opponentPoints to the first player
+                    nuvarandeSpelare.oos.writeObject("RoundScore" + opponentPoints);
+                    nuvarandeSpelare.opponent.oos.writeObject("RoundScore" + points);
+                    System.out.println("One round is done, send my points: " + points);
+                    //Send questions to client and get client's answer
+                    checkIfGameHasEnded();
+                    //currentState = SELECTING_CATEGORY;
 
-                    currentState = SELECTING_CATEGORY;
+                    //Send points......
                 } else if (currentState == ALL_QUESTIONS_ANSWERED) {
-
-                    // TODO: 2019-11-24 for each round add points to a list??
-                    // todo make it so that it shows in the end of the game.
-                    //nuvarandeSpelare.showScores();
-                    //nuvarandeSpelare.opponent.showScores();
-
+                    points = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
+                    System.out.println("-->" + points);
+                    nuvarandeSpelare.opponent.oos.writeObject(""+points);
                     System.out.println("ALL_QUESTIONS_ANSWERED");
-
-                    //Send scores
                 }
-
             }
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+        //Get all questions under one category
     private List<Question> getCategoryList(String input){
         List<Question> tempList = new LinkedList<>();
         if (input.equalsIgnoreCase("spel"))
@@ -88,25 +101,39 @@ public class Game extends Thread {
         return tempList;
     }
 
+    //Send the 4 Categories and jump to next state
     private void sendCategories() throws IOException {
         nuvarandeSpelare.oos.writeObject(dbq.categories);
         categoryCounter++;
-        System.out.println(categoryCounter);
+        System.out.println("Current round:"+categoryCounter+" of "+roundAmount);
     }
 
-    private void checkIfGameHasEnded(){
-        if (categoryCounter == roundAmount)
+    private void checkIfGameHasEnded() throws IOException {
+        if (categoryCounter == roundAmount){
+            nuvarandeSpelare.oos.writeObject("Gameover");
+            nuvarandeSpelare.opponent.oos.writeObject("Gameover");
             currentState = ALL_QUESTIONS_ANSWERED;
-
+        } else if(currentState == ASKING_QUESTIONS) {
+            System.out.println("!it runs here!");
+            currentState = SWITCH_PLAYER;
+        }else if (currentState == SELECTING_CATEGORY) {
+            System.out.println("!!it runs here!!");
+            currentState = ASKING_QUESTIONS;
+        } else if (currentState == SWITCH_PLAYER) {
+            System.out.println("!!!it runs here!!!");
+            currentState = SELECTING_CATEGORY;
+        }
     }
 
+    //player1 server send questions to player1's client
     private void sendQuestion(List<Question> list) throws IOException, ClassNotFoundException {
         int counter = 0;
-        Object obj;
+        System.out.println("question amount is: " + questionAmount);
         while (counter < questionAmount) {
             nuvarandeSpelare.oos.writeObject(list.get(counter));
-            obj = nuvarandeSpelare.ois.readObject();
-            String answer = (String) obj;
+            //Read player1's points
+            points = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
+            System.out.println("Current player's points: "+points);
             counter++;
         }
     }
