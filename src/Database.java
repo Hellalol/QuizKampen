@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-public class DatabaseQuestions {
+public class Database {
 
     Properties properties;
     Map<String,String> all = new LinkedHashMap<>();
@@ -13,7 +13,7 @@ public class DatabaseQuestions {
     protected List<Question> javaCategory = new LinkedList<>();
     protected List<Question> teknikCategory = new LinkedList<>();
 
-    DatabaseQuestions() {
+    Database() {
         properties = new Properties();
         getInfoFromAllXML();
 
@@ -66,7 +66,6 @@ public class DatabaseQuestions {
 
         String questionSpel1 = getQuestionsByCategory("category1").get(0);
         Question answersAndQuestionsSpel1 = new Question(getAnswersByQuestion(questionSpel1).get(0),
-
                 getAnswersByQuestion(questionSpel1).get(1),
                 getAnswersByQuestion(questionSpel1).get(2),
                 getAnswersByQuestion(questionSpel1).get(3),

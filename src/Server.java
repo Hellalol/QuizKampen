@@ -5,12 +5,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Server extends Thread {
-    Socket socket;
-    Server opponent;
-    String playername;
-    Game game;
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
+   protected Socket socket;
+   protected Server opponent;
+   protected String playername;
+   protected  ObjectOutputStream oos;
+   protected ObjectInputStream ois;
 
     public Server(Socket socket, String name){
         this.socket = socket;

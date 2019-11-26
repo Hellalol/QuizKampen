@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 
-public class Client1 extends JFrame implements Runnable {
+public class Client extends JFrame implements Runnable {
 
     Thread thread=new Thread(this);
     JButton[] buttons=new JButton[4];
     JPanel buttonsPanel=new JPanel();
-    JTextArea showQuestion = new JTextArea("Vänta på motståndare!",15,100);
+    JTextArea showQuestion = new JTextArea("Vänta på motståndare!",8,100);
     ObjectOutputStream pw;
     ObjectInputStream in;
     Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -22,12 +22,14 @@ public class Client1 extends JFrame implements Runnable {
     String rightAnswer;
     int round = 1;
 
-    public Client1(){
+    public Client(){
         String namn=JOptionPane.showInputDialog("Skriv ditt namn!");
         if(namn == null)
             System.exit(0);
         //  String categoy=JOptionPane.showInputDialog("Choose category");
         setLayout(new BorderLayout());
+        setSize(500,385);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             socket=new Socket("localhost",12345);
             pw=new ObjectOutputStream(socket.getOutputStream());
@@ -55,9 +57,7 @@ public class Client1 extends JFrame implements Runnable {
         add(buttonsPanel,BorderLayout.SOUTH);
         showQuestion.setBorder(border);
 
-        setSize(500,485);
         setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         thread.start();
     }
 
@@ -65,18 +65,17 @@ public class Client1 extends JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            Object data;
-            while((data=in.readObject())!=null){
-                if(data instanceof Question) {
+            Object dataFromServer;
+            while((dataFromServer=in.readObject())!=null){
+                if(dataFromServer instanceof Question) {
                     try{
                         Thread.sleep(500);
                     }catch (InterruptedException e){
                         e.printStackTrace();
                     }
-                    questionFromServer = (Question) data;
+                    questionFromServer = (Question) dataFromServer;
 
                     for (int i = 0; i < buttons.length; i++) {
-                        //buttons[i].addActionListener(sendAnswer);
                         buttons[i].setBackground(Color.white);
                         buttons[i].setForeground(Color.BLUE);
                         buttons[i].setBorder(border);
@@ -87,22 +86,17 @@ public class Client1 extends JFrame implements Runnable {
                     showQuestion.setText(questionFromServer.getQuestion());
                     makeButtonsVisible();
                     buttons[0].setText(questionFromServer.getAnswerOne());
-                    //System.out.println(questionFromServer.getAnswerOne());
                     buttons[1].setText(questionFromServer.getAnswerTwo());
-                    //System.out.println(questionFromServer.getAnswerTwo());
                     buttons[2].setText(questionFromServer.getAnswerThree());
-                    //System.out.println(questionFromServer.getAnswerThree());
                     buttons[3].setText(questionFromServer.getAnswerFour());
-                    //System.out.println(questionFromServer.getAnswerFour());
                     System.out.println("correct answer: "+questionFromServer.getCorrectAnswer());
                     rightAnswer = questionFromServer.getCorrectAnswer();
-                    //System.out.println("Right answer in receive: "+rightAnswer);
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
                     }
                 }
-                else if(data instanceof Category){
-                    categoryFromServer = (Category) data;
+                else if(dataFromServer instanceof Category){
+                    categoryFromServer = (Category) dataFromServer;
                     showQuestion.setText(categoryFromServer.getChooseCat());
                     makeButtonsVisible();
                     buttons[0].setText(categoryFromServer.getCat1());
@@ -114,12 +108,12 @@ public class Client1 extends JFrame implements Runnable {
                         buttons[i].setForeground(Color.blue);
                     }
                 }
-                else if(data instanceof String){
-                    String stringFromServer = (String) data;
+                else if(dataFromServer instanceof String){
+                    String stringFromServer = (String) dataFromServer;
                     //setTitle(stringFromServer);
                     System.out.println(stringFromServer);
-                    if(((String) data).startsWith("RoundScore")){
-                        pointsOpponent = Integer.parseInt(((String) data).substring(10));
+                    if(((String) dataFromServer).startsWith("RoundScore")){
+                        pointsOpponent = Integer.parseInt(((String) dataFromServer).substring(10));
                         System.out.println("pointsOpponent is: "+pointsOpponent);
                         //showQuestion.setText(points +" : "+pointsOpponent);
                         JOptionPane.showMessageDialog(this,"Current result:\n" + points + " : " + pointsOpponent,"Round "+ round + " is done",JOptionPane.INFORMATION_MESSAGE);
@@ -129,8 +123,8 @@ public class Client1 extends JFrame implements Runnable {
                         }
                     }
 
-                    if(((String) data).startsWith("Andra")){
-                        showQuestion.setText((String) data);
+                    if(((String) dataFromServer).startsWith("Andra")){
+                        showQuestion.setText((String) dataFromServer);
                         if (showQuestion.getText().equals("Andra spelarens tur!")){
                             for (int i = 0; i < buttons.length ; i++) {
                                 buttons[i].setVisible(false);
@@ -142,7 +136,7 @@ public class Client1 extends JFrame implements Runnable {
                     }
 
                     //When game is over send points
-                    if(((String) data).equals("Gameover")){
+                    if(((String) dataFromServer).equals("Gameover")){
                         pw.writeObject(""+points);
                         System.out.println("Send: "+points);
                         //pointsOpponent = Integer.parseInt((String)in.readObject());
@@ -156,8 +150,8 @@ public class Client1 extends JFrame implements Runnable {
                             btn.setVisible(false);
                         }
                     }
-                    if(((String) data).startsWith("Other")){
-                        showQuestion.setText((String) data);
+                    if(((String) dataFromServer).startsWith("Other")){
+                        showQuestion.setText((String) dataFromServer);
                         for (int i = 0; i < buttons.length; i++) {
                             buttons[i].setEnabled(false);
                         }
@@ -220,7 +214,7 @@ public class Client1 extends JFrame implements Runnable {
     }
 
     public static void main(String[] args) {
-        new Client1();
+        new Client();
     }
 
     void clientSendPoints(){

@@ -3,12 +3,12 @@ import java.io.Serializable;
 
 public class Question implements Serializable {
     static final long serialVersionUID = 42L;
-    private String question;
-    private String answerOne;
-    private String answerTwo;
-    private String answerThree;
-    private String answerFour;
-    private String correctAnswer;
+    protected String question;
+    protected String answerOne;
+    protected String answerTwo;
+    protected String answerThree;
+    protected String answerFour;
+    protected String correctAnswer;
     //ServerProtocoll pro = new ServerProtocoll();
 
     public Question(){};

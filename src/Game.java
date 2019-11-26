@@ -1,6 +1,3 @@
-
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +19,7 @@ public class Game extends Thread {
     int points;
     int opponentPoints;
 
-    DatabaseQuestions dbq = new DatabaseQuestions();
+    Database database = new Database();
     List<Question> spel = new LinkedList<>();
 
     public void setNuvarandeSpelare(Server nuvarandeSpelare) {
@@ -89,20 +86,20 @@ public class Game extends Thread {
     private List<Question> getCategoryList(String input){
         List<Question> tempList = new LinkedList<>();
         if (input.equalsIgnoreCase("spel"))
-            tempList = dbq.spelCategory;
+            tempList = database.spelCategory;
         else if (input.equalsIgnoreCase("sport"))
-            tempList = dbq.sportCategory;
+            tempList = database.sportCategory;
         else if (input.equalsIgnoreCase("java")){
-            tempList = dbq.javaCategory;
+            tempList = database.javaCategory;
         }else if(input.equalsIgnoreCase("teknik")){
-            tempList = dbq.teknikCategory;
+            tempList = database.teknikCategory;
         }
         return tempList;
     }
 
     //Send the 4 Categories and jump to next state
     private void sendCategories() throws IOException {
-        nuvarandeSpelare.oos.writeObject(dbq.categories);
+        nuvarandeSpelare.oos.writeObject(database.categories);
         categoryCounter++;
         System.out.println("Current round:"+categoryCounter+" of "+roundAmount);
     }

@@ -3,9 +3,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class QuestionAndRound {
-    private Properties properties;
-    private int questionAmount;
-    private int roundAmount;
+    protected Properties properties;
+    protected int questionAmount;
+    protected int roundAmount;
 
 
     public QuestionAndRound(String propertiesFile) {
