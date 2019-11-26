@@ -130,7 +130,7 @@ public class Client1 extends JFrame implements Runnable {
                         pw.writeObject(""+points);
                         System.out.println("Send: "+points);
                         //pointsOpponent = Integer.parseInt((String)in.readObject());
-                        System.out.println("Gameover pointsOpponent: " + pointsOpponent);
+
                         if(points > pointsOpponent)
                             showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
                         if(points < pointsOpponent)
