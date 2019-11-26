@@ -201,11 +201,11 @@ public class DatabaseQuestions {
         return tempList;
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         DatabaseQuestions ad= new DatabaseQuestions();
         //System.out.println(ad.getCategoryList("spel"));
         for(Question question: ad.getCategoryList("spel")){
             System.out.println(question);
         }
-    }
+    }*/
 }

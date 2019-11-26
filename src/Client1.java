@@ -18,8 +18,9 @@ public class Client1 extends JFrame implements Runnable {
     Question questionFromServer;
     Category categoryFromServer;
     int points;
-    int pointsOpponent =-1;
+    int pointsOpponent;
     String rightAnswer;
+    int round = 1;
 
     public Client1(){
         String namn=JOptionPane.showInputDialog("Skriv ditt namn!");
@@ -121,12 +122,24 @@ public class Client1 extends JFrame implements Runnable {
                     if(((String) data).startsWith("RoundScore")){
                         pointsOpponent = Integer.parseInt(((String) data).substring(10));
                         System.out.println("pointsOpponent is: "+pointsOpponent);
+                        //showQuestion.setText(points +" : "+pointsOpponent);
+                        JOptionPane.showMessageDialog(this,"Current result:\n" + points + " : " + pointsOpponent,"Round "+ round + " is done",JOptionPane.INFORMATION_MESSAGE);
+                        round++;
+                        for(JButton btn:buttons){
+                            btn.setText("");
+                        }
                     }
+                    //When game is over send points
                     if(((String) data).equals("Gameover")){
                         pw.writeObject(""+points);
                         System.out.println("Send: "+points);
                         pointsOpponent = Integer.parseInt((String)in.readObject());
-                        showQuestion.setText(points +" : "+pointsOpponent);
+                        if(points > pointsOpponent)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
+                        if(points < pointsOpponent)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou lose!");
+                        if(points == pointsOpponent)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nEven!");
                         for(JButton btn:buttons){
                             btn.setText("");
                         }
@@ -140,84 +153,64 @@ public class Client1 extends JFrame implements Runnable {
                         for (int i = 0; i < buttons.length; i++) {
                             buttons[i].setEnabled(true);
                         }
-
                 }
-
             }
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-/*
-    ActionListener sendSelecetedAlternativ= e->{
-        JButton button=(JButton) e.getSource();
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i].setEnabled(false);
-        }
-        try {
-            pw.writeObject(button.getText());
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    };*/
-/*
-    ActionListener sendCategory = e -> {
-        System.out.println("button click runs");
-        JButton button=(JButton) e.getSource();
-        System.out.println(button.getText());
-        try {
-            pw.writeObject(button.getText());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    };*/
 
     ActionListener sendAnswer = e -> {
         System.out.println("button click runs");
         JButton button=(JButton) e.getSource();
-        System.out.println(button.getText());
-        System.out.println(rightAnswer);
-        if(rightAnswer!=null && button.getText().equals(rightAnswer)){
-            //button.setBackground(Color.green);
-            button.setForeground(Color.green);
-            points++;
-            try {
-                //send player's points
-                pw.writeObject(""+points);
-                System.out.println("Player's points on clinent side: "+points);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            System.out.println("Right answer is: "+rightAnswer);
-        }else if(rightAnswer!=null){
-            //button.setBackground(Color.red);
-            button.setForeground(Color.red);
-            for(JButton btn : buttons){
-                if(btn.getText().equals(rightAnswer)){
-                    //btn.setBackground(Color.green);
-                    btn.setForeground(Color.green);
-                    break;
+        System.out.println("Pressed button is: " + button.getText());
+        System.out.println("right answer is: " + rightAnswer);
+        //client chose right answer
+        if(rightAnswer != null) {
+            if (button.getText().equals(rightAnswer)) {
+                //button.setBackground(Color.green);
+                button.setForeground(Color.green);
+                points++;
+                System.out.println("Client point: " + points);
+                clientSendPoints();
+                System.out.println("Right answer is: " + rightAnswer);
+            }//Client chose wrong answer
+            else {
+                //button.setBackground(Color.red);
+                button.setForeground(Color.red);
+                for (JButton btn : buttons) {
+                    if (btn.getText().equals(rightAnswer)) {
+                        //btn.setBackground(Color.green);
+                        btn.setForeground(Color.green);
+                        break;
+                    }
                 }
+                System.out.println("Client point: " + points);
+                clientSendPoints();
+                rightAnswer = null;
             }
-        }else{
+        }
+        else{
             try {
                 pw.writeObject(button.getText());
                 System.out.println("client sends: "+button.getText());
-                buttonsPanel.repaint();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-        //Show pointOpponent when get an opponent's points(which means as well one round is done)
-        if(pointsOpponent>0) {
-            showQuestion.setText(points + " : " + pointsOpponent);
-        }
-        pointsOpponent = -1;
     };
 
     public static void main(String[] args) {
         new Client1();
+    }
+
+    void clientSendPoints(){
+        try {
+            //send player's points
+            pw.writeObject(""+points);
+            System.out.println("Player's points on client side: "+points);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

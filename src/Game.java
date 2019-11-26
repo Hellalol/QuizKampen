@@ -21,6 +21,7 @@ public class Game extends Thread {
     int roundAmount = questionAndRound.getRoundAmount();
 
     int points;
+    int opponentPoints;
 
     DatabaseQuestions dbq = new DatabaseQuestions();
     List<Question> spel = new LinkedList<>();
@@ -39,8 +40,8 @@ public class Game extends Thread {
                     nuvarandeSpelare.opponent.oos.writeObject("Other player is choosing category ?");
                     //Player 1 sever sends the 4 Categories and jump to next state
                     sendCategories();
-                    checkIfGameHasEnded();
-                    //currentState = ASKING_QUESTIONS;
+                    //checkIfGameHasEnded();
+                    currentState = ASKING_QUESTIONS;
 
                 } else if (currentState == ASKING_QUESTIONS) {
                     System.out.println("ASKING_QUESTIONS");
@@ -50,17 +51,24 @@ public class Game extends Thread {
                     System.out.println("Chosen category is: "+selectedCategory);
                     //Get all questions under one category
                     spel = getCategoryList(selectedCategory);
-                    //Send questions to client and get client's answer
+                    //Send questions to client and keep on collecting score
                     sendQuestion(spel);
+                    System.out.println("received points is: " + points);
                     currentState = SWITCH_PLAYER;
 
                 } else if (currentState == SWITCH_PLAYER) {
                     System.out.println("SWITCH_PLAYER");
-                    //categoryCounter = 0;
-                    points = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
-                    System.out.println("One round is done, to send points: " + points);
-                    nuvarandeSpelare.opponent.oos.writeObject("RoundScore"+points);
+                    //Swap player
+
                     nuvarandeSpelare = nuvarandeSpelare.opponent;
+                    opponentPoints = points;
+                    points = 0;
+                    sendQuestion(spel);
+                    System.out.println("received points is: " + opponentPoints);
+                    //send the opponentPoints to the first player
+                    nuvarandeSpelare.oos.writeObject("RoundScore" + opponentPoints);
+                    nuvarandeSpelare.opponent.oos.writeObject("RoundScore" + points);
+                    System.out.println("One round is done, send my points: " + points);
                     //Send questions to client and get client's answer
                     checkIfGameHasEnded();
                     //currentState = SELECTING_CATEGORY;
@@ -101,7 +109,7 @@ public class Game extends Thread {
     }
 
     private void checkIfGameHasEnded() throws IOException {
-        if (categoryCounter > roundAmount){
+        if (categoryCounter == roundAmount){
             nuvarandeSpelare.oos.writeObject("Gameover");
             nuvarandeSpelare.opponent.oos.writeObject("Gameover");
             currentState = ALL_QUESTIONS_ANSWERED;
@@ -124,7 +132,8 @@ public class Game extends Thread {
         while (counter < questionAmount) {
             nuvarandeSpelare.oos.writeObject(list.get(counter));
             //Read player1's points
-            points += Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
+            points = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
+            System.out.println("Current player's points: "+points);
             counter++;
         }
     }
