@@ -105,7 +105,7 @@ public class Client extends JFrame implements Runnable {
                     buttons[3].setText(categoryFromServer.getCat4());
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
-                        buttons[i].setForeground(Color.blue);
+                        buttons[i].setBackground(Color.white);
                     }
                 }
                 else if(dataFromServer instanceof String){
@@ -141,11 +141,11 @@ public class Client extends JFrame implements Runnable {
                         System.out.println("Send: "+points);
                         //pointsOpponent = Integer.parseInt((String)in.readObject());
                         if(points > pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
+                            showQuestion.setText("Servers over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
                         if(points < pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou lose!");
+                            showQuestion.setText("Servers over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou lose!");
                         if(points == pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nEven!");
+                            showQuestion.setText("Servers over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nEven!");
                         for(JButton btn:buttons){
                             btn.setVisible(false);
                         }
@@ -167,31 +167,22 @@ public class Client extends JFrame implements Runnable {
     }
 
     ActionListener sendAnswer = e -> {
-        System.out.println("button click runs");
         JButton button=(JButton) e.getSource();
-        System.out.println("Pressed button is: " + button.getText());
-        System.out.println("right answer is: " + rightAnswer);
         //client chose right answer
         if(rightAnswer != null) {
             if (button.getText().equals(rightAnswer)) {
-                //button.setBackground(Color.green);
-                button.setForeground(Color.green);
+                button.setBackground(Color.green);
                 points++;
-                System.out.println("Client point: " + points);
                 clientSendPoints();
-                System.out.println("Right answer is: " + rightAnswer);
             }//Client chose wrong answer
             else {
-                //button.setBackground(Color.red);
-                button.setForeground(Color.red);
+                button.setBackground(Color.red);
                 for (JButton btn : buttons) {
                     if (btn.getText().equals(rightAnswer)) {
-                        //btn.setBackground(Color.green);
-                        btn.setForeground(Color.green);
+                        btn.setBackground(Color.green);
                         break;
                     }
                 }
-                System.out.println("Client point: " + points);
                 clientSendPoints();
                 rightAnswer = null;
             }
@@ -199,7 +190,6 @@ public class Client extends JFrame implements Runnable {
         else{
             try {
                 pw.writeObject(button.getText());
-                System.out.println("client sends: "+button.getText());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
