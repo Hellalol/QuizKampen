@@ -92,7 +92,6 @@ public class Client1 extends JFrame implements Runnable {
                     //System.out.println(questionFromServer.getAnswerThree());
                     buttons[3].setText(questionFromServer.getAnswerFour());
                     //System.out.println(questionFromServer.getAnswerFour());
-
                     System.out.println("correct answer: "+questionFromServer.getCorrectAnswer());
                     rightAnswer = questionFromServer.getCorrectAnswer();
                     //System.out.println("Right answer in receive: "+rightAnswer);
@@ -102,7 +101,6 @@ public class Client1 extends JFrame implements Runnable {
                 }
                 else if(data instanceof Category){
                     categoryFromServer = (Category) data;
-
                     showQuestion.setText(categoryFromServer.getChooseCat());
                     buttons[0].setText(categoryFromServer.getCat1());
                     buttons[1].setText(categoryFromServer.getCat2());
@@ -110,15 +108,13 @@ public class Client1 extends JFrame implements Runnable {
                     buttons[3].setText(categoryFromServer.getCat4());
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
+                        buttons[i].setForeground(Color.blue);
                     }
                 }
                 else if(data instanceof String){
                     String stringFromServer = (String) data;
                     //setTitle(stringFromServer);
                     System.out.println(stringFromServer);
-                    if(((String) data).startsWith("showscore")){
-                        System.exit(0);
-                    }
                     if(((String) data).startsWith("RoundScore")){
                         pointsOpponent = Integer.parseInt(((String) data).substring(10));
                         System.out.println("pointsOpponent is: "+pointsOpponent);
@@ -133,7 +129,8 @@ public class Client1 extends JFrame implements Runnable {
                     if(((String) data).equals("Gameover")){
                         pw.writeObject(""+points);
                         System.out.println("Send: "+points);
-                        pointsOpponent = Integer.parseInt((String)in.readObject());
+                        //pointsOpponent = Integer.parseInt((String)in.readObject());
+                        System.out.println("Gameover pointsOpponent: " + pointsOpponent);
                         if(points > pointsOpponent)
                             showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
                         if(points < pointsOpponent)
@@ -141,7 +138,7 @@ public class Client1 extends JFrame implements Runnable {
                         if(points == pointsOpponent)
                             showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nEven!");
                         for(JButton btn:buttons){
-                            btn.setText("");
+                            btn.setText(null);
                         }
                     }
                     if(((String) data).startsWith("Other")){
