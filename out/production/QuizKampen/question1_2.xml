@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="category1">category1</entry>
+    <entry key="question1_2">Med 176 miljoner sålda ex gick Minecraft (eventuellt?) upp som ny etta på listan över tidernas mest sålda spel. Vilken titel gick det (kanske?) om?</entry>
+    <entry key="answer1_2_1">Red Dead Redemption</entry>
+    <entry key="answer1_2_2">Grand Theft Auto V</entry>
+    <entry key="answer1_2_3">Super Mario Bros</entry>
+    <entry key="question1_2_right">Tetris</entry>
+</properties>
