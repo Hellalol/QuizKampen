@@ -38,6 +38,8 @@ public class Game extends Thread {
                     System.out.println("SELECTING_CATEGORY");
                     nuvarandeSpelare.opponent.oos.writeObject("Other player is choosing category ?");
                     //Server sends the 4 Categories and jump to next state
+
+
                     sendCategories();
                     //checkIfGameHasEnded();
                     currentState = ASKING_QUESTIONS;
@@ -68,24 +70,19 @@ public class Game extends Thread {
                     //server sends the updated new points to the previous player
                     nuvarandeSpelare.opponent.oos.writeObject("RoundScore" + points);
                     System.out.println("One round is done, send my points: " + points);
+                    opponentPoints = 0;
                     //Send questions to client and get client's answer
                     checkIfGameHasEnded();
                     //currentState = SELECTING_CATEGORY;
 
                     //Send points......
                 } else if (currentState == ALL_QUESTIONS_ANSWERED) {
-                    //Send totalPoints to opponent
-                    //totalPoints = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
+                    //get total points from both sides
                     totalPoints = (Integer)nuvarandeSpelare.ois.readObject();
                     totalPointsOpponent = (Integer) nuvarandeSpelare.opponent.ois.readObject();
-                    System.out.println("Server totalPoints: "+totalPoints+" "+totalPointsOpponent);
-
-                    //totalPointsOpponent = (Integer) nuvarandeSpelare.opponent.ois.readObject();
+                    //send total points to both sides
                     nuvarandeSpelare.opponent.oos.writeObject(totalPoints);
                     nuvarandeSpelare.oos.writeObject(totalPointsOpponent);
-                    System.out.println("-->" + totalPoints);
-                    System.out.println("-->" + totalPointsOpponent);
-                    System.out.println("ALL_QUESTIONS_ANSWERED");
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -143,5 +140,6 @@ public class Game extends Thread {
             System.out.println("Current player's points: "+points);
             counter++;
         }
+
     }
 }

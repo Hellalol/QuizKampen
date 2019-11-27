@@ -25,6 +25,7 @@ public class Client extends JFrame implements Runnable {
     int totalPoints;
     int totalPointsOpponent;
 
+    StringBuilder info = new StringBuilder("Current result: \n");
     public Client(){
         String namn=JOptionPane.showInputDialog("Skriv ditt namn!");
         if(namn == null)
@@ -112,20 +113,20 @@ public class Client extends JFrame implements Runnable {
                     }
                 }
                 else if(dataFromServer instanceof String){
-                    String stringFromServer = (String) dataFromServer;
-                    System.out.println(stringFromServer);
                     if(((String) dataFromServer).startsWith("RoundScore")){
                         pointsOpponent = Integer.parseInt(((String) dataFromServer).substring(10));
                         System.out.println("pointsOpponent is: "+pointsOpponent);
                         //showQuestion.setText(points +" : "+pointsOpponent);
+                        info.append(points + " : " + pointsOpponent + "\n");
                         JOptionPane.showMessageDialog(this,
-                                "Current result:\n" + points + " : " + pointsOpponent,
+                                info,
                                 "Round "+ round + " is done",
                                 JOptionPane.INFORMATION_MESSAGE);
                         round++;
                         for(JButton btn:buttons){
                             btn.setText("");
                         }
+                        pointsOpponent = 0;
                     }
 
                     if(((String) dataFromServer).startsWith("Andra")){
@@ -141,10 +142,7 @@ public class Client extends JFrame implements Runnable {
                     if(((String) dataFromServer).equals("Gameover")){
                         pw.writeObject(totalPoints);
                         pw.flush();
-                        System.out.println("Game over send totalPoints: "+totalPoints);
-                        //totalPointsOpponent = Integer.parseInt((String)in.readObject()) ;
                         totalPointsOpponent = (Integer)in.readObject();
-                        System.out.println("Total points "+totalPoints+" opponent totalPoints "+totalPointsOpponent);
                         if(totalPoints > totalPointsOpponent)
                             showQuestion.setText("Game is over\nFinal Result:\n"+ totalPoints +" : "+totalPointsOpponent + "\nYou are winner!");
                         if(totalPoints < totalPointsOpponent)
@@ -196,6 +194,7 @@ public class Client extends JFrame implements Runnable {
             try {
                 pw.writeObject(button.getText());
                 pw.flush();
+                points = 0;
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
