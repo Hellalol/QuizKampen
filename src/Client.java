@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -8,9 +9,12 @@ import java.net.Socket;
 public class Client extends JFrame implements Runnable {
 
     Thread thread=new Thread(this);
+
     JButton[] buttons=new JButton[4];
     JPanel buttonsPanel=new JPanel();
+    JPanel showQuestionPanel = new JPanel(new GridLayout(1,2,10,0));
     JTextArea showQuestion = new JTextArea("Vänta på motståndare!",8,100);
+    JTextArea showResults = new JTextArea();
     ObjectOutputStream pw;
     ObjectInputStream in;
     Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -30,7 +34,7 @@ public class Client extends JFrame implements Runnable {
             System.exit(0);
         //  String categoy=JOptionPane.showInputDialog("Choose category");
         setLayout(new BorderLayout());
-        setSize(500,385);
+        setSize(550,285);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             socket=new Socket("localhost",12345);
@@ -48,15 +52,21 @@ public class Client extends JFrame implements Runnable {
             buttons[i].setBackground(Color.white);
             buttons[i].setBorder(border);
             buttons[i].setFont(new Font("arial",Font.PLAIN,20));
-            buttonsPanel.setLayout(new GridLayout(2,2,16,16));
+            buttonsPanel.setLayout(new GridLayout(2,2,10,10));
             buttonsPanel.add(buttons[i]);
         }
         setLocationRelativeTo(null);
         showQuestion.setWrapStyleWord(true);
         showQuestion.setLineWrap(true);
-        showQuestion.setFont(new Font("arial",Font.PLAIN,20));
-        add(showQuestion,BorderLayout.NORTH);
+        showQuestion.setFont(new Font("arial",Font.PLAIN,15));
+        add(showQuestionPanel,BorderLayout.NORTH);
+        showQuestionPanel.add(showQuestion);
+        showQuestionPanel.add(showResults);
+        buttonsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(buttonsPanel,BorderLayout.SOUTH);
+        showResults.setBorder(border);
+        showQuestionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        showResults.setFont(new Font("arial", Font.PLAIN, 15));
         showQuestion.setBorder(border);
 
         setVisible(true);
@@ -79,10 +89,10 @@ public class Client extends JFrame implements Runnable {
 
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setBackground(Color.white);
-                        buttons[i].setForeground(Color.BLUE);
+                        buttons[i].setForeground(Color.black);
                         buttons[i].setBorder(border);
                         buttons[i].setFont(new Font("arial", Font.PLAIN, 20));
-                        buttonsPanel.setLayout(new GridLayout(2, 2, 16, 16));
+                        buttonsPanel.setLayout(new GridLayout(2, 2, 10, 16));
                         buttonsPanel.add(buttons[i]);
                     }
                     showQuestion.setText(questionFromServer.getQuestion());
@@ -107,7 +117,7 @@ public class Client extends JFrame implements Runnable {
                     buttons[3].setText(categoryFromServer.getCat4());
                     for (int i = 0; i < buttons.length; i++) {
                         buttons[i].setEnabled(true);
-                        buttons[i].setForeground(Color.blue);
+                        buttons[i].setBackground(Color.white);
                     }
                 }
                 else if(dataFromServer instanceof String){
@@ -121,7 +131,7 @@ public class Client extends JFrame implements Runnable {
                                 "Current result:\n" + points + " : " + pointsOpponent,
                                 "Round "+ round + " is done",
                                 JOptionPane.INFORMATION_MESSAGE);
-
+                        showResults.append("runda " + round + ": "+ "[ " + points + " | " + pointsOpponent + " ]\n");
                         finalScorePlayer1 += points;
                         finalScorePlayer2 += pointsOpponent;
                         points = 0;
@@ -176,14 +186,14 @@ public class Client extends JFrame implements Runnable {
         //client chose right answer
         if(rightAnswer != null) {
             if (button.getText().equals(rightAnswer)) {
-                button.setForeground(Color.green);
+                button.setBackground(Color.green);
                 points++;
             }//Client chose wrong answer
             else {
-                button.setForeground(Color.red);
+                button.setBackground(Color.red);
                 for (JButton btn : buttons) {
                     if (btn.getText().equals(rightAnswer)) {
-                        btn.setForeground(Color.green);
+                        btn.setBackground(Color.green);
                         break;
                     }
                 }
