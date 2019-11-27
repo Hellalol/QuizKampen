@@ -66,7 +66,7 @@ public class Client extends JFrame implements Runnable {
     public void run() {
         try {
             Object dataFromServer;
-            while((dataFromServer=in.readObject())!=null){
+            while((dataFromServer = in.readObject()) != null){
                 if(dataFromServer instanceof Question) {
                     try{
                         Thread.sleep(500);
@@ -110,13 +110,15 @@ public class Client extends JFrame implements Runnable {
                 }
                 else if(dataFromServer instanceof String){
                     String stringFromServer = (String) dataFromServer;
-                    //setTitle(stringFromServer);
                     System.out.println(stringFromServer);
                     if(((String) dataFromServer).startsWith("RoundScore")){
                         pointsOpponent = Integer.parseInt(((String) dataFromServer).substring(10));
                         System.out.println("pointsOpponent is: "+pointsOpponent);
                         //showQuestion.setText(points +" : "+pointsOpponent);
-                        JOptionPane.showMessageDialog(this,"Current result:\n" + points + " : " + pointsOpponent,"Round "+ round + " is done",JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this,
+                                "Current result:\n" + points + " : " + pointsOpponent,
+                                "Round "+ round + " is done",
+                                JOptionPane.INFORMATION_MESSAGE);
                         round++;
                         for(JButton btn:buttons){
                             btn.setText("");
@@ -129,17 +131,13 @@ public class Client extends JFrame implements Runnable {
                             for (int i = 0; i < buttons.length ; i++) {
                                 buttons[i].setVisible(false);
                             }
-
                         }
-
-
                     }
 
                     //When game is over send points
                     if(((String) dataFromServer).equals("Gameover")){
                         pw.writeObject(""+points);
-                        System.out.println("Send: "+points);
-                        //pointsOpponent = Integer.parseInt((String)in.readObject());
+                        pw.flush();
                         if(points > pointsOpponent)
                             showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
                         if(points < pointsOpponent)
@@ -167,39 +165,29 @@ public class Client extends JFrame implements Runnable {
     }
 
     ActionListener sendAnswer = e -> {
-        System.out.println("button click runs");
         JButton button=(JButton) e.getSource();
-        System.out.println("Pressed button is: " + button.getText());
-        System.out.println("right answer is: " + rightAnswer);
         //client chose right answer
         if(rightAnswer != null) {
             if (button.getText().equals(rightAnswer)) {
-                //button.setBackground(Color.green);
                 button.setForeground(Color.green);
                 points++;
-                System.out.println("Client point: " + points);
-                clientSendPoints();
-                System.out.println("Right answer is: " + rightAnswer);
             }//Client chose wrong answer
             else {
-                //button.setBackground(Color.red);
                 button.setForeground(Color.red);
                 for (JButton btn : buttons) {
                     if (btn.getText().equals(rightAnswer)) {
-                        //btn.setBackground(Color.green);
                         btn.setForeground(Color.green);
                         break;
                     }
                 }
-                System.out.println("Client point: " + points);
-                clientSendPoints();
-                rightAnswer = null;
             }
+            clientSendPoints();
+            rightAnswer = null;
         }
         else{
             try {
                 pw.writeObject(button.getText());
-                System.out.println("client sends: "+button.getText());
+                pw.flush();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -221,7 +209,7 @@ public class Client extends JFrame implements Runnable {
         try {
             //send player's points
             pw.writeObject(""+points);
-            System.out.println("Player's points on client side: "+points);
+            pw.flush();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
