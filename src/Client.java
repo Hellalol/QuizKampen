@@ -123,6 +123,7 @@ public class Client extends JFrame implements Runnable {
                                 "Round "+ round + " is done",
                                 JOptionPane.INFORMATION_MESSAGE);
                         round++;
+                        points = 0;
                         for(JButton btn:buttons){
                             btn.setText("");
                         }
