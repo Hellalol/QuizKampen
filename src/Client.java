@@ -22,6 +22,9 @@ public class Client extends JFrame implements Runnable {
     String rightAnswer;
     int round = 1;
 
+    int totalPoints;
+    int totalPointsOpponent;
+
     public Client(){
         String namn=JOptionPane.showInputDialog("Skriv ditt namn!");
         if(namn == null)
@@ -136,14 +139,18 @@ public class Client extends JFrame implements Runnable {
 
                     //When game is over send points
                     if(((String) dataFromServer).equals("Gameover")){
-                        pw.writeObject(""+points);
+                        pw.writeObject(totalPoints);
                         pw.flush();
-                        if(points > pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
-                        if(points < pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou lose!");
-                        if(points == pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nEven!");
+                        System.out.println("Game over send totalPoints: "+totalPoints);
+                        //totalPointsOpponent = Integer.parseInt((String)in.readObject()) ;
+                        totalPointsOpponent = (Integer)in.readObject();
+                        System.out.println("Total points "+totalPoints+" opponent totalPoints "+totalPointsOpponent);
+                        if(totalPoints > totalPointsOpponent)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ totalPoints +" : "+totalPointsOpponent + "\nYou are winner!");
+                        if(totalPoints < totalPointsOpponent)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ totalPoints +" : "+totalPointsOpponent + "\nYou lose!");
+                        if(totalPoints == totalPointsOpponent)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ totalPoints +" : "+totalPointsOpponent + "\nEven!");
                         for(JButton btn:buttons){
                             btn.setVisible(false);
                         }
@@ -171,6 +178,7 @@ public class Client extends JFrame implements Runnable {
             if (button.getText().equals(rightAnswer)) {
                 button.setForeground(Color.green);
                 points++;
+                totalPoints++;
             }//Client chose wrong answer
             else {
                 button.setForeground(Color.red);

@@ -19,6 +19,9 @@ public class Game extends Thread {
     int points;
     int opponentPoints;
 
+    int totalPoints;
+    int totalPointsOpponent;
+
     Database database = new Database();
     List<Question> spel = new LinkedList<>();
 
@@ -71,9 +74,17 @@ public class Game extends Thread {
 
                     //Send points......
                 } else if (currentState == ALL_QUESTIONS_ANSWERED) {
-                    points = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
-                    System.out.println("-->" + points);
-                    //nuvarandeSpelare.opponent.oos.writeObject("" + opponentPoints);
+                    //Send totalPoints to opponent
+                    //totalPoints = Integer.parseInt((String)nuvarandeSpelare.ois.readObject());
+                    totalPoints = (Integer)nuvarandeSpelare.ois.readObject();
+                    totalPointsOpponent = (Integer) nuvarandeSpelare.opponent.ois.readObject();
+                    System.out.println("Server totalPoints: "+totalPoints+" "+totalPointsOpponent);
+
+                    //totalPointsOpponent = (Integer) nuvarandeSpelare.opponent.ois.readObject();
+                    nuvarandeSpelare.opponent.oos.writeObject(totalPoints);
+                    nuvarandeSpelare.oos.writeObject(totalPointsOpponent);
+                    System.out.println("-->" + totalPoints);
+                    System.out.println("-->" + totalPointsOpponent);
                     System.out.println("ALL_QUESTIONS_ANSWERED");
                 }
             }
