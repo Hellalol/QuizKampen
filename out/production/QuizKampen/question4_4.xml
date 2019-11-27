@@ -2,10 +2,9 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="category4">category4</entry>
-    <entry key="question4_4">question4_4</entry>
-    <entry key="answer4_4_1">answer4_4_right</entry>
-    <entry key="answer4_4_2">answer4_4_2</entry>
-    <entry key="answer4_4_3">answer4_4_3</entry>
-    <entry key="answer4_4_4">answer4_4_4</entry>
-    <entry key="question4_4_right">_answer4_4_right</entry>
+    <entry key="question4_4">Vad är källkod?</entry>
+    <entry key="answer4_4_1">En kod du knäcker för att ta dig till källan</entry>
+    <entry key="answer4_4_2">en maskinkod </entry>
+    <entry key="answer4_4_3">kod som "riktiga" programmerarna känner till </entry>
+    <entry key="question4_4_right">Den kod du skriver i t.ex Dev c++</entry>
 </properties>

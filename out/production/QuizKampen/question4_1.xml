@@ -2,10 +2,9 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="category4">category4</entry>
-    <entry key="question4_1">question4_1</entry>
-    <entry key="answer4_1_1">answer4_1_right</entry>
-    <entry key="answer4_1_2">answer4_1_2</entry>
-    <entry key="answer4_1_3">answer4_1_3</entry>
-    <entry key="answer4_1_4">answer4_1_4</entry>
-    <entry key="question4_1_right">_answer4_1_right</entry>
+    <entry key="question4_1">Vad kallas en sådan här sats: int a;</entry>
+    <entry key="answer4_1_1">Variabelkontemplation </entry>
+    <entry key="answer4_1_2">RAM </entry>
+    <entry key="answer4_1_3">Initiering </entry>
+    <entry key="question4_1_right">Variabeldeklaration</entry>
 </properties>

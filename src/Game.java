@@ -22,6 +22,7 @@ public class Game extends Thread {
     Database database = new Database();
     List<Question> spel = new LinkedList<>();
 
+
     public void setNuvarandeSpelare(Server nuvarandeSpelare) {
         this.nuvarandeSpelare = nuvarandeSpelare;
     }
@@ -32,6 +33,8 @@ public class Game extends Thread {
         try {
             while (true) {
                 if (currentState == SELECTING_CATEGORY) {
+                    points = 0;
+                    opponentPoints = points;
                     System.out.println("SELECTING_CATEGORY");
                     nuvarandeSpelare.opponent.oos.writeObject("Other player is choosing category ?");
                     //Server sends the 4 Categories and jump to next state
@@ -75,6 +78,7 @@ public class Game extends Thread {
                     System.out.println("-->" + points);
                     //nuvarandeSpelare.opponent.oos.writeObject("" + opponentPoints);
                     System.out.println("ALL_QUESTIONS_ANSWERED");
+
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -91,8 +95,8 @@ public class Game extends Thread {
             tempList = database.sportCategory;
         else if (input.equalsIgnoreCase("java")){
             tempList = database.javaCategory;
-        }else if(input.equalsIgnoreCase("teknik")){
-            tempList = database.teknikCategory;
+        }else if(input.equalsIgnoreCase("blandade frågor")){
+            tempList = database.blandadeFrågor;
         }
         return tempList;
     }

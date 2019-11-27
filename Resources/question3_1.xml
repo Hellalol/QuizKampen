@@ -2,9 +2,9 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="category3">category3</entry>
-    <entry key="question3_1">question3_1</entry>
-    <entry key="answer3_1_1">answer3_1_1</entry>
-    <entry key="answer3_1_2">answer3_1_2</entry>
-    <entry key="answer3_1_3">answer3_1_3</entry>
-    <entry key="question3_1_right">answer3_1_right</entry>
+    <entry key="question3_1">Från vilken stad kommer ishockey-laget Brynäs?</entry>
+    <entry key="answer3_1_1">stockholm </entry>
+    <entry key="answer3_1_2">malmö </entry>
+    <entry key="answer3_1_3">umeå </entry>
+    <entry key="question3_1_right">Gävle</entry>
 </properties>

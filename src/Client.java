@@ -19,6 +19,8 @@ public class Client extends JFrame implements Runnable {
     Category categoryFromServer;
     int points;
     int pointsOpponent;
+    int finalScorePlayer1;
+    int finalScorePlayer2;
     String rightAnswer;
     int round = 1;
 
@@ -119,6 +121,11 @@ public class Client extends JFrame implements Runnable {
                                 "Current result:\n" + points + " : " + pointsOpponent,
                                 "Round "+ round + " is done",
                                 JOptionPane.INFORMATION_MESSAGE);
+
+                        finalScorePlayer1 += points;
+                        finalScorePlayer2 += pointsOpponent;
+                        points = 0;
+                        pointsOpponent = 0;
                         round++;
                         for(JButton btn:buttons){
                             btn.setText("");
@@ -138,12 +145,12 @@ public class Client extends JFrame implements Runnable {
                     if(((String) dataFromServer).equals("Gameover")){
                         pw.writeObject(""+points);
                         pw.flush();
-                        if(points > pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou are winner!");
-                        if(points < pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nYou lose!");
-                        if(points == pointsOpponent)
-                            showQuestion.setText("Game is over\nFinal Result:\n"+ points +" : "+pointsOpponent + "\nEven!");
+                        if(finalScorePlayer1 > finalScorePlayer2)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ finalScorePlayer1 +" : "+finalScorePlayer2 + "\nYou are winner!");
+                        if(finalScorePlayer1 < finalScorePlayer2)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ finalScorePlayer1 +" : "+finalScorePlayer2 + "\nYou lose!");
+                        if(finalScorePlayer1 == finalScorePlayer2)
+                            showQuestion.setText("Game is over\nFinal Result:\n"+ finalScorePlayer1 +" : "+finalScorePlayer2 + "\nEven!");
                         for(JButton btn:buttons){
                             btn.setVisible(false);
                         }
@@ -183,6 +190,7 @@ public class Client extends JFrame implements Runnable {
             }
             clientSendPoints();
             rightAnswer = null;
+
         }
         else{
             try {
@@ -193,6 +201,7 @@ public class Client extends JFrame implements Runnable {
             }
         }
     };
+
 
     void makeButtonsVisible(){
         buttons[0].setVisible(true);
