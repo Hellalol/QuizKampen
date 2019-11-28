@@ -98,6 +98,7 @@ public class Game extends Thread {
         }else if(input.equalsIgnoreCase("blandade frågor")){
             tempList = database.blandadeFrågor;
         }
+
         return tempList;
     }
 
