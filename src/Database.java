@@ -19,26 +19,26 @@ public class Database {
 
         String questionBlandade1 =getQuestionsByCategory("category3").get(0);
         Question answersAndQuestionsBlandade1 = new Question(getAnswersByQuestion(questionBlandade1).get(0),
-                getAnswersByQuestion(questionBlandade1).get(1),
-                getAnswersByQuestion(questionBlandade1).get(2),
-                getAnswersByQuestion(questionBlandade1).get(3),
                 getAnswersByQuestion(questionBlandade1).get(4),
+                getAnswersByQuestion(questionBlandade1).get(3),
+                getAnswersByQuestion(questionBlandade1).get(2),
+                getAnswersByQuestion(questionBlandade1).get(1),
                 getAnswersByQuestion(questionBlandade1).get(4));
 
         String questionBlandade2 =getQuestionsByCategory("category3").get(1);
         Question answersAndQuestionsBlandade2 = new Question(getAnswersByQuestion(questionBlandade2).get(0),
-                getAnswersByQuestion(questionBlandade2).get(1),
-                getAnswersByQuestion(questionBlandade2).get(2),
                 getAnswersByQuestion(questionBlandade2).get(3),
+                getAnswersByQuestion(questionBlandade2).get(1),
                 getAnswersByQuestion(questionBlandade2).get(4),
+                getAnswersByQuestion(questionBlandade2).get(2),
                 getAnswersByQuestion(questionBlandade2).get(4));
 
         String questionBlandade3 =getQuestionsByCategory("category3").get(2);
         Question answersAndQuestionsBlandade3 = new Question(getAnswersByQuestion(questionBlandade3).get(0),
                 getAnswersByQuestion(questionBlandade3).get(1),
-                getAnswersByQuestion(questionBlandade3).get(2),
                 getAnswersByQuestion(questionBlandade3).get(3),
                 getAnswersByQuestion(questionBlandade3).get(4),
+                getAnswersByQuestion(questionBlandade3).get(2),
                 getAnswersByQuestion(questionBlandade3).get(4));
 
         String questionBlandade4 =getQuestionsByCategory("category3").get(3);
@@ -56,34 +56,34 @@ public class Database {
 
         String questionJava1 =getQuestionsByCategory("category4").get(0);
         Question answersAndQuestionsJava1 = new Question(getAnswersByQuestion(questionJava1).get(0),
-                getAnswersByQuestion(questionJava1).get(1),
                 getAnswersByQuestion(questionJava1).get(2),
-                getAnswersByQuestion(questionJava1).get(3),
+                getAnswersByQuestion(questionJava1).get(1),
                 getAnswersByQuestion(questionJava1).get(4),
+                getAnswersByQuestion(questionJava1).get(3),
                 getAnswersByQuestion(questionJava1).get(4));
 
         String questionJava2 =getQuestionsByCategory("category4").get(1);
         Question answersAndQuestionsJava2 = new Question(getAnswersByQuestion(questionJava2).get(0),
-                getAnswersByQuestion(questionJava2).get(1),
                 getAnswersByQuestion(questionJava2).get(2),
-                getAnswersByQuestion(questionJava2).get(3),
                 getAnswersByQuestion(questionJava2).get(4),
+                getAnswersByQuestion(questionJava2).get(3),
+                getAnswersByQuestion(questionJava2).get(1),
                 getAnswersByQuestion(questionJava2).get(4));
 
         String questionJava3 =getQuestionsByCategory("category4").get(2);
         Question answersAndQuestionsJava3 = new Question(getAnswersByQuestion(questionJava3).get(0),
-                getAnswersByQuestion(questionJava3).get(1),
                 getAnswersByQuestion(questionJava3).get(2),
                 getAnswersByQuestion(questionJava3).get(3),
                 getAnswersByQuestion(questionJava3).get(4),
+                getAnswersByQuestion(questionJava3).get(1),
                 getAnswersByQuestion(questionJava3).get(4));
 
         String questionJava4 =getQuestionsByCategory("category4").get(3);
         Question answersAndQuestionsJava4 = new Question(getAnswersByQuestion(questionJava4).get(0),
-                getAnswersByQuestion(questionJava4).get(1),
-                getAnswersByQuestion(questionJava4).get(2),
-                getAnswersByQuestion(questionJava4).get(3),
                 getAnswersByQuestion(questionJava4).get(4),
+                getAnswersByQuestion(questionJava4).get(3),
+                getAnswersByQuestion(questionJava4).get(2),
+                getAnswersByQuestion(questionJava4).get(1),
                 getAnswersByQuestion(questionJava4).get(4));
 
         javaCategory.add(answersAndQuestionsJava1);
@@ -102,26 +102,26 @@ public class Database {
 
         String questionsport2 = getQuestionsByCategory("category2").get(1);
         Question answersAndQuestionsSport2 = new Question(getAnswersByQuestion(questionsport2).get(0),
-                getAnswersByQuestion(questionsport2).get(1),
                 getAnswersByQuestion(questionsport2).get(2),
                 getAnswersByQuestion(questionsport2).get(3),
                 getAnswersByQuestion(questionsport2).get(4),
+                getAnswersByQuestion(questionsport2).get(1),
                 getAnswersByQuestion(questionsport2).get(4));
 
         String questionsport3 = getQuestionsByCategory("category2").get(2);
         Question answersAndQuestionsSport3 = new Question(getAnswersByQuestion(questionsport3).get(0),
-                getAnswersByQuestion(questionsport3).get(1),
-                getAnswersByQuestion(questionsport3).get(2),
                 getAnswersByQuestion(questionsport3).get(3),
+                getAnswersByQuestion(questionsport3).get(1),
                 getAnswersByQuestion(questionsport3).get(4),
+                getAnswersByQuestion(questionsport3).get(2),
                 getAnswersByQuestion(questionsport3).get(4));
 
         String questionsport4 = getQuestionsByCategory("category2").get(3);
         Question answersAndQuestionsSport4 = new Question(getAnswersByQuestion(questionsport4).get(0),
-                getAnswersByQuestion(questionsport4).get(1),
-                getAnswersByQuestion(questionsport4).get(2),
-                getAnswersByQuestion(questionsport4).get(3),
                 getAnswersByQuestion(questionsport4).get(4),
+                getAnswersByQuestion(questionsport4).get(1),
+                getAnswersByQuestion(questionsport4).get(3),
+                getAnswersByQuestion(questionsport4).get(2),
                 getAnswersByQuestion(questionsport4).get(4));
 
         sportCategory.add(answersAndQuestionsSport1);
@@ -140,35 +140,35 @@ public class Database {
 
         String questionSpel1 = getQuestionsByCategory("category1").get(0);
         Question answersAndQuestionsSpel1 = new Question(getAnswersByQuestion(questionSpel1).get(0),
-                getAnswersByQuestion(questionSpel1).get(1),
-                getAnswersByQuestion(questionSpel1).get(2),
-                getAnswersByQuestion(questionSpel1).get(3),
                 getAnswersByQuestion(questionSpel1).get(4),
+                getAnswersByQuestion(questionSpel1).get(3),
+                getAnswersByQuestion(questionSpel1).get(2),
+                getAnswersByQuestion(questionSpel1).get(1),
                 getAnswersByQuestion(questionSpel1).get(4)
         );
 
         String questionSpel2 = getQuestionsByCategory("category1").get(1);
         Question answersAndQuestionsSpel2 = new Question(getAnswersByQuestion(questionSpel2).get(0),
+                getAnswersByQuestion(questionSpel2).get(3),
                 getAnswersByQuestion(questionSpel2).get(1),
                 getAnswersByQuestion(questionSpel2).get(2),
-                getAnswersByQuestion(questionSpel2).get(3),
                 getAnswersByQuestion(questionSpel2).get(4),
                 getAnswersByQuestion(questionSpel2).get(4));
 
         String questionSpel3 = getQuestionsByCategory("category1").get(2);
         Question answersAndQuestionsSpel3 = new Question(getAnswersByQuestion(questionSpel3).get(0),
-                getAnswersByQuestion(questionSpel3).get(1),
                 getAnswersByQuestion(questionSpel3).get(2),
                 getAnswersByQuestion(questionSpel3).get(3),
                 getAnswersByQuestion(questionSpel3).get(4),
+                getAnswersByQuestion(questionSpel3).get(1),
                 getAnswersByQuestion(questionSpel3).get(4));
 
         String questionSpel4 = getQuestionsByCategory("category1").get(3);
         Question answersAndQuestionsSpel4 = new Question(getAnswersByQuestion(questionSpel4).get(0),
-                getAnswersByQuestion(questionSpel4).get(1),
                 getAnswersByQuestion(questionSpel4).get(2),
-                getAnswersByQuestion(questionSpel4).get(3),
+                getAnswersByQuestion(questionSpel4).get(1),
                 getAnswersByQuestion(questionSpel4).get(4),
+                getAnswersByQuestion(questionSpel4).get(3),
                 getAnswersByQuestion(questionSpel4).get(4));
 
 
@@ -179,14 +179,6 @@ public class Database {
 
 
 
-    }
-
-
-
-
-
-    public List<Question> loadCategorylistSpel(){
-        return this.spelCategory;
     }
 
     List<String> getQuestionsByCategory(String category){
@@ -211,27 +203,20 @@ public class Database {
         return answers;
     }
 
-    //Random the answers and show the right answer index
-    void randomAnswers(List<String> answers){
-        String rightAnswer = answers.get(answers.size()-1);
-        System.out.println("right answer: "+rightAnswer);
-        for (int i = answers.size()-1; i >=1; i--) {
-            //for (int i = answers.size()-1; i >=0; i--) {
-            int random = (int) (Math.random()*i)+1;
-            //int random = (int) (Math.random()*(i+1));
-            String temp = answers.get(i);
-            answers.set(i,answers.get(random));
-            answers.set(random,temp);
-        }
+    Category mixedCategories(){
+        int r = (int) (Math.random() * 4);
 
-        for (int i = 0; i < answers.size() ; i++) {
-            if(answers.get(i).equals(rightAnswer)){
-                answers.add(""+(i-1));
-                //answers.add(""+i);
-                System.out.println("right index: "+i);
-                break;
-            }
+        switch (r){
+            case 1:
+                categories = new Category("Välj kategori!","spel","sport","blandade frågor","java");
+            case 2:
+                categories = new Category("Välj kategori!","sport","spel","java","blandade frågor");
+            case 3:
+                categories = new Category("Välj kategori!","java","blandade frågor","spel","sport");
+            case 4:
+                categories = new Category("Välj kategori!","blandade frågor","java","sport","spel");
         }
+        return categories;
     }
 
     //Store all categories, questions and answers into a Map
@@ -259,26 +244,4 @@ public class Database {
             }
         }
     }
-
-    List<Question> getCategoryList(String category){
-        List<Question> tempList = new LinkedList<>();
-        if (category.equalsIgnoreCase("spel"))
-            tempList = spelCategory;
-        else if (category.equalsIgnoreCase("sport"))
-            tempList = sportCategory;
-        else if (category.equalsIgnoreCase("java")){
-            tempList = javaCategory;
-        }else if(category.equalsIgnoreCase("blandade frågor")){
-            tempList = blandadeFrågor;
-        }
-        return tempList;
-    }
-
-/*    public static void main(String[] args) {
-        DatabaseQuestions ad= new DatabaseQuestions();
-        //System.out.println(ad.getCategoryList("spel"));
-        for(Question question: ad.getCategoryList("spel")){
-            System.out.println(question);
-        }
-    }*/
 }

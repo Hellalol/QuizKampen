@@ -103,7 +103,7 @@ public class Game extends Thread {
 
     //Send the 4 Categories and jump to next state
     private void sendCategories() throws IOException {
-        nuvarandeSpelare.oos.writeObject(database.categories);
+        nuvarandeSpelare.oos.writeObject(database.mixedCategories());
         categoryCounter++;
         System.out.println("Current round:"+categoryCounter+" of "+roundAmount);
     }

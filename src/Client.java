@@ -14,7 +14,7 @@ public class Client extends JFrame implements Runnable {
     JPanel buttonsPanel=new JPanel();
     JPanel showQuestionPanel = new JPanel(new GridLayout(1,2,10,0));
     JTextArea showQuestion = new JTextArea("Vänta på motståndare!",8,100);
-    JTextArea showResults = new JTextArea();
+    JTextArea showResults = new JTextArea("                      POÄNG\n");
     ObjectOutputStream pw;
     ObjectInputStream in;
     Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -34,7 +34,7 @@ public class Client extends JFrame implements Runnable {
             System.exit(0);
         //  String categoy=JOptionPane.showInputDialog("Choose category");
         setLayout(new BorderLayout());
-        setSize(550,285);
+        setSize(530,285);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             socket=new Socket("localhost",12345);
@@ -51,7 +51,7 @@ public class Client extends JFrame implements Runnable {
             buttons[i].addActionListener(sendAnswer);
             buttons[i].setBackground(Color.white);
             buttons[i].setBorder(border);
-            buttons[i].setFont(new Font("arial",Font.PLAIN,20));
+            buttons[i].setFont(new Font("arial",Font.PLAIN,15));
             buttonsPanel.setLayout(new GridLayout(2,2,10,10));
             buttonsPanel.add(buttons[i]);
         }
@@ -91,7 +91,7 @@ public class Client extends JFrame implements Runnable {
                         buttons[i].setBackground(Color.white);
                         buttons[i].setForeground(Color.black);
                         buttons[i].setBorder(border);
-                        buttons[i].setFont(new Font("arial", Font.PLAIN, 20));
+                        buttons[i].setFont(new Font("arial", Font.PLAIN, 15));
                         buttonsPanel.setLayout(new GridLayout(2, 2, 10, 16));
                         buttonsPanel.add(buttons[i]);
                     }
@@ -131,7 +131,7 @@ public class Client extends JFrame implements Runnable {
                                 "Current result:\n" + points + " : " + pointsOpponent,
                                 "Round "+ round + " is done",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        showResults.append("runda " + round + ": "+ "[ " + points + " | " + pointsOpponent + " ]\n");
+                        showResults.append("   runda " + round + ": "+ "   |  " + points + "  |  " + pointsOpponent + "  |\n");
                         finalScorePlayer1 += points;
                         finalScorePlayer2 += pointsOpponent;
                         points = 0;
