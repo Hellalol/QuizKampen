@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="category3">category3</entry>
+    <entry key="question3_2">Vilket grundämne har förkortningen Ag i periodiska systemet?</entry>
+    <entry key="answer3_2_1">guld </entry>
+    <entry key="answer3_2_2">koppar </entry>
+    <entry key="answer3_2_3">järn </entry>
+    <entry key="question3_2_right">silver </entry>
+</properties>

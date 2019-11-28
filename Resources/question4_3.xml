@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="category4">category4</entry>
+    <entry key="question4_3">Vilket värde får x?
+        int Y=12;
+        int Z=5;
+        int X=Y/Z;
+    </entry>
+    <entry key="answer4_3_1">X får värdet 2,4</entry>
+    <entry key="answer4_3_2">X får värdet Z</entry>
+    <entry key="answer4_3_3">X får värdet Y</entry>
+    <entry key="question4_3_right"> X får värdet 2</entry>
+</properties>

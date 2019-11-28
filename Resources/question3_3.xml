@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="category3">category3</entry>
+    <entry key="question3_3">Vilken dag på året är kung Carl XVI Gustaf födelsedag?</entry>
+    <entry key="answer3_3_1">17 maj</entry>
+    <entry key="answer3_3_2">6 juni</entry>
+    <entry key="answer3_3_3">24 december</entry>
+    <entry key="question3_3_right">30 april</entry>
+</properties>

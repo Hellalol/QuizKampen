@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="category4">category4</entry>
+    <entry key="question4_4">Vad är källkod?</entry>
+    <entry key="answer4_4_1">En kod du knäcker för att ta dig till källan</entry>
+    <entry key="answer4_4_2">en maskinkod </entry>
+    <entry key="answer4_4_3">kod som "riktiga" programmerarna känner till </entry>
+    <entry key="question4_4_right">Den kod du skriver i t.ex Dev c++</entry>
+</properties>

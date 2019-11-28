@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="category3">category3</entry>
+    <entry key="question3_1">Från vilken stad kommer ishockey-laget Brynäs?</entry>
+    <entry key="answer3_1_1">stockholm </entry>
+    <entry key="answer3_1_2">malmö </entry>
+    <entry key="answer3_1_3">umeå </entry>
+    <entry key="question3_1_right">Gävle</entry>
+</properties>

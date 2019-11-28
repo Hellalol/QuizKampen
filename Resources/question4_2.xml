@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="category4">category4</entry>
+    <entry key="question4_2">I datatyperna Float och Double kan du lagra:</entry>
+    <entry key="answer4_2_1">Tecken</entry>
+    <entry key="answer4_2_2">Endast heltal</entry>
+    <entry key="answer4_2_3">Strängar</entry>
+    <entry key="question4_2_right">Decimaltal</entry>
+</properties>
